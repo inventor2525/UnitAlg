@@ -1,0 +1,11 @@
+Metadata-Version: 1.2
+Name: UnitAlg
+Version: 0.0.1
+Summary: An un-described package.
+Home-page: https://github.com/inventor2525/UnitAlg
+Author: Charlie Angela Mehlenbeck
+Author-email: charlie_inventor2003@yahoo.com
+License: LICENSE.txt
+Description: #Write your readme here.
+Platform: UNKNOWN
+Requires-Python: ~=3.7
