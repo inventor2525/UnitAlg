@@ -1,4 +1,4 @@
-from .helpers import *
+from helpers import *
 from typing import Union, List
 import numpy as np
 
@@ -42,7 +42,7 @@ class Vector3():
     @staticmethod
     def from_other(value) -> 'Vector3':
         if isinstance(value, (gp_Vec, gp_Pnt, gp_Dir, gp_XYZ)):
-            return Vector3(value.x, value.y, value.z)
+            return Vector3(value.X(), value.Y(), value.Z())
         if isinstance(value, np.ndarray):
             return Vector3(*value)
 
@@ -75,18 +75,23 @@ class Vector3():
     def z(self, z:float) -> None:
         self._value[2] = z
 
+    def __str__(self) -> str:
+        return str.format('({0},{1},{2})',*self._value)
+    def __repr__(self) -> str:
+        return self.__str__()
+
     #----OCC conversion functions----
     def occ_AX1(self, origin=[0,0,0]) -> gp_Ax1:
         return gp_Ax1(Vector3(origin).occ_Pnt, self.occ_Dir)
 
     @property
     def occ_Vec(self) -> gp_Vec:
-        return gp_Vec(*self._value)
+        return gp_Vec(float(self._value[0]), float(self._value[1]), float(self._value[2]))
 
     @property
     def occ_Dir(self) -> gp_Dir:
-        return gp_Dir(*self._value)
+        return gp_Dir(float(self._value[0]), float(self._value[1]), float(self._value[2]))
 
     @property
     def occ_Pnt(self) -> gp_Pnt:
-        return gp_Pnt(*self._value)
+        return gp_Pnt(float(self._value[0]), float(self._value[1]), float(self._value[2]))

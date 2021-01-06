@@ -1,9 +1,10 @@
-from .helpers import *
-from typing import Union, List
+from helpers import *
+from typing import Union, List, Tuple
 import numpy as np
+import math
 
 from OCC.Core.gp import gp_Ax1, gp_Pnt, gp_Vec, gp_Dir, gp_Quaternion, gp_Trsf, gp_GTrsf, gp_XYZ, gp_Mat, gp_OZ
-from .Vector3 import Vector3
+from Vector3 import Vector3
 
 class Quaternion():
     def __init__(self, x:float, y:float, z:float, w:float):
@@ -13,14 +14,18 @@ class Quaternion():
     def identity() -> 'Quaternion':
         return Quaternion(0,0,0,1)
 
-    @classmethod
+    @staticmethod
+    def from_OCC(quat : gp_Quaternion) -> 'Quaternion':
+        return Quaternion(quat.X(),quat.Y(),quat.Z(),quat.W())
+
+    @staticmethod
     def from_rotation_matrix(mat:Union[np.ndarray, List[List[float]]]) -> 'Quaternion':
         #TODO: do this without OCC:
         quat = gp_Quaternion(gp_Mat(*[float(x) for x in chain.from_iterable(mat)]))
         return Quaternion.from_other(quat)
 
     def from_angle_axis(angle:float, axis:Vector3):
-        quat = gp_Quaternion(axis.occ_Vec, angle)
+        quat = gp_Quaternion(axis.occ_Vec, math.radians(angle))
         return Quaternion.from_other(quat)
 
     #----Casting----
@@ -73,6 +78,11 @@ class Quaternion():
         self._value[3] = w
         self._derived_updated = False
 
+    def __str__(self) -> str:
+        return str.format('angle:{0} axis:({1},{2},{3}) Quaternion:({4},{5},{6},{7})',math.degrees(self.angle),*self.axis.value,*self._value)
+    def __repr__(self) -> str:
+        return self.__str__()
+
     #----Derived Properties----
     def _ensure_derived(self) -> None:
         if not self._derived_updated:
@@ -92,7 +102,11 @@ class Quaternion():
         self._ensure_derived()
         return self._axis
 
+    @property
+    def angle_axis(self) -> Tuple[float,float]:
+        return self.angle, self._axis
+
     #----OCC conversion functions----
     @property
     def occ_Quaternion(self):
-        return gp_Quaternion(*self._value)
+        return gp_Quaternion(self._value[0], self._value[1], self._value[2], self._value[3])
