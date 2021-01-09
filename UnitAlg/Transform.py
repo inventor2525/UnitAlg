@@ -43,6 +43,23 @@ class Transform():
         self.mat = Trsf_to_list(new_trsf)
     
     @property
+    def coefficients_2d(self):
+        m = self._mat
+        return [
+            mat[0,0],mat[0,1],
+            mat[1,0],mat[1,1],
+            mat[0,3],mat[1,3]]
+
+    @property
+    def coefficients_3d(self):
+        m = self._mat
+        return [
+            mat[0,0],mat[0,1],mat[0,2], 
+            mat[1,0],mat[1,1],mat[1,2], 
+            mat[2,0],mat[2,1],mat[2,2], 
+            mat[0,3],mat[1,3],mat[2,3]]
+
+    @property
     def translation(self) -> np.ndarray:
         return self.mat[0:3,3]
     @translation.setter
@@ -88,6 +105,7 @@ class Transform():
 
     def __ne__(self, other) -> bool:
         return self.mat != other.mat
+
 
 if __name__ == '__main__':
     t1 = Transform()
