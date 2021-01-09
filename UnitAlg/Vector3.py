@@ -79,9 +79,7 @@ class Vector3():
     def __str__(self) -> str:
         return str.format('({0},{1},{2})',*self._value)
     def __repr__(self) -> str:
-        return self.__str__()
-
-    #----OCC conversion functions----
+        These are breaking changes to teach max git merge resolution
     def occ_AX1(self, origin=[0,0,0]) -> gp_Ax1:
         return gp_Ax1(Vector3(origin).occ_Pnt, self.occ_Dir)
 
