@@ -1,4 +1,4 @@
-from helpers import *
+from UnitAlg.helpers import *
 from typing import Union, List, Tuple
 import numpy as np
 import math
@@ -107,7 +107,7 @@ class Quaternion():
         return self.angle, self._axis
 
     #----Operators----
-
+    
     #----OCC conversion functions----
     @property
     def occ_Quaternion(self):

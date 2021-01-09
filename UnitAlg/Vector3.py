@@ -1,4 +1,4 @@
-from helpers import *
+from UnitAlg.helpers import *
 from typing import Union, List
 import numpy as np
 
@@ -92,10 +92,6 @@ class Vector3():
             return True    
         else: 
             return False
-
-
-
-
 
     #----OCC conversion functions----
     def occ_AX1(self, origin=[0,0,0]) -> gp_Ax1:
