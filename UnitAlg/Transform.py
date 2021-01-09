@@ -7,9 +7,7 @@ import math
 from UnitAlg import Vector3, Quaternion
 from OCC.Core.gp import gp_Trsf, gp_GTrsf, gp_Mat, gp_XYZ
 
-from GraphMagK.DataStructures import Tree
-
-class Transform(Tree):
+class Transform():
     def __init__(self, mat=np.identity(4)):
         self.mat = mat
 
