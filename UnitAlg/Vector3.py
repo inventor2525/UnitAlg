@@ -81,6 +81,22 @@ class Vector3():
     def __repr__(self) -> str:
         return self.__str__()
 
+    def __eq__(self, other) -> bool:
+        if self.value == other.value:
+            return True    
+        else: 
+            return False
+
+    def __ne__(self, other) -> bool:
+        if self.value != other.value:
+            return True    
+        else: 
+            return False
+
+
+
+
+
     #----OCC conversion functions----
     def occ_AX1(self, origin=[0,0,0]) -> gp_Ax1:
         return gp_Ax1(Vector3(origin).occ_Pnt, self.occ_Dir)
