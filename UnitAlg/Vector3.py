@@ -82,10 +82,12 @@ class Vector3():
         return self.__str__()
 
     def __eq__(self, other) -> bool:
-        return self.value == other.value
+        comparison = self.value == other.value
+        return comparison.all()
 
     def __ne__(self, other) -> bool:
-        return self.value != other.value
+        comparison = self.value != other.value
+        return comparison.all()
 
     #----OCC conversion functions----
     def occ_AX1(self, origin=[0,0,0]) -> gp_Ax1:

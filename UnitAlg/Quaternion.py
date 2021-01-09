@@ -108,10 +108,12 @@ class Quaternion():
 
     #----Operators----
     def __eq__(self, other) -> bool:
-        return self.value == other.value
+        comparison = self.value == other.value
+        return comparison.all()
 
     def __ne__(self, other) -> bool:
-        return self.value != other.value
+        comparison = self.value != other.value
+        return comparison.all()
     
     #----OCC conversion functions----
     @property
