@@ -4,8 +4,7 @@ import numpy as np
 import numpy.linalg as LA
 import math
 
-from Vector3 import Vector3
-from Quaternion import Quaternion
+from UnitAlg import Vector3, Quaternion
 from OCC.Core.gp import gp_Trsf, gp_GTrsf, gp_Mat, gp_XYZ
 
 from GraphMagK.DataStructures import Tree
@@ -85,6 +84,12 @@ class Transform(Tree):
     def __rmul__(self, other:'Transform') -> 'Transform':
         #return Transform(other._mat*self._mat.T)
         return Transform.from_OCC(self.GTrsf*other.GTrsf)
+
+    def __eq__(self, other) -> bool:
+        return self.mat == other.mat
+
+    def __ne__(self, other) -> bool:
+        return self.mat != other.mat
 
 if __name__ == '__main__':
     t1 = Transform()

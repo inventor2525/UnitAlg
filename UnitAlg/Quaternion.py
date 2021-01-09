@@ -4,7 +4,7 @@ import numpy as np
 import math
 
 from OCC.Core.gp import gp_Ax1, gp_Pnt, gp_Vec, gp_Dir, gp_Quaternion, gp_Trsf, gp_GTrsf, gp_XYZ, gp_Mat, gp_OZ
-from Vector3 import Vector3
+from UnitAlg import Vector3
 
 class Quaternion():
     def __init__(self, x:float, y:float, z:float, w:float):
@@ -107,6 +107,11 @@ class Quaternion():
         return self.angle, self._axis
 
     #----Operators----
+    def __eq__(self, other) -> bool:
+        return self.value == other.value
+
+    def __ne__(self, other) -> bool:
+        return self.value != other.value
     
     #----OCC conversion functions----
     @property
