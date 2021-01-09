@@ -81,13 +81,19 @@ class Vector3():
     def __repr__(self) -> str:
         return self.__str__()
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self,other) -> bool:
         comparison = self.value == other.value
         return comparison.all()
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self,other) -> bool:
         comparison = self.value != other.value
         return comparison.all()
+
+    def __add__(self,other) -> 'Vector3':
+        return self.value + other.value
+
+    def __sub__(self,other) -> 'Vector3':
+        return self.value - other.value
 
     #----OCC conversion functions----
     def occ_AX1(self, origin=[0,0,0]) -> gp_Ax1:

@@ -107,13 +107,19 @@ class Quaternion():
         return self.angle, self._axis
 
     #----Operators----
-    def __eq__(self, other) -> bool:
+    def __eq__(self,other) -> bool:
         comparison = self.value == other.value
         return comparison.all()
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self,other) -> bool:
         comparison = self.value != other.value
         return comparison.all()
+
+    def __add__(self,other) -> 'Quaternion':
+        return self.value + other.value
+
+    def __sub__(self,other) -> 'Quaternion':
+        return self.value - other.value
     
     #----OCC conversion functions----
     @property
