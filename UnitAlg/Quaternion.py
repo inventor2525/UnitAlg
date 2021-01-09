@@ -106,6 +106,8 @@ class Quaternion():
     def angle_axis(self) -> Tuple[float,float]:
         return self.angle, self._axis
 
+    #----Operators----
+
     #----OCC conversion functions----
     @property
     def occ_Quaternion(self):

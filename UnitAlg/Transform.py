@@ -73,6 +73,7 @@ class Transform(Tree):
         t.SetRotation(rotation.occ_Quaternion)
         self._mat[0:3,0:3] = np.array(Transform.Trsf_to_list( t ))[0:3, 0:3] * self.localScale
 
+    #----Operators----
     def __str__(self) -> str:
         return self._mat.__str__()
     def __repr__(self) -> str:

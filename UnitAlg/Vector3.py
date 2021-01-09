@@ -75,6 +75,7 @@ class Vector3():
     def z(self, z:float) -> None:
         self._value[2] = z
 
+    #----Operators----
     def __str__(self) -> str:
         return str.format('({0},{1},{2})',*self._value)
     def __repr__(self) -> str:
