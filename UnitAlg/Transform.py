@@ -108,6 +108,7 @@ class Transform():
         comparison = self.mat != other.mat
         return comparison.all()
 
+
     #I need to vet these, haven't done it yet...-- Max
     def __add__(self,other) -> 'Vector3':
         return self.mat + other.mat
