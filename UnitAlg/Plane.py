@@ -43,6 +43,6 @@ class Plane():
     @property
     def occ_Plane(self):
         #create gp_Dir object and gp_Pnt object, then send as parameters
-        pnt = gp_Pnt(float(self.point.x), float(self.point.y), float(self.point.z))
-        dir = gp_Dir(float(self.direction.x), float(self.direction.y), float(self.direction.z))
+        pnt = gp_Pnt(self.point.x, self.point.y, self.point.z)
+        dir = gp_Dir(self.direction.x, self.direction.y, self.direction.z)
         return gp_Pln(pnt, dir)

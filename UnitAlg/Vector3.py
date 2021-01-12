@@ -56,28 +56,28 @@ class Vector3():
 
     @property
     def x(self) -> float:
-        return self._value[0]
+        return float(self._value[0])
     @x.setter
     def x(self, x:float) -> None:
         self._value[0] = x
 
     @property
     def y(self) -> float:
-        return self._value[1]
+        return float(self._value[1])
     @y.setter
     def y(self, y:float) -> None:
         self._value[1] = y
     
     @property
     def z(self) -> float:
-        return self._value[2]
+        return float(self._value[2])
     @z.setter
     def z(self, z:float) -> None:
         self._value[2] = z
 
     #----Operators----
     def __str__(self) -> str:
-        return str.format('({0},{1},{2})',*self._value)
+        return str.format('({0}, {1}, {2})',*self._value)
     def __repr__(self) -> str:
         return self.__str__()
 
