@@ -11,10 +11,8 @@ class Plane():
 
     @staticmethod
     def from_OCC(gpPlane:gp_Pln):
-        gpPoint = gpPlane.Location()
-        point = Vector3(gpPoint.X(),gpPoint.Y(),gpPoint.Z())
-        gpDir = gpPlane.Position().Direction()
-        direction = Vector3(gpDir.X(), gpDir.Y(), gpDir.Z())
+        point = Vector3.from_other(gpPlane.Location())
+        direction = Vector3.from_other(gpPlane.Position().Direction())
         return Plane(point, direction)
 
     #----Main Properties----
@@ -43,6 +41,6 @@ class Plane():
     @property
     def occ_Plane(self):
         #create gp_Dir object and gp_Pnt object, then send as parameters
-        pnt = gp_Pnt(self.point.x, self.point.y, self.point.z)
-        dir = gp_Dir(self.direction.x, self.direction.y, self.direction.z)
+        pnt = self.point.occ_Pnt
+        dir = self.direction.occ_Dir
         return gp_Pln(pnt, dir)
