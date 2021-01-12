@@ -114,12 +114,6 @@ class Quaternion():
     def __ne__(self,other) -> bool:
         comparison = self.value != other.value
         return comparison.all()
-
-    def __add__(self,other) -> 'Quaternion':
-        return self.value + other.value
-
-    def __sub__(self,other) -> 'Quaternion':
-        return self.value - other.value
     
     #----OCC conversion functions----
     @property
