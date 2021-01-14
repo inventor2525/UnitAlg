@@ -5,7 +5,7 @@ from OCC.Core.gp import gp_Pln, gp_Pnt, gp_Dir
 
 #class to start plane
 class Plane():
-    def __init__(self, point:'Vector3', direction:'Vector3'):
+    def __init__(self, point:Vector3, direction:Vector3):
         self.point = point
         self.direction = direction  
 
@@ -17,23 +17,23 @@ class Plane():
 
     #----Main Properties----
     @property
-    def point(self) -> 'Vector3':
+    def point(self) -> Vector3:
         return self._point
     @point.setter
-    def point(self, point:'Vector3') -> None:
+    def point(self, point:Vector3) -> None:
         self._point = point
 
     @property
-    def direction(self) -> 'Vector3':
+    def direction(self) -> Vector3:
         return self._direction
     @direction.setter
-    def direction(self, direction:'Vector3') -> None:
+    def direction(self, direction:Vector3) -> None:
         self._direction = direction
 
     #----Operators-----
         
     def __str__(self) -> str:
-        return str.format('origin of plane:{0}\ndirection of plane:{1}',self.point, self.direction)
+        return str.format('origin:{0} direction:{1}',self.point, self.direction)
     def __repr__(self) -> str:
         return self.__str__()
 
