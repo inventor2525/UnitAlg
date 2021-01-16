@@ -30,6 +30,11 @@ class Plane():
     def direction(self, direction:Vector3) -> None:
         self._direction = direction
 
+    #----Functions----
+    #TODO: make reflection method, where ray incoming,
+    #determine outgoing ray (e.g. angle inc = angle ref)
+    #need planes normal to do reflection
+
     #----Operators-----
         
     def __str__(self) -> str:

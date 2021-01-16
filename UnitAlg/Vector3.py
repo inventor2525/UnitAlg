@@ -75,6 +75,16 @@ class Vector3():
     def z(self, z:float) -> None:
         self._value[2] = z
 
+    #----Functions----
+    #TODO: highest priority - multiplication/division
+    #-- the above is just done component-wise
+    ##TODO:Make functions mimicing Unity's Vector3 class magnitude, distance, normalized
+    # dot, cross
+    #angle between vectors
+    #use Numpy methods where applicable
+
+    #lerp, which is a static method
+
     #----Operators----
     def __str__(self) -> str:
         return str.format('({0}, {1}, {2})',*self._value)
