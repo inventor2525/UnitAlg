@@ -6,7 +6,7 @@ setup(
     author='Charlie Angela Mehlenbeck',
     author_email='charlie_inventor2003@yahoo.com',
     packages=['UnitAlg'],
-    py_modules=['UnitAlgProxy'],
+    py_modules=[],
     scripts=[],
     url='https://github.com/inventor2525/UnitAlg',
     license='LICENSE.txt',
