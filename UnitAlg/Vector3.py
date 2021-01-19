@@ -105,6 +105,19 @@ class Vector3():
     def __sub__(self,other) -> 'Vector3':
         return self.value - other.value
 
+    def __mul__(self,other) -> 'Vector3':
+        if isinstance(other, Vector3):
+            return self.value * other.value
+        return np.multiply(self.value, other)
+
+'''
+right multiplication just passes the argument to the left multiplacation function for now
+'''
+    def __rmul__(self,other) -> 'Vector3':
+        return self.__mul__(other)
+
+
+
     #----OCC conversion functions----
     def occ_AX1(self, origin=[0,0,0]) -> gp_Ax1:
         return gp_Ax1(Vector3(origin).occ_Pnt, self.occ_Dir)
