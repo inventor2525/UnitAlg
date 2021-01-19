@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='UnitAlg',
-    version='0.0.2',
+    version='0.0.3',
     author='Charlie Angela Mehlenbeck',
     author_email='charlie_inventor2003@yahoo.com',
     packages=['UnitAlg'],
