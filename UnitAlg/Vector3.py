@@ -77,11 +77,27 @@ class Vector3():
         self._value[2] = z
 
     #----Functions----
+    '''
+    Returns the length of this vector
+    '''
     def magnitude(self):
         return math.sqrt(self.x*self.x + self.y*self.y + self.z*self.z)
 
+    '''
+    Makes this vector have a magnitude of 1 with same direction as before
+    Note: this function will change the current vector.  Use normalized if change is undesired
+    '''
     def Normalize(self):
         self.value = self.value / self.magnitude()
+
+    '''
+    Returns the unit vector for current vector
+    Note: this function does NOT affect the current vector.  Use Normalized function if change is desired.
+    '''
+    def normalized(self):
+        return self.value/self.magnitude()
+
+
     ##TODO:Make functions mimicing Unity's Vector3 class magnitude, distance, normalized
     # dot, cross
     #angle between vectors
@@ -111,8 +127,8 @@ class Vector3():
 
     def __mul__(self,other) -> 'Vector3':
         if isinstance(other, Vector3):
-            return self.value * other.value
-        return np.multiply(self.value, other)
+            return Vector3.from_other(self.value * other.value)
+        return Vector3.from_other(np.multiply(self.value, other))
 
     '''
     right multiplication just passes the argument to the left multiplacation function for now
@@ -122,8 +138,8 @@ class Vector3():
 
     def __truediv__(self,other) -> 'Vector3':
         if isinstance(other, Vector3):
-            return self.value / other.value
-        return np.divide(self.value, other)
+            return Vector3.from_other(self.value / other.value)
+        return Vector3.from_other(np.divide(self.value, other))
 
     # This doesn't work just yet...this is called when '+=' operator is called
     # doesn't work because the type is not retained and changes to NoneType
