@@ -9,6 +9,12 @@ class Vector3():
     def __init__(self, x:float, y:float, z:float):
         self.value = [x,y,z]
 
+    @staticmethod
+    def _from_np(value: np.ndarray) -> 'Vector3':
+        newArr = Vector3.__new__(Vector3)
+        newArr._value = value
+        return newArr
+
     #----Common values----
     @classproperty
     def zero() -> 'Vector3':
@@ -77,28 +83,38 @@ class Vector3():
         self._value[2] = z
 
     #----Functions----
-    '''
-    Returns the length of this vector
-    '''
-    def magnitude(self):
-        return math.sqrt(self.x*self.x + self.y*self.y + self.z*self.z)
+    def magnitude(self) -> float:
+        ''' Returns the length of this vector '''
+        return np.linalg.norm(self.value)
 
-    '''
-    Makes this vector have a magnitude of 1 with same direction as before
-    Note: this function will change the current vector.  Use normalized if change is undesired
-    '''
-    def Normalize(self):
+    def Normalize(self) -> None:
+        '''
+        Makes this vector have a magnitude of 1 with same direction as before
+        Note: this function will change the current vector.  Use normalized if change is undesired
+        '''
         self.value = self.value / self.magnitude()
 
-    '''
-    Returns the unit vector for current vector
-    Note: this function does NOT affect the current vector.  Use Normalized function if change is desired.
-    '''
-    def normalized(self):
-        return self.value/self.magnitude()
+    @staticmethod
+    def normalized(self) -> 'Vector3':
+        '''
+        Returns the unit vector for current vector
+        Note: this function does NOT affect the current vector.  Use Normalized function if change is desired.
+        '''
+        return Vector3.from_other(self.value/self.magnitude())
+
+    @staticmethod
+    def Distance(VectorA:'Vector3', VectorB:'Vector3') -> float:
+        ''' Returns the distance between a and b (same as (a-b).magnitude) '''
+        return (VectorA-VectorB).magnitude()
+
+    def Angle(fromV:'Vector3', toV:'Vector3'):
+        ''' Returns the angle in degrees betwen 'fromV' and 'toV' '''
+        #placeholder until I get the dot product function working
+        x = 5
 
 
-    ##TODO:Make functions mimicing Unity's Vector3 class magnitude, distance, normalized
+
+    ##TODO:Make functions mimicing Unity's Vector3 class distance
     # dot, cross
     #angle between vectors
     #use Numpy methods where applicable
@@ -120,15 +136,15 @@ class Vector3():
         return comparison.all()
 
     def __add__(self,other) -> 'Vector3':
-        return Vector3.from_other(self.value + other.value)
+        return Vector3._from_np(self.value + other.value)
 
     def __sub__(self,other) -> 'Vector3':
-        return Vector3.from_other(self.value - other.value)
+        return Vector3._from_np(self.value - other.value)
 
     def __mul__(self,other) -> 'Vector3':
         if isinstance(other, Vector3):
-            return Vector3.from_other(self.value * other.value)
-        return Vector3.from_other(np.multiply(self.value, other))
+            return Vector3._from_np(self.value * other.value)
+        return Vector3._from_np(np.multiply(self.value, other))
 
     '''
     right multiplication just passes the argument to the left multiplacation function for now
@@ -138,14 +154,11 @@ class Vector3():
 
     def __truediv__(self,other) -> 'Vector3':
         if isinstance(other, Vector3):
-            return Vector3.from_other(self.value / other.value)
-        return Vector3.from_other(np.divide(self.value, other))
+            return Vector3._from_np(self.value / other.value)
+        return Vector3._from_np(np.divide(self.value, other))
 
-    # This doesn't work just yet...this is called when '+=' operator is called
-    # doesn't work because the type is not retained and changes to NoneType
     def __iadd__(self,other):
-        if isinstance(other, Vector3):
-            return self + other
+        return self + other
 
   
 
