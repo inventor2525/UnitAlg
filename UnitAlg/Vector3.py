@@ -77,7 +77,6 @@ class Vector3():
 
     #----Functions----
     #TODO: highest priority - multiplication/division
-    #-- the above is just done component-wise
     ##TODO:Make functions mimicing Unity's Vector3 class magnitude, distance, normalized
     # dot, cross
     #angle between vectors
@@ -110,11 +109,26 @@ class Vector3():
             return self.value * other.value
         return np.multiply(self.value, other)
 
-'''
-right multiplication just passes the argument to the left multiplacation function for now
-'''
+    '''
+    right multiplication just passes the argument to the left multiplacation function for now
+    '''
     def __rmul__(self,other) -> 'Vector3':
         return self.__mul__(other)
+
+    def __truediv__(self,other) -> 'Vector3':
+        if isinstance(other, Vector3):
+            return self.value / other.value
+        return np.divide(self.value, other)
+
+    # This doesn't work just yet...this is called when '+=' operator is called
+    # doesn't work because the type is not retained and changes to NoneType
+    # def __iadd__(self,other):
+    #     if isinstance(other, Vector3):
+    #         print("TESTING")
+    #         test = self.value + other.value
+    #         self.value = test
+
+  
 
 
 
