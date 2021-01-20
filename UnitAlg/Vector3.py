@@ -1,6 +1,7 @@
 from UnitAlg.helpers import *
 from typing import Union, List
 import numpy as np
+import math
 
 from OCC.Core.gp import gp_Pnt, gp_Vec, gp_Dir, gp_Trsf, gp_XYZ, gp_Ax1
 
@@ -76,7 +77,11 @@ class Vector3():
         self._value[2] = z
 
     #----Functions----
-    #TODO: highest priority - multiplication/division
+    def magnitude(self):
+        return math.sqrt(self.x*self.x + self.y*self.y + self.z*self.z)
+
+    def Normalize(self):
+        self.value = self.value / self.magnitude()
     ##TODO:Make functions mimicing Unity's Vector3 class magnitude, distance, normalized
     # dot, cross
     #angle between vectors
@@ -99,10 +104,10 @@ class Vector3():
         return comparison.all()
 
     def __add__(self,other) -> 'Vector3':
-        return self.value + other.value
+        return Vector3.from_other(self.value + other.value)
 
     def __sub__(self,other) -> 'Vector3':
-        return self.value - other.value
+        return Vector3.from_other(self.value - other.value)
 
     def __mul__(self,other) -> 'Vector3':
         if isinstance(other, Vector3):
@@ -122,11 +127,9 @@ class Vector3():
 
     # This doesn't work just yet...this is called when '+=' operator is called
     # doesn't work because the type is not retained and changes to NoneType
-    # def __iadd__(self,other):
-    #     if isinstance(other, Vector3):
-    #         print("TESTING")
-    #         test = self.value + other.value
-    #         self.value = test
+    def __iadd__(self,other):
+        if isinstance(other, Vector3):
+            return self + other
 
   
 
