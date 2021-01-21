@@ -146,12 +146,6 @@ class Vector3():
             return Vector3._from_np(self.value * other.value)
         return Vector3._from_np(np.multiply(self.value, other))
 
-    '''
-    right multiplication just passes the argument to the left multiplacation function for now
-    '''
-    def __rmul__(self,other) -> 'Vector3':
-        return self.__mul__(other)
-
     def __truediv__(self,other) -> 'Vector3':
         if isinstance(other, Vector3):
             return Vector3._from_np(self.value / other.value)

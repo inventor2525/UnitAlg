@@ -24,7 +24,11 @@ class Quaternion():
         quat = gp_Quaternion(gp_Mat(*[float(x) for x in chain.from_iterable(mat)]))
         return Quaternion.from_other(quat)
 
+    @staticmethod
     def from_angle_axis(angle:float, axis:Vector3):
+        '''
+        Use degrees for the angle
+        '''
         quat = gp_Quaternion(axis.occ_Vec, math.radians(angle))
         return Quaternion.from_other(quat)
 
@@ -108,14 +112,27 @@ class Quaternion():
 
     #----Operators----
     def __eq__(self,other) -> bool:
+        #could also use gp_Quaternion.IsEqual() here but would also increase occ dependency
         comparison = self.value == other.value
         return comparison.all()
 
     def __ne__(self,other) -> bool:
         comparison = self.value != other.value
         return comparison.all()
-    
+
+    def __mul__(self,other: Union[Vector3, 'Quaternion']) -> Union[Vector3, 'Quaternion']:
+        quat = self.occ_Quaternion
+        if isinstance(other, Quaternion):
+            occQuat = quat.Multiplied(other.occ_Quaternion)
+            return Quaternion.from_other(occQuat)
+        if isinstance(other, Vector3):
+            occVec = quat.Multiply(other.occ_Vec)
+            return Vector3.from_other(occVec)
+
+    #TODO: inverted and reverse functions
+
+
     #----OCC conversion functions----
     @property
-    def occ_Quaternion(self):
+    def occ_Quaternion(self) -> gp_Quaternion:
         return gp_Quaternion(self._value[0], self._value[1], self._value[2], self._value[3])
