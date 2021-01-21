@@ -104,13 +104,23 @@ class Vector3():
 
     @staticmethod
     def Distance(VectorA:'Vector3', VectorB:'Vector3') -> float:
-        ''' Returns the distance between a and b (same as (a-b).magnitude) '''
+        ''' Returns the distance between two vectors (same as (a-b).magnitude) '''
         return (VectorA-VectorB).magnitude()
 
+    @staticmethod
+    def Dot(VectorA:'Vector3', VectorB:'Vector3'):
+        ''' Dot product between two vectors '''
+        return np.dot(VectorA.value,VectorB.value)
+
     def Angle(fromV:'Vector3', toV:'Vector3'):
-        ''' Returns the angle in degrees betwen 'fromV' and 'toV' '''
-        #placeholder until I get the dot product function working
-        x = 5
+        ''' 
+        Returns the unsigned angle between 'fromV' and 'toV' in degrees.  
+        Angle is never greater than 180.  
+        '''
+        angle = math.degrees(math.acos(Vector3.Dot(fromV,toV)/(fromV.magnitude()*toV.magnitude())))
+        # if angle > 180:
+            # angle = angle - 180
+        return angle
 
 
 
