@@ -88,8 +88,8 @@ class Transform():
 
     @property
     def inverse(self):
-        return Transform.from_OCC(self.GTrsf.Inverted())
-        
+         return Transform(np.linalg.inv(self.mat))
+         
     #----Operators----
     def __str__(self) -> str:
         return self._mat.__str__()
