@@ -1,4 +1,4 @@
-from UnitAlg import Vector3
+from UnitAlg import Vector3, Quaternion
 from OCC.Core.gp import gp_Pln, gp_Pnt, gp_Dir
 
 #class for plane objects in UnitAlg.  Features methods to convert between UnitAlg and OOC's version of planes.
@@ -32,16 +32,14 @@ class Plane():
 
     #----Functions----
     def reflect(self, ray:Vector3) -> Vector3:
-        #rotate vector along axis of plane by cross product of plane normal and incoming ray
-        #check to make sure incoming ray is not paralell to normal (which is just 0)
+        ''' reflect ray from plane, at an equal to incoming angle '''
         incoming_angle = Vector3.angle(ray,self.normal)
-        rotation_axis = Vector3.cross(ray, self.normal)
-        if rotation_axis != 0:
+        if incoming_angle != 0:
+            rotation_axis = Vector3.cross(ray, self.normal)
             rotation = Quaternion.from_angle_axis(2*incoming_angle, rotation_axis)
-        else: 
-            rotation = 1
-        outgoing_ray = ray*rotation
-        return outgoing_ray
+            return rotation*ray
+        else:
+            return ray
 
     #----Operators-----
         

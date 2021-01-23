@@ -108,16 +108,16 @@ class Vector3():
         return (vector_a - vector_b).magnitude()
 
     @staticmethod
-    def dot(vector_a:'Vector3', vector_b:'Vector3'):
+    def dot(vector_a:'Vector3', vector_b:'Vector3') -> float:
         ''' Dot product between two vectors '''
         return np.dot(vector_a.value,vector_b.value)
 
     @staticmethod
-    def cross(vector_a,vector_b):
+    def cross(vector_a:'Vector3',vector_b:'Vector3') -> 'Vector3':
         '''Cross product between two vectors '''
-        return np.cross(vector_a.value,vector_b.value)
+        return Vector3._from_np(np.cross(vector_a.value,vector_b.value))
 
-    def angle(from_v:'Vector3', to_v:'Vector3'):
+    def angle(from_v:'Vector3', to_v:'Vector3') -> float:
         ''' 
         Returns the unsigned angle between 'fromV' and 'toV' in degrees.  
         Angle is never greater than 180.  
@@ -141,7 +141,7 @@ class Vector3():
 
     def __ne__(self,other:'Vector3') -> bool:
         comparison = self.value != other.value
-        return comparison.all()
+        return comparison.any()
 
     def __add__(self,other:'Vector3') -> 'Vector3':
         return Vector3._from_np(self.value + other.value)
