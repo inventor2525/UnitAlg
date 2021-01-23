@@ -87,7 +87,7 @@ class Vector3():
         ''' Returns the length of this vector '''
         return np.linalg.norm(self.value)
 
-    def Normalize(self) -> None:
+    def normalize(self) -> None:
         '''
         Makes this vector have a magnitude of 1 with same direction as before
         Note: this function will change the current vector.  Use normalized if change is undesired
@@ -103,33 +103,31 @@ class Vector3():
         return Vector3.from_other(self.value/self.magnitude())
 
     @staticmethod
-    def Distance(VectorA:'Vector3', VectorB:'Vector3') -> float:
+    def distance(vector_a:'Vector3', vector_b:'Vector3') -> float:
         ''' Returns the distance between two vectors (same as (a-b).magnitude) '''
-        return (VectorA-VectorB).magnitude()
+        return (vector_a - vector_b).magnitude()
 
     @staticmethod
-    def Dot(VectorA:'Vector3', VectorB:'Vector3'):
+    def dot(vector_a:'Vector3', vector_b:'Vector3'):
         ''' Dot product between two vectors '''
-        return np.dot(VectorA.value,VectorB.value)
+        return np.dot(vector_a.value,vector_b.value)
 
-    def Angle(fromV:'Vector3', toV:'Vector3'):
+    @staticmethod
+    def cross(vector_a,vector_b):
+        '''Cross product between two vectors '''
+        return np.cross(vector_a.value,vector_b.value)
+
+    def angle(from_v:'Vector3', to_v:'Vector3'):
         ''' 
         Returns the unsigned angle between 'fromV' and 'toV' in degrees.  
         Angle is never greater than 180.  
         '''
-        angle = math.degrees(math.acos(Vector3.Dot(fromV,toV)/(fromV.magnitude()*toV.magnitude())))
-        # if angle > 180:
-            # angle = angle - 180
-        return angle
+        return math.degrees(math.acos(Vector3.dot(from_v,to_v)/(from_v.magnitude()*to_v.magnitude())))
 
 
 
     ##TODO:Make functions mimicing Unity's Vector3 class distance
-    # dot, cross
-    #angle between vectors
-    #use Numpy methods where applicable
-
-    #lerp, which is a static method
+       #lerp, which is a static method
 
     #----Operators----
     def __str__(self) -> str:
@@ -137,39 +135,31 @@ class Vector3():
     def __repr__(self) -> str:
         return self.__str__()
 
-    def __eq__(self,other) -> bool:
+    def __eq__(self,other:'Vector3') -> bool:
         comparison = self.value == other.value
         return comparison.all()
 
-    def __ne__(self,other) -> bool:
+    def __ne__(self,other:'Vector3') -> bool:
         comparison = self.value != other.value
         return comparison.all()
 
-    def __add__(self,other) -> 'Vector3':
+    def __add__(self,other:'Vector3') -> 'Vector3':
         return Vector3._from_np(self.value + other.value)
 
-    def __sub__(self,other) -> 'Vector3':
+    def __sub__(self,other:'Vector3') -> 'Vector3':
         return Vector3._from_np(self.value - other.value)
 
-    def __mul__(self,other) -> 'Vector3':
-        if isinstance(other, Vector3):
-            return Vector3._from_np(self.value * other.value)
-        return Vector3._from_np(np.multiply(self.value, other))
+    def __mul__(self,other:float) -> 'Vector3':
+        return Vector3._from_np(self.value * other)
 
-    def __truediv__(self,other) -> 'Vector3':
-        if isinstance(other, Vector3):
-            return Vector3._from_np(self.value / other.value)
+    def __truediv__(self,other:float) -> 'Vector3':
         return Vector3._from_np(np.divide(self.value, other))
 
     def __iadd__(self,other):
         return self + other
 
-  
-
-
-
     #----OCC conversion functions----
-    def occ_AX1(self, origin=[0,0,0]) -> gp_Ax1:
+    def occ_Ax1(self, origin=[0,0,0]) -> gp_Ax1:
         return gp_Ax1(Vector3(origin).occ_Pnt, self.occ_Dir)
 
     @property

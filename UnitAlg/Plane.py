@@ -5,15 +5,15 @@ from OCC.Core.gp import gp_Pln, gp_Pnt, gp_Dir
 
 #class to start plane
 class Plane():
-    def __init__(self, point:Vector3, direction:Vector3):
+    def __init__(self, point:Vector3, normal:Vector3):
         self.point = point
-        self.direction = direction  
+        self.normal = normal 
 
     @staticmethod
     def from_OCC(gpPlane:gp_Pln):
         point = Vector3.from_other(gpPlane.Location())
-        direction = Vector3.from_other(gpPlane.Position().Direction())
-        return Plane(point, direction)
+        normal = Vector3.from_other(gpPlane.Position().Direction())
+        return Plane(point, normal)
 
     #----Main Properties----
     @property
@@ -24,21 +24,29 @@ class Plane():
         self._point = point
 
     @property
-    def direction(self) -> Vector3:
-        return self._direction
-    @direction.setter
-    def direction(self, direction:Vector3) -> None:
-        self._direction = direction
+    def normal(self) -> Vector3:
+        return self._normal
+    @normal.setter
+    def normal(self, normal:Vector3) -> None:
+        self._normal = normal
 
     #----Functions----
-    #TODO: make reflection method, where ray incoming,
-    #determine outgoing ray (e.g. angle inc = angle ref)
-    #need planes normal to do reflection
+    def reflect(self, ray:Vector3) -> Vector3:
+        #rotate vector along axis of plane by cross product of plane normal and incoming ray
+        #check to make sure incoming ray is not paralell to normal (which is just 0)
+        incoming_angle = Vector3.angle(ray,self.normal)
+        rotation_axis = Vector3.cross(ray, self.normal)
+        if rotation_axis != 0:
+            rotation = Quaternion.from_angle_axis(2*incoming_angle, rotation_axis)
+        else: 
+            rotation = 1
+        outgoing_ray = ray*rotation
+        return outgoing_ray
 
     #----Operators-----
         
     def __str__(self) -> str:
-        return str.format('origin:{0} direction:{1}',self.point, self.direction)
+        return str.format('origin:{0} normal:{1}',self.point, self.normal)
     def __repr__(self) -> str:
         return self.__str__()
 
@@ -47,5 +55,5 @@ class Plane():
     def occ_Plane(self):
         #create gp_Dir object and gp_Pnt object, then send as parameters
         pnt = self.point.occ_Pnt
-        dir = self.direction.occ_Dir
-        return gp_Pln(pnt, dir)
+        normal = self.normal.occ_Dir
+        return gp_Pln(pnt, normal)
