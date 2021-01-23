@@ -86,6 +86,10 @@ class Transform():
         t.SetRotation(rotation.occ_Quaternion)
         self._mat[0:3,0:3] = np.array(Transform.Trsf_to_list( t ))[0:3, 0:3] * self.localScale
 
+    @property
+    def inverse(self):
+        return Transform.from_OCC(self.GTrsf.Inverted())
+        
     #----Operators----
     def __str__(self) -> str:
         return self._mat.__str__()
@@ -112,19 +116,26 @@ if __name__ == '__main__':
     t1 = Transform()
     q1 = Quaternion.from_angle_axis(45,Vector3.up)
     t1.rotation = q1
-
+    print("1")
     print(t1)
-
+    print("2")
     t2 = Transform()
     q2 = Quaternion.from_angle_axis(0,Vector3.up)
     t2.rotation = q2
 
     print(q1)
+    print("3")
     print(q2)
+    print("4")
     #print(Quaternion.from_OCC(q1.occ_Quaternion*q2.occ_Quaternion))
 
     print(t1)
+    print("5")
     print(t2)
+    print("6")
     print(t1*t2)
+    print("7")
     print(math.degrees(t1.rotation.angle), t1.rotation.axis)
+    print("8")
     print((t1*t2).rotation.angle_axis)
+    print("9")
