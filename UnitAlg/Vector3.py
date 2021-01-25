@@ -124,7 +124,14 @@ class Vector3():
         '''
         return math.degrees(math.acos(Vector3.dot(from_v,to_v)/(from_v.magnitude()*to_v.magnitude())))
 
-
+    @staticmethod
+    def lerp(vector_a:'Vector3', vector_b:'Vector3', factor:float) -> 'Vector3':
+        p1 = vector_a.value
+        p2 = vector_b.value
+        v = (p2-p1)
+        d = np.sqrt(np.dot(v,v))
+        v_norm = v/d
+        return (p1 + v_norm*d*factor)
 
     ##TODO:Make functions mimicing Unity's Vector3 class distance
        #lerp, which is a static method
@@ -157,7 +164,8 @@ class Vector3():
         return self + other
 
     def __hash__(self):
-        x = 5
+        return hash(tuple(self._value))
+
 
     #----OCC conversion functions----
     def occ_Ax1(self, origin=[0,0,0]) -> gp_Ax1:
