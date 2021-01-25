@@ -98,7 +98,7 @@ class Vector3():
     def normalized(self) -> 'Vector3':
         '''
         Returns the unit vector for current vector
-        Note: this function does NOT affect the current vector.  Use Normalized function if change is desired.
+        Note: this function does NOT affect the current vector.  Use normalize function if change is desired.
         '''
         return Vector3.from_other(self.value/self.magnitude())
 
@@ -136,12 +136,10 @@ class Vector3():
         return self.__str__()
 
     def __eq__(self,other:'Vector3') -> bool:
-        comparison = self.value == other.value
-        return comparison.all()
+        return all(self.value == other.value)
 
     def __ne__(self,other:'Vector3') -> bool:
-        comparison = self.value != other.value
-        return comparison.any()
+        return any(self.value != other.value)
 
     def __add__(self,other:'Vector3') -> 'Vector3':
         return Vector3._from_np(self.value + other.value)
@@ -157,6 +155,9 @@ class Vector3():
 
     def __iadd__(self,other):
         return self + other
+
+    def __hash__(self):
+        x = 5
 
     #----OCC conversion functions----
     def occ_Ax1(self, origin=[0,0,0]) -> gp_Ax1:
