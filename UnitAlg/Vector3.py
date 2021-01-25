@@ -129,9 +129,9 @@ class Vector3():
         p1 = vector_a.value
         p2 = vector_b.value
         v = (p2-p1)
-        d = np.sqrt(np.dot(v,v))
+        d = np.linalg.norm(v)
         v_norm = v/d
-        return (p1 + v_norm*d*factor)
+        return Vector3._from_np(p1 + v_norm*d*factor)
 
     ##TODO:Make functions mimicing Unity's Vector3 class distance
        #lerp, which is a static method
