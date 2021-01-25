@@ -133,9 +133,6 @@ class Vector3():
         v_norm = v/d
         return Vector3._from_np(p1 + v_norm*d*factor)
 
-    ##TODO:Make functions mimicing Unity's Vector3 class distance
-       #lerp, which is a static method
-
     #----Operators----
     def __str__(self) -> str:
         return str.format('({0}, {1}, {2})',*self._value)
@@ -164,7 +161,7 @@ class Vector3():
         return self + other
 
     def __hash__(self):
-        return hash(tuple(self._value))
+        return hash((self.x,self.y,self.z))
 
 
     #----OCC conversion functions----
