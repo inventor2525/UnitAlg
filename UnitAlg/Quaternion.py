@@ -116,12 +116,10 @@ class Quaternion():
     #----Operators----
     def __eq__(self,other) -> bool:
         #could also use gp_Quaternion.IsEqual() here but would also increase occ dependency
-        comparison = self.value == other.value
-        return comparison.all()
+        return all(self.value == other.value)
 
     def __ne__(self,other) -> bool:
-        comparison = self.value != other.value
-        return comparison.all()
+        return any(self.value != other.value)
 
     def __mul__(self,other: Union[Vector3, 'Quaternion']) -> Union[Vector3, 'Quaternion']:
         quat = self.occ_Quaternion
