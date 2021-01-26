@@ -77,14 +77,14 @@ class Transform():
 
     @property
     def rotation(self) -> Quaternion:
-        rotation_mat = self._mat[0:3,0:3] / self.localScale
+        rotation_mat = self._mat[0:3,0:3] / self.localScale.value
         return Quaternion.from_rotation_matrix(rotation_mat)
 
     @rotation.setter
     def rotation(self, rotation:Quaternion):
         t = gp_Trsf()
         t.SetRotation(rotation.occ_Quaternion)
-        self._mat[0:3,0:3] = np.array(Transform.Trsf_to_list( t ))[0:3, 0:3] * self.localScale
+        self._mat[0:3,0:3] = np.array(Transform.Trsf_to_list( t ))[0:3, 0:3] * self.localScale.value
 
     @property
     def inverse(self) -> 'Transform':
