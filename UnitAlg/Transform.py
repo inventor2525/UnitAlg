@@ -105,12 +105,10 @@ class Transform():
         return Transform.from_OCC(self.GTrsf*other.GTrsf)
 
     def __eq__(self,other) -> bool:
-        comparison = self.mat == other.mat
-        return comparison.all()
+        return all(self.mat == other.mat)
 
     def __ne__(self,other) -> bool:
-        comparison = self.mat != other.mat
-        return comparison.all()   
+        return any(self.mat != other.mat)
 
 if __name__ == '__main__':
     t1 = Transform()
