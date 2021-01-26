@@ -110,6 +110,9 @@ class Quaternion():
     def angle_axis(self) -> Tuple[float,float]:
         return self.angle, self._axis
 
+    def inverted(self):
+        return Quaternion.from_angle_axis(-(math.degrees(self.angle)), self.axis)
+
     #----Operators----
     def __eq__(self,other) -> bool:
         #could also use gp_Quaternion.IsEqual() here but would also increase occ dependency
@@ -128,8 +131,6 @@ class Quaternion():
         if isinstance(other, Vector3):
             occVec = quat.Multiply(other.occ_Vec)
             return Vector3.from_other(occVec)
-
-    #TODO: inverted and reverse functions
 
 
     #----OCC conversion functions----
