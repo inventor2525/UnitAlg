@@ -25,7 +25,7 @@ class Quaternion():
         return Quaternion.from_other(quat)
 
     @staticmethod
-    def from_angle_axis(angle:float, axis:Vector3):
+    def from_angle_axis(angle:float, axis:Vector3) -> 'Quaternion':
         '''
         Use degrees for the angle
         '''
@@ -107,10 +107,10 @@ class Quaternion():
         return self._axis
 
     @property
-    def angle_axis(self) -> Tuple[float,float]:
+    def angle_axis(self) -> Tuple[float,Vector3]:
         return self.angle, self._axis
 
-    def inverted(self):
+    def inverted(self) -> 'Quaternion':
         return Quaternion.from_angle_axis(-(math.degrees(self.angle)), self.axis)
 
     #----Operators----

@@ -22,7 +22,7 @@ class Transform():
             ]
 
     @staticmethod
-    def from_OCC(trsf : Union[gp_GTrsf, gp_Trsf]):
+    def from_OCC(trsf : Union[gp_GTrsf, gp_Trsf]) -> 'Transform':
         return Transform(np.array(Transform.Trsf_to_list(trsf)))
 
     @property
@@ -43,7 +43,7 @@ class Transform():
         self.mat = Trsf_to_list(new_trsf)
     
     @property
-    def coefficients_2d(self):
+    def coefficients_2d(self) -> List[List[float]]:
         m = self._mat
         return [
             m[0,0],m[0,1],
@@ -51,7 +51,7 @@ class Transform():
             m[0,3],m[1,3]]
 
     @property
-    def coefficients_3d(self):
+    def coefficients_3d(self) -> List[List[float]]:
         m = self._mat
         return [
             m[0,0],m[0,1],m[0,2], 
@@ -60,20 +60,20 @@ class Transform():
             m[0,3],m[1,3],m[2,3]]
 
     @property
-    def translation(self) -> np.ndarray:
-        return self.mat[0:3,3]
+    def translation(self) -> Vector3:
+        return Vector3._from_np(self.mat[0:3,3])
     @translation.setter
-    def translation(self, new_translation:Union[np.ndarray, List[float]]) -> None:
-        self._mat[0:3,3] = np.array(new_translation)
+    def translation(self, new_translation: Vector3) -> None:
+        self._mat[0:3,3] = new_translation.value
     
     @property
-    def localScale(self) -> np.ndarray:
+    def localScale(self) -> Vector3:
         m = self._mat
-        return LA.norm([m[0:3,0], m[0:3,1], m[0:3,2]], axis=1)
+        return Vector3._from_np(LA.norm([m[0:3,0], m[0:3,1], m[0:3,2]], axis=1))
     @localScale.setter
     def localScale(self, new_localScale:Vector3) -> None:
         current_localScale = self.localScale
-        self._mat[0:3,0:3] = (self._mat[0:3,0:3]/current_localScale)*new_localScale.value
+        self._mat[0:3,0:3] = (self._mat[0:3,0:3]/current_localScale.value)*new_localScale.value
 
     @property
     def rotation(self) -> Quaternion:
@@ -87,7 +87,7 @@ class Transform():
         self._mat[0:3,0:3] = np.array(Transform.Trsf_to_list( t ))[0:3, 0:3] * self.localScale
 
     @property
-    def inverse(self):
+    def inverse(self) -> 'Transform':
          return Transform(np.linalg.inv(self.mat))
          
     #----Operators----

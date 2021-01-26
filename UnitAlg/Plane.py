@@ -10,7 +10,7 @@ class Plane():
         self.normal = normal 
 
     @staticmethod
-    def from_OCC(gpPlane:gp_Pln):
+    def from_OCC(gpPlane:gp_Pln) -> 'Plane':
         ''' creates plane from OCC's plane class '''
         point = Vector3.from_other(gpPlane.Location())
         normal = Vector3.from_other(gpPlane.Position().Direction())
@@ -51,7 +51,7 @@ class Plane():
 
     #----OCC conversion functions----
     @property
-    def occ_Plane(self):
+    def occ_Plane(self) -> gp_Pln:
         ''' create an OCC plane object with the same parameters from the UnitAlg plane object '''
         pnt = self.point.occ_Pnt
         normal = self.normal.occ_Dir
