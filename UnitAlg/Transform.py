@@ -36,7 +36,7 @@ class Transform():
     def GTrsf(self) -> gp_GTrsf:
         return gp_GTrsf(
             gp_Mat(*[float(x) for x in chain.from_iterable(self._mat[0:3,0:3])]), 
-            gp_XYZ(*[float(x) for x in self.translation])
+            gp_XYZ(*[float(x) for x in self.mat[0:3,3]])
             )
     @GTrsf.setter
     def GTrsf(self, new_trsf : Union[gp_Trsf, gp_GTrsf]) -> None:
