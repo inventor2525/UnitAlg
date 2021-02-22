@@ -12,6 +12,36 @@ class Transform():
         self.mat = mat
 
     @staticmethod
+    def Translate(translation :Vector3) -> 'Transform':
+        t = Transform()
+        t.translation = translation
+        return t
+    
+    @staticmethod
+    def Rotate(rotation :Quaternion) -> 'Transform':
+        t = Transform()
+        t.rotation = rotation
+        return t
+    
+    @staticmethod
+    def Rotate_about(rotation :Quaternion, origin :Vector3) -> 'Transform':
+        return Transform.Translate(origin*-1)*Transform.Rotate(rotation)*Transform.Translate(origin)
+
+    @staticmethod
+    def Scale(scale :Vector3) -> 'Transform':
+        t = Transform()
+        t.localScale = scale
+        return t
+    
+    @staticmethod
+    def TRS(translation :Vector3, rotation :Quaternion, scale :Vector3) -> 'Transform':
+        t = Transform()
+        t.translation = translation
+        t.rotation = rotation
+        t.localScale = scale
+        return t
+
+    @staticmethod
     def Trsf_to_list(trsf : Union[gp_Trsf, gp_GTrsf]) -> List[List[float]]:
         t = trsf.TranslationPart()
         return [
