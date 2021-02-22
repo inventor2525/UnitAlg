@@ -94,7 +94,7 @@ class Vector3():
         '''
         self.value = self.value / self.magnitude()
 
-    @staticmethod
+    @property
     def normalized(self) -> 'Vector3':
         '''
         Returns the unit vector for current vector
