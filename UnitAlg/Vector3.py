@@ -6,7 +6,7 @@ import math
 from OCC.Core.gp import gp_Pnt, gp_Vec, gp_Dir, gp_Trsf, gp_XYZ, gp_Ax1
 
 class Vector3():
-    def __init__(self, x:float, y:float, z:float):
+    def __init__(self, x:float, y:float, z:float=0):
         self.value = [x,y,z]
 
     @staticmethod
