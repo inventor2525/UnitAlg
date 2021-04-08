@@ -44,6 +44,10 @@ class Vector3():
     def forward() -> 'Vector3':
         return Vector3(0,0,1)
 
+    @classproperty
+    def ones() -> 'Vector3':
+        return Vector3(1,1,1)
+
     #----Casting----
     #TODO: better python interface to use for this? aka "__Something__"
     @staticmethod
