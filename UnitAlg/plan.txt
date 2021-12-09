@@ -2,23 +2,7 @@ Vector3:
 	init(x,y,z)
 	init(numpy)
 	from & to others
-	
-*	subscriptable
-	len
-	iterable
-	
-	Angle
-*	Cross
-*	dot
-*	Magnitude
-*	SqMagnitude
-	Lerp
-*	multiply
-*	add
-	equality
-*	normalize
-	to string
-	
+
 Plane:
 *	init(normal, center)
 *	init(p1,p2,p3)
