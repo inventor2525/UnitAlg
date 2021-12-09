@@ -3,7 +3,6 @@ from typing import Union, List, Tuple
 import numpy as np
 import math
 
-from OCC.Core.gp import gp_Ax1, gp_Pnt, gp_Vec, gp_Dir, gp_Quaternion, gp_Trsf, gp_GTrsf, gp_XYZ, gp_Mat, gp_OZ
 from UnitAlg import Vector3
 
 class Quaternion():
@@ -15,31 +14,15 @@ class Quaternion():
 		return Quaternion(0,0,0,1)
 
 	@staticmethod
-	def from_OCC(quat : gp_Quaternion) -> 'Quaternion':
-		return Quaternion(quat.X(),quat.Y(),quat.Z(),quat.W())
-
-	@staticmethod
-	def from_rotation_matrix(mat:Union[np.ndarray, List[List[float]]]) -> 'Quaternion':
-		#TODO: do this without OCC:
-		quat = gp_Quaternion(gp_Mat(*[float(x) for x in chain.from_iterable(mat)]))
-		return Quaternion.from_other(quat)
+	def from_rotation_matrix(mat:Union[np.ndarray, List[List[Union[float,int]]]]) -> 'Quaternion':
+		raise NotImplementedError()
 
 	@staticmethod
 	def from_angle_axis(angle:float, axis:Vector3) -> 'Quaternion':
 		'''
 		Use degrees for the angle
 		'''
-		quat = gp_Quaternion(axis.occ_Vec, math.radians(angle))
-		return Quaternion.from_other(quat)
-
-	#----Casting----
-	#TODO: better python interface to use for this? aka "__Something__"
-	@staticmethod
-	def from_other(value) -> 'Quaternion':
-		if isinstance(value, gp_Quaternion):
-			return Quaternion(value.X(), value.Y(), value.Z(), value.W())
-		if isinstance(value, np.ndarray):
-			return Quaternion(*value)
+		raise NotImplementedError()
 
 	#----Main Properties----
 	@property
@@ -82,17 +65,17 @@ class Quaternion():
 		self._value[3] = w
 		self._derived_updated = False
 
-	def __str__(self) -> str:
-		return str.format('angle:{0} axis:({1},{2},{3}) Quaternion:({4},{5},{6},{7})',math.degrees(self.angle),*self.axis.value,*self._value)
-	def __repr__(self) -> str:
-		return self.__str__()
-
 	#----Derived Properties----
 	def _ensure_derived(self) -> None:
+		'''
+		Calculates derived properties like angle and axis,
+		keeping them for performance of recal.
+		'''
 		if not self._derived_updated:
+			raise NotImplementedError()
 			#TODO: do this without OCC:
 			quat = self.occ_Quaternion
-			axis = gp_Vec()
+			axis = Vector3()
 			self._angle = quat.GetVectorAndAngle(axis)
 			self._axis = Vector3.from_other(axis)
 	
@@ -120,18 +103,8 @@ class Quaternion():
 
 	def __ne__(self,other) -> bool:
 		return any(self.value != other.value)
-
-	def __mul__(self,other: Union[Vector3, 'Quaternion']) -> Union[Vector3, 'Quaternion']:
-		quat = self.occ_Quaternion
-		if isinstance(other, Quaternion):
-			occQuat = quat.Multiplied(other.occ_Quaternion)
-			return Quaternion.from_other(occQuat)
-		if isinstance(other, Vector3):
-			occVec = quat.Multiply(other.occ_Vec)
-			return Vector3.from_other(occVec)
-
-
-	#----OCC conversion functions----
-	@property
-	def occ_Quaternion(self) -> gp_Quaternion:
-		return gp_Quaternion(self._value[0], self._value[1], self._value[2], self._value[3])
+	
+	def __str__(self) -> str:
+		return str.format('angle:{0} axis:({1},{2},{3}) Quaternion:({4},{5},{6},{7})',math.degrees(self.angle),*self.axis.value,*self._value)
+	def __repr__(self) -> str:
+		return self.__str__()
