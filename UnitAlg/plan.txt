@@ -77,10 +77,12 @@ Standards:
 single tab indent
 no double blank lines
 1 blank line between 'un-related' functions
-capital letter prefanced camel case for file and class name, all methods, and all properties.
-	regular cammel case for fields; underscore prefaced for hidden entities (which should 
-	be very minimal for anything!)
-Classes ordered as:
+capital letter prefanced camel case for file and class names.
+	underscore sperated lower case for all else;
+		underscore prefaced for hidden entities (which should 
+		be very minimal for anything!)
+
+**Classes ordered as**:
 	class Name
 		child classes (in dependancy order!)
 		class fields
