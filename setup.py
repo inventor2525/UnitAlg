@@ -13,8 +13,7 @@ setup(
     description='An un-described package.',
     long_description=open('README.md').read(),
     install_requires=[
-        'numpy',
-        'OCC'
+        'numpy'
     ],
     python_requires='~=3.7'
 )
