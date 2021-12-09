@@ -147,6 +147,16 @@ class Vector3():
     def __repr__(self) -> str:
         return self.__str__()
 
+    def __iter__(self) -> Iterator[float]:
+        return self._value.__iter__()
+    def __len__(self) -> int:
+        return 3
+    
+    def __getitem__(self, index:int)->float:
+        return self._value[index]
+    def __setitem__(self,index:int,value:float) -> None:
+        self._value[index] = value
+        
     def __eq__(self,other:'Vector3') -> bool:
         return all(self.value == other.value)
 
