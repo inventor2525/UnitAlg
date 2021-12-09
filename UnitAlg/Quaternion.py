@@ -105,7 +105,7 @@ class Quaternion():
 		True
 		"""
 		return numpy.array((-self._value[0], -self._value[1],
-                        -self._value[2], self._value[3]), dtype=numpy.float64)
+						-self._value[2], self._value[3]), dtype=numpy.float64)
 
 	def inverse(self) -> 'Quaternion':
 		"""Return inverse of quaternion.
@@ -121,6 +121,7 @@ class Quaternion():
 		if mag < np.finfo.tiny:
 			return Quaternion.identity()
 		return Quaternion(self._value[0] / mag, self._value[1] / mag, self._value[2] / mag, self._value[3] / mag)
+
 
 
 	#----Operators----
@@ -146,4 +147,21 @@ class Quaternion():
 			x1*y0 - y1*x0 + z1*w0 + w1*z0,
 			-x1*x0 - y1*y0 - z1*z0 + w1*w0), dtype=numpy.float64)
 		elif isinstance(other, Vector3):
-			raise NotImplementedError()
+			x = rotation.x * 2.0
+			y = rotation.y * 2.0
+			z = rotation.z * 2.0
+			xx = rotation.x * x
+			yy = rotation.y * y
+			zz = rotation.z * z
+			xy = rotation.x * y
+			xz = rotation.x * z
+			yz = rotation.y * z
+			wx = rotation.w * x
+			wy = rotation.w * y
+			wz = rotation.w * z
+
+			res = Vector3()
+			res.x = (1.0 - (yy + zz)) * other.x + (xy - wz) * other.y + (xz + wy) * other.z
+			res.y = (xy + wz) * other.x + (1.0 - (xx + zz)) * other.y + (yz - wx) * other.z
+			res.z = (xz - wy) * other.x + (yz + wx) * other.y + (1.0 - (xx + yy)) * other.z
+			return res
