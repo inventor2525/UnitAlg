@@ -87,6 +87,10 @@ class Vector3():
         self._value[2] = z
 
     #----Functions----
+    def sq_magnitude(self) -> float:
+        ''' Returns squared length of this vector '''
+        return np.linalg.norm(self.value)
+        
     def magnitude(self) -> float:
         ''' Returns the length of this vector '''
         return np.linalg.norm(self.value)
