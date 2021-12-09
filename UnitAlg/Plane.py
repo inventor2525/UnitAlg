@@ -40,7 +40,9 @@ class Plane():
 		raise NotImplementedError()
 	@overload
 	def reflect(self, direction:Vector3) -> Vector3: 
-		''' reflect direction off a plane, at an angle equal to incoming angle. '''
+		'''
+		Reflect direction off a plane, at an angle equal to incoming angle.
+		'''
 		...
 	@overload
 	def reflect(self, ray:Ray) -> Ray:
