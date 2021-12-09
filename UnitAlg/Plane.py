@@ -9,13 +9,6 @@ class Plane():
 		self.point = point
 		self.normal = normal 
 
-	@staticmethod
-	def from_OCC(gpPlane:gp_Pln) -> 'Plane':
-		''' creates plane from OCC's plane class '''
-		point = Vector3.from_other(gpPlane.Location())
-		normal = Vector3.from_other(gpPlane.Position().Direction())
-		return Plane(point, normal)
-
 	#----Main Properties----
 	@property
 	def point(self) -> Vector3:
@@ -43,16 +36,8 @@ class Plane():
 			return ray
 
 	#----Operators-----
-		
 	def __str__(self) -> str:
 		return str.format('origin:{0} normal:{1}',self.point, self.normal)
 	def __repr__(self) -> str:
 		return self.__str__()
 
-	#----OCC conversion functions----
-	@property
-	def occ_Plane(self) -> gp_Pln:
-		''' create an OCC plane object with the same parameters from the UnitAlg plane object '''
-		pnt = self.point.occ_Pnt
-		normal = self.normal.occ_Dir
-		return gp_Pln(pnt, normal)
