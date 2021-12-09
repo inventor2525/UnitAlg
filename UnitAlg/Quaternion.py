@@ -1,14 +1,40 @@
 from UnitAlg.helpers import *
-from typing import Union, List, Tuple
+from typing import Any, Union, List, Tuple, overload
 import numpy as np
 import math
 
 from UnitAlg import Vector3
 
 class Quaternion():
-	def __init__(self, x:float, y:float, z:float, w:float):
-		self.value = [x,y,z,w]
-
+	@overload
+	def __init__(self, x:Union[float,int], y:Union[float,int], z:Union[float,int], w:Union[float,int]) -> None: ...
+	@overload
+	def __init__(self, arr:Union[np.ndarray, List[Union[float,int]], Tuple[Union[float,int]]]) -> None: ...
+	@overload
+	def __init__(self, arr:Any) -> None: ... 
+	
+	def __init__(self, x_other,y=None,z=None,w=None) -> None:
+		if y is None:
+			if isinstance(x_other, (list, tuple)):
+				if len(x_other) == 4:
+					self.value = x_other
+				else:
+					raise ValueError("Invalid list or tuple, need size of 4, got {}",len(x_other))
+			elif isinstance(x_other, np.ndarray):
+				if x_other.shape==(4,):
+					self.value = x_other
+				elif x_other.shape==(1,4):
+					self.value = x_other[0]
+				else:
+					raise ValueError("invalid numpy array shape {}, expected shape (4,) or (1,4)",x_other.shape)
+			else:
+				self._value = Vector3._from(x_other)._value
+				self._derived_updated = False
+		elif all_true((isinstance(v,(int, float)) for v in (x_other,y,z,w))):
+			self.value = [x_other,y,z,w]
+		else:
+			raise ValueError("init can only take 3 real numbers, or 1 list numpy array or some type with a conversion function specified in from_conversions and nothing else.")
+				
 	@classproperty
 	def identity() -> 'Quaternion':
 		return Quaternion(0,0,0,1)
