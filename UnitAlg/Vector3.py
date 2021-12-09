@@ -3,8 +3,6 @@ from typing import Iterator, Union, List
 import numpy as np
 import math
 
-from OCC.Core.gp import gp_Pnt, gp_Vec, gp_Dir, gp_Trsf, gp_XYZ, gp_Ax1
-
 class Vector3():
     def __init__(self, x:float, y:float, z:float=0):
         self.value = [x,y,z]
@@ -77,14 +75,6 @@ class Vector3():
         newArr._value = value
         return newArr
         
-    #TODO: better python interface to use for this? aka "__Something__"
-    @staticmethod
-    def from_other(value) -> 'Vector3':
-        if isinstance(value, (gp_Vec, gp_Pnt, gp_Dir, gp_XYZ)):
-            return Vector3(value.X(), value.Y(), value.Z())
-        if isinstance(value, np.ndarray):
-            return Vector3(*value)
-            
     #----Functions----
     def sq_magnitude(self) -> float:
         ''' Returns squared length of this vector '''
@@ -175,19 +165,3 @@ class Vector3():
         return str.format('({0}, {1}, {2})',*self._value)
     def __repr__(self) -> str:
         return self.__str__()
-    
-    #----OCC conversion functions----
-    def occ_Ax1(self, origin=[0,0,0]) -> gp_Ax1:
-        return gp_Ax1(Vector3(origin).occ_Pnt, self.occ_Dir)
-
-    @property
-    def occ_Vec(self) -> gp_Vec:
-        return gp_Vec(float(self._value[0]), float(self._value[1]), float(self._value[2]))
-
-    @property
-    def occ_Dir(self) -> gp_Dir:
-        return gp_Dir(float(self._value[0]), float(self._value[1]), float(self._value[2]))
-
-    @property
-    def occ_Pnt(self) -> gp_Pnt:
-        return gp_Pnt(float(self._value[0]), float(self._value[1]), float(self._value[2]))
