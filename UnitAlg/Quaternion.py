@@ -2,6 +2,7 @@ from UnitAlg.helpers import *
 from typing import Union, List, Tuple
 import numpy as np
 import math
+from multipledispatch import dispatch
 
 from UnitAlg import Vector3
 
@@ -96,9 +97,34 @@ class Quaternion():
 	def inverted(self) -> 'Quaternion':
 		return Quaternion.from_angle_axis(-(math.degrees(self.angle)), self.axis)
 
+	def quaternion_conjugate(self) -> 'Quaternion':
+		"""Return conjugate of quaternion.
+		>>> q0 = random_quaternion()
+		>>> q1 = q0.quaternion_conjugate()
+		>>> q1[3] == q0[3] and all(q1[:3] == -q0[:3])
+		True
+		"""
+		return numpy.array((-self._value[0], -self._value[1],
+                        -self._value[2], self._value[3]), dtype=numpy.float64)
+
+	def inverse(self) -> 'Quaternion':
+		"""Return inverse of quaternion.
+		>>> q0 = random_quaternion()
+		>>> q1 = q0.inverse()
+		>>> numpy.allclose(quaternion_multiply(q0, q1), [0, 0, 0, 1])
+		True
+		"""
+		return self.quaternion_conjugate() / numpy.dot(self._value, self._value)
+
+	def normalize(self) -> 'Quaternion':
+		mag = math.sqrt(numpy.dot(self._value, self._value))
+		if mag < np.finfo.tiny:
+			return Quaternion.identity()
+		return Quaternion(self._value[0] / mag, self._value[1] / mag, self._value[2] / mag, self._value[3] / mag)
+
+
 	#----Operators----
 	def __eq__(self,other) -> bool:
-		#could also use gp_Quaternion.IsEqual() here but would also increase occ dependency
 		return all(self.value == other.value)
 
 	def __ne__(self,other) -> bool:
@@ -106,5 +132,18 @@ class Quaternion():
 	
 	def __str__(self) -> str:
 		return str.format('angle:{0} axis:({1},{2},{3}) Quaternion:({4},{5},{6},{7})',math.degrees(self.angle),*self.axis.value,*self._value)
+	
 	def __repr__(self) -> str:
 		return self.__str__()
+	
+	def __mul__(self,other)->'Quaternion':
+		if isinstance(other, 'Quaternion'):
+			x0,y0,z0,w0 = self._value[0], self._value[1], self._value[2], self._value[3]
+			x1,y1,z1,w1 = other.x, other.y, other.z, other.w
+			return numpy.array((
+			x1*w0 + y1*z0 - z1*y0 + w1*x0,
+			-x1*z0 + y1*w0 + z1*x0 + w1*y0,
+			x1*y0 - y1*x0 + z1*w0 + w1*z0,
+			-x1*x0 - y1*y0 - z1*z0 + w1*w0), dtype=numpy.float64)
+		elif isinstance(other, Vector3):
+			raise NotImplementedError()
