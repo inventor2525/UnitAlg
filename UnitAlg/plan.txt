@@ -1,0 +1,112 @@
+Vector3:
+	init(x,y,z)
+	init(numpy)
+	from & to others
+	
+*	subscriptable
+	len
+	iterable
+	
+	Angle
+*	Cross
+*	dot
+*	Magnitude
+*	SqMagnitude
+	Lerp
+*	multiply
+*	add
+	equality
+*	normalize
+	to string
+	
+Plane:
+*	init(normal, center)
+*	init(p1,p2,p3)
+*	init(list[vector3])
+	
+	properties:
+*		center
+*		normal
+*	Raycast
+	reflect(Vector3)
+	reflect(Ray)
+	project(Vector3)
+	Side(Vector3) -> int (+/- 1)
+	SameSide(Vector3,Vector3)->bool
+	GetDistanceToPoint(Vector3) -> float (takes side into account!)
+	to string
+	
+Quaternion
+*	init(x,y,z,w)
+*	init(vector3|numpy|list)
+	init(vector3|numpy|list, float)
+	
+	from eulers(vector3|numpy|list)
+	to eulers(vector3|numpy|list)
+	
+*	inverse
+*	multiply(Vector3)
+*	multiply(Quaternion)
+	FromToRotation(Quaternion,Quaternion,float)
+	LookRotation
+	Lerp
+	Slerp
+*	Normalize
+	Euler
+	AngleAxis
+	AngleTo(Quaternion)
+	equality check
+	to string
+
+Ray
+*	init(vector3|numpy|list, vector3|numpy|list) #origin direction
+	GetPoint(float) -> Vector3 #distance from origin along direction (+/-)
+	to string
+
+Matrix33
+	init(Quaternion)
+	init(numpy|list[List])
+	init(Vector3,Vector3,Vector3)
+	
+	properties:
+		Quaternion
+		up down
+		forward back
+		left right
+	
+	inverse
+	multiply(Vector3)
+	multiply(Ray)
+	multiply(Plane)
+	
+Matrix44
+	(same as matrix33, reused through subclassing and using a differnt private size enforcement possibly)
+	
+	init(Quaternion, Vector3)  aka TR
+	init(Quaternion, Vector3, Vector3) aka TRS
+	
+	factories:
+		perspective
+		ortho
+		
+Standards:
+single tab indent
+no double blank lines
+1 blank line between 'un-related' functions
+capital letter prefanced camel case for file and class name, all methods, and all properties.
+	regular cammel case for fields; underscore prefaced for hidden entities (which should 
+	be very minimal for anything!)
+Classes ordered as:
+	class Name
+		child classes (in dependancy order!)
+		class fields
+		init's (using overload to define varients!!)
+		public properties
+		private properties
+		public methods (overloads last)
+		private methods
+	; each group sorted seperately in dependancy order, then in order of
+	similar functionality (IFF 'close enough'), and then (ideally!), alphabetically
+favor (BREIF!) doc strings ('''<summery>''' to code comments; aka: #<something>) where overlap can exist
+Type hinting for all!!!
+Finally: statics of anything should always come first in that group.
