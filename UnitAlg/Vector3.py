@@ -107,7 +107,7 @@ class Vector3():
         Returns the unit vector for current vector
         Note: this function does NOT affect the current vector.  Use normalize function if change is desired.
         '''
-        return Vector3.from_other(self.value/self.magnitude())
+        return self / self.magnitude()
 
     @staticmethod
     def distance(vector_a:'Vector3', vector_b:'Vector3') -> float:
