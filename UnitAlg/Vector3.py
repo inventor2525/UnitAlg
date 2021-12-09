@@ -1,12 +1,43 @@
+from UnitAlg.Convertable import Convertable
+from numpy.lib.arraysetops import isin
+from UnitAlg.helpers.classproperty import all_true
 from UnitAlg.helpers import *
-from typing import Iterator, Union, List
+from typing import Any, Iterator, Tuple, Type, Union, List, overload
 import numpy as np
 import math
 
-class Vector3():
-    def __init__(self, x:float, y:float, z:float=0):
-        self.value = [x,y,z]
+class Vector3(Convertable):
+    to_conversions = {}
+    from_conversions = {}
+    
+    @overload
+    def __init__(self, x:Union[float,int], y:Union[float,int], z:Union[float,int]=0) -> None: ...
+    @overload
+    def __init__(self, arr:Union[np.ndarray,List[Union[float,int]], Tuple[Union[float,int]]]) -> None: ...
+    @overload
+    def __init__(self, arr:Any) -> None: ... #TODO: Is a variable restriciton on typeing possible? based on converison functions?
 
+    def __init__(self, x_other, y=None,z=0) -> None:
+        if y is None:
+            if isinstance(x_other, (list, tuple)):
+                if len(x_other) == 3:
+                    self.value = x_other
+                else:
+                    raise ValueError("Invalid list or tuple, need size of 3, got {}",len(x_other))
+            elif isinstance(x_other, np.ndarray):
+                if x_other.shape==(3,):
+                    self.value = x_other
+                elif x_other.shape==(1,3):
+                    self.value = x_other[0]
+                else:
+                    raise ValueError("invalid numpy array shape {}, expected shape (3,) or (1,3)",x_other.shape)
+            else:
+                self._value = Vector3._from(x_other)._value
+        elif all_true((isinstance(v,(int, float)) for v in (x_other,y,z))):
+            self.value = [x_other,y,z]
+        else:
+            raise ValueError("init can only take 3 real numbers, or 1 list numpy array or some type with a conversion function specified in from_conversions and nothing else.")
+                
     #----Common values----
     @classproperty
     def back() -> 'Vector3':
@@ -165,3 +196,25 @@ class Vector3():
         return str.format('({0}, {1}, {2})',*self._value)
     def __repr__(self) -> str:
         return self.__str__()
+        
+if __name__ == "__main__":
+    print(Vector3(3,4,5))
+    
+    print(Vector3(3,4))
+    print(Vector3(1,2))
+    print(Vector3([0,math.pi,42]))
+    try:
+        print(Vector3(1))
+    except Exception as e: print(e)
+    
+    try:
+        print(Vector3([1,2]))
+    except Exception as e: print(e)
+    
+    try:
+        print(Vector3([1,2,3],6))
+    except Exception as e: print(e)
+    
+    try:
+        print(Vector3(1,'f'))
+    except Exception as e: print(e)
