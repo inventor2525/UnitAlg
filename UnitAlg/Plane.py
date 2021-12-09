@@ -1,5 +1,6 @@
-from UnitAlg import Vector3, Quaternion
-from OCC.Core.gp import gp_Pln, gp_Pnt, gp_Dir
+from typing import overload
+from UnitAlg import Vector3, Quaternion, Ray
+from multipledispatch import dispatch
 
 class Plane():
 	''' 
@@ -25,19 +26,32 @@ class Plane():
 		self._normal = normal
 
 	#----Functions----
-	def reflect(self, ray:Vector3) -> Vector3:
-		''' reflect ray from plane, at an angle equal to incoming angle '''
-		incoming_angle = Vector3.angle(ray,self.normal)
+	@dispatch(Vector3)
+	def _reflect(self, direction:Vector3) -> Vector3:
+		incoming_angle = Vector3.angle(direction,self.normal)
 		if incoming_angle != 0:
-			rotation_axis = Vector3.cross(ray, self.normal)
+			rotation_axis = Vector3.cross(direction, self.normal)
 			rotation = Quaternion.from_angle_axis(2*incoming_angle, rotation_axis)
-			return rotation*ray
+			return rotation*direction
 		else:
-			return ray
-
+			return direction
+	@dispatch(Ray)
+	def _reflect(self, ray:Ray) -> Ray:
+		raise NotImplementedError()
+	@overload
+	def reflect(self, direction:Vector3) -> Vector3: 
+		''' reflect direction off a plane, at an angle equal to incoming angle. '''
+		...
+	@overload
+	def reflect(self, ray:Ray) -> Ray:
+		'''
+		Reflect ray off a plane, at an angle equal to incoming angle, and an origin at the intersection point. '''
+		...
+	def reflect(self,*args):
+		return self._reflect(*args)
+		
 	#----Operators-----
 	def __str__(self) -> str:
 		return str.format('origin:{0} normal:{1}',self.point, self.normal)
 	def __repr__(self) -> str:
 		return self.__str__()
-
