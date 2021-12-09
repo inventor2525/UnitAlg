@@ -1,5 +1,5 @@
 from UnitAlg.helpers import *
-from typing import Union, List
+from typing import Iterator, Union, List
 import numpy as np
 import math
 
