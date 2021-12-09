@@ -92,7 +92,8 @@ capital letter prefanced camel case for file and class names.
 		public methods (overloads last)
 		private methods
 	; each group sorted seperately in dependancy order, then in order of
-	similar functionality (IFF 'close enough'), and then (ideally!), alphabetically
+	similar functionality (IFF 'close enough'), and then (ideally!): alphabetically...
+	Unless clear logical progression from one to the next that aids in readability.
 favor (BREIF!) doc strings ('''<summery>''' to code comments; aka: #<something>) where overlap can exist
 Type hinting for all!!!
 Finally: statics of anything should always come first in that group.
