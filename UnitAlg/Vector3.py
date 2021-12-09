@@ -146,7 +146,7 @@ class Vector3():
         return str.format('({0}, {1}, {2})',*self._value)
     def __repr__(self) -> str:
         return self.__str__()
-
+    
     def __iter__(self) -> Iterator[float]:
         return self._value.__iter__()
     def __len__(self) -> int:
@@ -159,28 +159,23 @@ class Vector3():
         
     def __eq__(self,other:'Vector3') -> bool:
         return all(self.value == other.value)
-
     def __ne__(self,other:'Vector3') -> bool:
         return any(self.value != other.value)
 
     def __add__(self,other:'Vector3') -> 'Vector3':
         return Vector3._from_np(self.value + other.value)
-
+    def __iadd__(self,other:'Vector3') -> 'Vector3':
+        return self + other
     def __sub__(self,other:'Vector3') -> 'Vector3':
         return Vector3._from_np(self.value - other.value)
 
     def __mul__(self,other:float) -> 'Vector3':
         return Vector3._from_np(self.value * other)
-
     def __truediv__(self,other:float) -> 'Vector3':
         return Vector3._from_np(np.divide(self.value, other))
 
-    def __iadd__(self,other):
-        return self + other
-
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash((self.x,self.y,self.z))
-
 
     #----OCC conversion functions----
     def occ_Ax1(self, origin=[0,0,0]) -> gp_Ax1:
