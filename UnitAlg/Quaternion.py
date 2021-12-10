@@ -145,9 +145,8 @@ class Quaternion():
 	def normalize(self) -> None:
 		mag = math.sqrt(np.dot(self._value, self._value))
 		if mag < np.finfo.tiny:
-			return Quaternion.identity()
-		return Quaternion(self._value[0] / mag, self._value[1] / mag, self._value[2] / mag, self._value[3] / mag)
-
+			self.value = np.array([0,0,0,1])
+		self.value = np.array(self._value[0] / mag, self._value[1] / mag, self._value[2] / mag, self._value[3] / mag)
 
 
 	#----Operators----
@@ -172,20 +171,20 @@ class Quaternion():
 			-x1*z0 + y1*w0 + z1*x0 + w1*y0,
 			x1*y0 - y1*x0 + z1*w0 + w1*z0,
 			-x1*x0 - y1*y0 - z1*z0 + w1*w0), dtype=np.float64))
-			
+
 		elif isinstance(other, Vector3):
-			x = rotation.x * 2.0
-			y = rotation.y * 2.0
-			z = rotation.z * 2.0
-			xx = rotation.x * x
-			yy = rotation.y * y
-			zz = rotation.z * z
-			xy = rotation.x * y
-			xz = rotation.x * z
-			yz = rotation.y * z
-			wx = rotation.w * x
-			wy = rotation.w * y
-			wz = rotation.w * z
+			x = self._value[0] * 2.0
+			y = self._value[1] * 2.0
+			z = self._value[2] * 2.0
+			xx = self._value[0] * x
+			yy = self._value[1] * y
+			zz = self._value[2] * z
+			xy = self._value[0] * y
+			xz = self._value[0] * z
+			yz = self._value[1] * z
+			wx = self._value[3] * x
+			wy = self._value[3] * y
+			wz = self._value[3] * z
 
 			res = Vector3()
 			res.x = (1.0 - (yy + zz)) * other.x + (xy - wz) * other.y + (xz + wy) * other.z
