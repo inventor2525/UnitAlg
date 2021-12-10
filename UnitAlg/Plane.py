@@ -1,15 +1,42 @@
-from typing import overload
+from typing import Union, overload
 from UnitAlg import Vector3, Quaternion, Ray
 from multipledispatch import dispatch
 
 class Plane():
-	''' 
-	class for plane objects in UnitAlg.  Features methods to convert between UnitAlg and OOC's version of planes. 
-	'''
-	def __init__(self, point:Vector3, normal:Vector3):
+	@dispatch(Vector3,Vector3)
+	def __dispatch_init__(self, point:Vector3, normal:Vector3) -> None:
 		self.point = point
-		self.normal = normal 
-
+		self.normal = normal
+	@dispatch(Vector3,Vector3,Vector3)
+	def __dispatch_init__(self, p1:Vector3, p2:Vector3, p3:Vector3) -> None:
+		raise NotImplementedError()
+	@dispatch((float,int), (float,int), (float,int))
+	def __dispatch_init__(self, x_coefficient:Union[float,int], y_coefficient:Union[float,int], z_offset:Union[float,int]) -> None:
+		raise NotImplementedError()
+	
+	@overload
+	def __init__(self, point:Vector3, normal:Vector3) -> None:
+		'''
+		Creates a plane with a position and normal.
+		'''
+		...
+	@overload
+	def __init__(self, p1:Vector3, p2:Vector3, p3:Vector3) -> None:
+		'''
+		Creates a plane with 3 positions.
+		'''
+		...
+	@overload
+	def __init__(self, p1:Vector3, p2:Vector3, p3:Vector3) -> None:
+		'''
+		Creates a plane with coefficients that describe it's equation.
+		
+		Note: this only works if it is not perpendicular to the xy plane.
+		'''
+		...
+	def __init__(self, *args) -> None:
+		self.__dispatch_init__(*args)
+	
 	#----Main Properties----
 	@property
 	def point(self) -> Vector3:
