@@ -1,4 +1,4 @@
-from typing import Union, overload
+from typing import Union, overload, Tuple
 from UnitAlg import Vector3, Quaternion, Ray
 from multipledispatch import dispatch
 
@@ -15,8 +15,8 @@ class Plane():
 	def __dispatch_init__(self, x_coefficient:Union[float,int], y_coefficient:Union[float,int], z_offset:Union[float,int]) -> None:
 		'''#using ax + by + c = z method:'''
 		p1 = Vector3([0,0,z_offset])
-		p2 = Vector3([100,0, (x_coefficient*100 + z_offset)])
-		p3 = Vector3([0, 100, (y_coefficient*100 + z_offset)])
+		p2 = Vector3([100,0, x_coefficient*100 + z_offset])
+		p3 = Vector3([0, 100, y_coefficient*100 + z_offset])
 		self.__dispatch_init__(p1, p2, p3)
 	
 	@overload
@@ -58,8 +58,19 @@ class Plane():
 		self._normal = normal
 
 	#----Functions----
-	def raycast(self,ray:Ray) -> Vector3:
-		raise NotImplementedError()
+	def raycast(self,ray:Ray) -> Tuple[bool, Vector3]:
+		denom = Vector3.dot(ray.direction,self.normal)
+		if denom == 0:
+			return False, Vector3(NAN,NAN,NAN)
+		else:
+			if denom < 0:
+				normal = -self.normal
+			else: normal = self.normal
+		p0 = Vector3(self.position - ray.origin)
+		t = Vector3.dot(self.normal, p0)/denom
+		intersection = ray.origin + ray.direction*t
+		return True, intersection
+
 		
 	@dispatch(Vector3)
 	def _reflect(self, direction:Vector3) -> Vector3:
