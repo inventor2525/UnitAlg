@@ -5,7 +5,6 @@ import numpy.linalg as LA
 import math
 
 from UnitAlg import Vector3, Quaternion
-from OCC.Core.gp import gp_Trsf, gp_GTrsf, gp_Mat, gp_XYZ
 
 class Transform():
 	def __init__(self, mat=np.identity(4)):
@@ -40,21 +39,7 @@ class Transform():
 		t.rotation = rotation
 		t.localScale = scale
 		return t
-
-	@staticmethod
-	def Trsf_to_list(trsf : Union[gp_Trsf, gp_GTrsf]) -> List[List[float]]:
-		t = trsf.TranslationPart()
-		return [
-			[trsf.Value(1,1), trsf.Value(1,2), trsf.Value(1,3), t.X()],
-			[trsf.Value(2,1), trsf.Value(2,2), trsf.Value(2,3), t.Y()],
-			[trsf.Value(3,1), trsf.Value(3,2), trsf.Value(3,3), t.Z()],
-			[0,0,0,1]
-			]
-
-	@staticmethod
-	def from_OCC(trsf : Union[gp_GTrsf, gp_Trsf]) -> 'Transform':
-		return Transform(np.array(Transform.Trsf_to_list(trsf)))
-
+		
 	@property
 	def mat(self) -> np.ndarray:
 		return np.array(self._mat)
@@ -62,16 +47,6 @@ class Transform():
 	def mat(self, new_mat: Union[np.ndarray, List[List[float]]]):
 		self._mat = np.array(new_mat)
 
-	@property
-	def GTrsf(self) -> gp_GTrsf:
-		return gp_GTrsf(
-			gp_Mat(*[float(x) for x in chain.from_iterable(self._mat[0:3,0:3])]), 
-			gp_XYZ(*[float(x) for x in self.mat[0:3,3]])
-			)
-	@GTrsf.setter
-	def GTrsf(self, new_trsf : Union[gp_Trsf, gp_GTrsf]) -> None:
-		self.mat = Trsf_to_list(new_trsf)
-	
 	@property
 	def coefficients_2d(self) -> List[List[float]]:
 		m = self._mat
@@ -112,6 +87,7 @@ class Transform():
 
 	@rotation.setter
 	def rotation(self, rotation:Quaternion):
+		raise NotImplementedError()
 		t = gp_Trsf()
 		t.SetRotation(rotation.occ_Quaternion)
 		self._mat[0:3,0:3] = np.array(Transform.Trsf_to_list( t ))[0:3, 0:3] * self.localScale.value
