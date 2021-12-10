@@ -123,27 +123,27 @@ class Quaternion():
 	def inverted(self) -> 'Quaternion':
 		return Quaternion.from_angle_axis(-(math.degrees(self.angle)), self.axis)
 
-	def quaternion_conjugate(self) -> 'Quaternion':
+	def conjugate(self) -> 'Quaternion':
 		"""Return conjugate of quaternion.
 		>>> q0 = random_quaternion()
-		>>> q1 = q0.quaternion_conjugate()
+		>>> q1 = q0.conjugate()
 		>>> q1[3] == q0[3] and all(q1[:3] == -q0[:3])
 		True
 		"""
-		return numpy.array((-self._value[0], -self._value[1],
-						-self._value[2], self._value[3]), dtype=numpy.float64)
+		return Quaternion(np.array((-self._value[0], -self._value[1],
+						-self._value[2], self._value[3]), dtype=np.float64))
 
 	def inverse(self) -> 'Quaternion':
 		"""Return inverse of quaternion.
 		>>> q0 = random_quaternion()
 		>>> q1 = q0.inverse()
-		>>> numpy.allclose(quaternion_multiply(q0, q1), [0, 0, 0, 1])
+		>>> np.allclose(quaternion_multiply(q0, q1), [0, 0, 0, 1])
 		True
 		"""
-		return self.quaternion_conjugate() / numpy.dot(self._value, self._value)
+		return Quaternion(self.conjugate().value() / np.dot(self._value, self._value))
 
-	def normalize(self) -> 'Quaternion':
-		mag = math.sqrt(numpy.dot(self._value, self._value))
+	def normalize(self) -> None:
+		mag = math.sqrt(np.dot(self._value, self._value))
 		if mag < np.finfo.tiny:
 			return Quaternion.identity()
 		return Quaternion(self._value[0] / mag, self._value[1] / mag, self._value[2] / mag, self._value[3] / mag)
@@ -164,14 +164,15 @@ class Quaternion():
 		return self.__str__()
 	
 	def __mul__(self,other)->'Quaternion':
-		if isinstance(other, 'Quaternion'):
+		if isinstance(other, Quaternion):
 			x0,y0,z0,w0 = self._value[0], self._value[1], self._value[2], self._value[3]
 			x1,y1,z1,w1 = other.x, other.y, other.z, other.w
-			return numpy.array((
+			return Quaternion(np.array((
 			x1*w0 + y1*z0 - z1*y0 + w1*x0,
 			-x1*z0 + y1*w0 + z1*x0 + w1*y0,
 			x1*y0 - y1*x0 + z1*w0 + w1*z0,
-			-x1*x0 - y1*y0 - z1*z0 + w1*w0), dtype=numpy.float64)
+			-x1*x0 - y1*y0 - z1*z0 + w1*w0), dtype=np.float64))
+			
 		elif isinstance(other, Vector3):
 			x = rotation.x * 2.0
 			y = rotation.y * 2.0
