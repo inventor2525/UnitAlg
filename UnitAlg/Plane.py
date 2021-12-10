@@ -58,8 +58,19 @@ class Plane():
 		self._normal = normal
 
 	#----Functions----
-	def raycast(self,ray:Ray) -> Vector3:
-		raise NotImplementedError()
+	def raycast(self,ray:Ray) -> Tuple[bool, Vector3]:
+		denom = Vector3.dot(ray.direction,self.normal)
+		if denom == 0:
+			return False, Vector3(NAN,NAN,NAN)
+		else:
+			if denom < 0:
+				normal = -self.normal
+			else: normal = self.normal
+		p0 = Vector3(self.position - ray.origin)
+		t = Vector3.dot(self.normal, p0)/denom
+		intersection = ray.origin + ray.direction*t
+		return True, intersection
+
 		
 	@dispatch(Vector3)
 	def _reflect(self, direction:Vector3) -> Vector3:
