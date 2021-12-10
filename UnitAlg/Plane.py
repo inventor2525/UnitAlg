@@ -9,7 +9,8 @@ class Plane():
 		self.normal = normal
 	@dispatch(Vector3,Vector3,Vector3)
 	def __dispatch_init__(self, p1:Vector3, p2:Vector3, p3:Vector3) -> None:
-		raise NotImplementedError()
+		self.point = p1
+		self.normal = Vector3.cross((p2-p1).normalized, (p3-p1).normalized)
 	@dispatch((float,int), (float,int), (float,int))
 	def __dispatch_init__(self, x_coefficient:Union[float,int], y_coefficient:Union[float,int], z_offset:Union[float,int]) -> None:
 		'''#using ax + by + c = z method:'''
