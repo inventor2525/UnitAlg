@@ -54,6 +54,9 @@ class Plane():
 		self._normal = normal
 
 	#----Functions----
+	def raycast(self,ray:Ray) -> Vector3:
+		raise NotImplementedError()
+		
 	@dispatch(Vector3)
 	def _reflect(self, direction:Vector3) -> Vector3:
 		incoming_angle = Vector3.angle(direction,self.normal)
