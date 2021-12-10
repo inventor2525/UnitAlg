@@ -12,7 +12,11 @@ class Plane():
 		raise NotImplementedError()
 	@dispatch((float,int), (float,int), (float,int))
 	def __dispatch_init__(self, x_coefficient:Union[float,int], y_coefficient:Union[float,int], z_offset:Union[float,int]) -> None:
-		raise NotImplementedError()
+		'''#using ax + by + c = z method:'''
+		p1 = Vector3([0,0,z_offset])
+		p2 = Vector3([100,0, (x_coefficient*100 + z_offset)])
+		p3 = Vector3([0, 100, (y_coefficient*100 + z_offset)])
+		self.__dispatch_init__(p1, p2, p3)
 	
 	@overload
 	def __init__(self, point:Vector3, normal:Vector3) -> None:
