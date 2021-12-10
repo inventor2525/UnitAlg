@@ -1,4 +1,4 @@
-from typing import Union, overload
+from typing import Union, overload, Tuple
 from UnitAlg import Vector3, Quaternion, Ray
 from multipledispatch import dispatch
 
