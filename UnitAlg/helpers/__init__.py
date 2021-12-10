@@ -1,2 +1,2 @@
-from .classproperty import classproperty
+from .classproperty import classproperty, all_true
 from itertools import chain
