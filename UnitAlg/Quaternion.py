@@ -146,7 +146,7 @@ class Quaternion():
 		mag = math.sqrt(np.dot(self._value, self._value))
 		if mag < np.finfo.tiny:
 			self.value = np.array([0,0,0,1])
-		self.value = np.array(self._value[0] / mag, self._value[1] / mag, self._value[2] / mag, self._value[3] / mag)
+		self.value = np.array(self._value/mag)
 
 
 	#----Operators----
