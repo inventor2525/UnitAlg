@@ -68,7 +68,7 @@ class Plane():
 			return direction
 	@dispatch(Ray)
 	def _reflect(self, ray:Ray) -> Ray:
-		raise NotImplementedError()
+		return Ray(self.raycast(ray), self._reflect(ray.direction))
 	@overload
 	def reflect(self, direction:Vector3) -> Vector3: 
 		'''
