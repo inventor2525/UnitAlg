@@ -32,7 +32,7 @@ class Plane():
 		'''
 		...
 	@overload
-	def __init__(self, p1:Vector3, p2:Vector3, p3:Vector3) -> None:
+	def __init__(self, x_coefficient:Union[float,int], y_coefficient:Union[float,int], z_offset:Union[float,int]) -> None:
 		'''
 		Creates a plane with coefficients that describe it's equation.
 		
@@ -63,8 +63,7 @@ class Plane():
 		if denom > 0:
 			p0 = self.position - ray.origin
 			t = Vector3.dot(self.normal, p0)/denom
-			intersection = ray.origin + ray.direction*t
-			return t >= 0
+			return t >= 0, ray.origin + ray.direction*t
 		elif denom == 0:
 			return False, None
 		else:
@@ -72,8 +71,7 @@ class Plane():
 			denom = Vector3.dot(negNormal, ray.direction)
 			p0 = self.position - ray.origin
 			t = Vector3.dot(p0, negNormal)/denom
-			intersection = ray.origin + ray.direction * t
-			return t >= 0	
+			return t >= 0, ray.origin + ray.direction * t	
 
 	@dispatch(Vector3)
 	def _reflect(self, direction:Vector3) -> Vector3:
