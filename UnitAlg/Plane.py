@@ -4,12 +4,12 @@ from multipledispatch import dispatch
 
 class Plane():
 	@dispatch(Vector3,Vector3)
-	def __dispatch_init__(self, point:Vector3, normal:Vector3) -> None:
-		self.point = point
+	def __dispatch_init__(self, position:Vector3, normal:Vector3) -> None:
+		self.position = position
 		self.normal = normal
 	@dispatch(Vector3,Vector3,Vector3)
 	def __dispatch_init__(self, p1:Vector3, p2:Vector3, p3:Vector3) -> None:
-		self.point = p1
+		self.position = p1
 		self.normal = Vector3.cross((p2-p1).normalized, (p3-p1).normalized)
 	@dispatch((float,int), (float,int), (float,int))
 	def __dispatch_init__(self, x_coefficient:Union[float,int], y_coefficient:Union[float,int], z_offset:Union[float,int]) -> None:
@@ -20,7 +20,7 @@ class Plane():
 		self.__dispatch_init__(p1, p2, p3)
 	
 	@overload
-	def __init__(self, point:Vector3, normal:Vector3) -> None:
+	def __init__(self, position:Vector3, normal:Vector3) -> None:
 		'''
 		Creates a plane with a position and normal.
 		'''
@@ -44,11 +44,11 @@ class Plane():
 	
 	#----Main Properties----
 	@property
-	def point(self) -> Vector3:
-		return self._point
-	@point.setter
-	def point(self, point:Vector3) -> None:
-		self._point = point
+	def position(self) -> Vector3:
+		return self._position
+	@position.setter
+	def position(self, position:Vector3) -> None:
+		self._position = position
 
 	@property
 	def normal(self) -> Vector3:
@@ -61,7 +61,7 @@ class Plane():
 	def raycast(self,ray:Ray) -> Tuple[bool, Vector3]:
 		denom = Vector3.dot(ray.direction,self.normal)
 		if denom > 0:
-			p0 = self.point - ray.origin
+			p0 = self.position - ray.origin
 			t = Vector3.dot(self.normal, p0)/denom
 			intersection = ray.origin + ray.direction*t
 			return t >= 0
@@ -70,7 +70,7 @@ class Plane():
 		else:
 			negNormal = -self.normal
 			denom = Vector3.dot(negNormal, ray.direction)
-			p0 = self.point - ray.origin
+			p0 = self.position - ray.origin
 			t = Vector3.dot(p0, negNormal)/denom
 			intersection = ray.origin + ray.direction * t
 			return t >= 0	
@@ -96,13 +96,13 @@ class Plane():
 	@overload
 	def reflect(self, ray:Ray) -> Ray:
 		'''
-		Reflect ray off a plane, at an angle equal to incoming angle, and an origin at the intersection point. '''
+		Reflect ray off a plane, at an angle equal to incoming angle, and an origin at the intersection position. '''
 		...
 	def reflect(self,*args):
 		return self._reflect(*args)
 		
 	#----Operators-----
 	def __str__(self) -> str:
-		return str.format('origin:{0} normal:{1}',self.point, self.normal)
+		return str.format('origin:{0} normal:{1}',self.position, self.normal)
 	def __repr__(self) -> str:
 		return self.__str__()
