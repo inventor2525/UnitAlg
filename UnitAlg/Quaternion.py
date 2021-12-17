@@ -72,6 +72,9 @@ class Quaternion():
 		'''
 		q = Quaternion(*(axis.normalized._value*np.sin(angle/2)), np.cos(angle/2))
 		q.normalize
+		q._angle = angle
+		q._axis = axis
+		q._derived_updated = True
 		return q
 
 	#----Main Properties----
@@ -121,6 +124,7 @@ class Quaternion():
 		Calculates derived properties like angle and axis,
 		keeping them for performance of recal.
 		'''
+		#https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle/index.htm
 		if not self._derived_updated:
 			_w = self.w
 			if _w > 1: self.normalize()
