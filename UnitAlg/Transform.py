@@ -121,12 +121,9 @@ class Transform():
 		if isinstance(other, Transform):
 			return Transform(np.matmul( self._mat, other._mat) )
 		elif isinstance(other, Vector3):
-			v4 = np.array([*other._value, 1.])
+			v4 = np.array([*other._value, 0])
 			v4 = np.dot(v4, self._mat)
-			if np.abs(v4[3]) < epsilon:
-				return Vector3(np.inf, np.inf, np.inf)
-			else:
-				return Vector3(v4[:3]/v4[3])
+			return Vector3(v4[:3])
 		else:
 			raise ValueError("Transforms can only be multiplied by Vector3's and Transforms, not "+type(other))
 	def __rmul__(self, other:'Transform') -> 'Transform':
