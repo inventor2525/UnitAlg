@@ -70,7 +70,9 @@ class Quaternion():
 		'''
 		Use degrees for the angle
 		'''
-		raise NotImplementedError()
+		q = Quaternion(*(axis.normalized._value*np.sin(angle/2)), np.cos(angle/2))
+		q.normalize
+		return q
 
 	#----Main Properties----
 	@property

@@ -4,7 +4,7 @@ import numpy as np
 import numpy.linalg as LA
 import math
 
-from UnitAlg import Vector3, Quaternion, epsilon
+from UnitAlg import Vector3, Quaternion
 
 class Transform():
 	def __init__(self, mat=np.identity(4)):
