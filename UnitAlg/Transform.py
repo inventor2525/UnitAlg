@@ -94,7 +94,7 @@ class Transform():
 
 	@property
 	def inverse(self) -> 'Transform':
-		 return Transform(np.linalg.inv(self.mat))
+		 return Transform(LA.inv(self._mat))
 		 
 	#----Operators----
 	def __str__(self) -> str:
@@ -103,12 +103,9 @@ class Transform():
 		return self._mat.__repr__()
 
 	def __mul__(self, other:'Transform') -> 'Transform':
-		#return Transform(self._mat*other._mat.T)
-		return Transform.from_OCC(other.GTrsf*self.GTrsf)
-		
+		return Transform(np.matmul( self._mat, other._mat) )
 	def __rmul__(self, other:'Transform') -> 'Transform':
-		#return Transform(other._mat*self._mat.T)
-		return Transform.from_OCC(self.GTrsf*other.GTrsf)
+		return Transform(np.matmul( other._mat, self._mat) )
 
 	def __eq__(self,other) -> bool:
 		return all(self.mat == other.mat)
@@ -117,6 +114,17 @@ class Transform():
 		return any(self.mat != other.mat)
 
 if __name__ == '__main__':
+	print(Transform(np.array([
+		[1,0,0,0],
+		[0,2,0,0],
+		[0,0,1,0],
+		[0,0,0,1]
+	]))*Transform(np.array([
+		[1,0,0,1],
+		[0,1,0,2],
+		[0,0,1,3],
+		[0,0,0,1]
+	])))
 	t1 = Transform()
 	q1 = Quaternion.from_angle_axis(45,Vector3.up)
 	t1.rotation = q1
