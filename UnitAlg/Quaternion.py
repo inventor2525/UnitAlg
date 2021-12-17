@@ -178,7 +178,32 @@ class Quaternion():
 		#from rospy tf.transformations
 		return Quaternion(np.array((-self._value[0], -self._value[1],
 						-self._value[2], self._value[3]), dtype=np.float64))
-
+	def eulers(self) -> Tuple[float,float,float]:
+		'''
+		Calculates and returns the euler equivalent of this quaternion.
+		
+		Result in radians about x,y,z (in that order).
+		'''
+		_x, _y, _z, _w = self._value
+		test = _x*_y + _z*_w
+		near_point_5 = .5-epsilon
+		if test > near_point_5: #singularity at north pole
+			y_e = 2 * math.atan2(_x,_w)
+			z_e = math.pi/2
+			x_e = 0
+		elif test < -near_point_5: #singularity at south pole
+			y_e = -2 * math.atan2(_x,_w)
+			z_e = - math.pi/2
+			x_e = 0
+		else:
+			sqx = _x*_x
+			sqy = _y*_y
+			sqz = _z*_z
+			y_e = math.atan2(2*_y*_w-2*_x*_z , 1 - 2*sqy - 2*sqz)
+			z_e = math.asin(2*test)
+			x_e = math.atan2(2*_x*_w-2*_y*_z , 1 - 2*sqx - 2*sqz)
+		return x_e, y_e, z_e
+	
 	def inverse(self) -> 'Quaternion':
 		#from rospy tf.transformations
 		return Quaternion(self.conjugate()._value / np.dot(self._value, self._value))
