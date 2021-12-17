@@ -41,30 +41,42 @@ class Quaternion():
 		return Quaternion(0,0,0,1)
 
 	@staticmethod
-	def from_rotation_matrix(matrix:Union[np.ndarray, List[List[Union[float,int]]]]) -> 'Quaternion':
-		#from rospy tf.transformations
-		q = np.empty((4, ), dtype=np.float64)
-		M = np.array(matrix, dtype=np.float64, copy=False)[:4, :4]
-		t = np.trace(M)
-		if t > M[3, 3]:
-			q[3] = t
-			q[2] = M[1, 0] - M[0, 1]
-			q[1] = M[0, 2] - M[2, 0]
-			q[0] = M[2, 1] - M[1, 2]
+	def from_rotation_matrix(m:Union[np.ndarray, List[List[Union[float,int]]]]) -> 'Quaternion':
+		#http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
+		trace = m[0,0] + m[1,1] + m[2,2]
+		if trace > 0:
+			s = 0.5 / math.sqrt(trace+ 1)
+			return Quaternion([
+				(m[2,1] - m[1,2]) * s,
+				(m[0,2] - m[2,0]) * s,
+				(m[1,0] - m[0,1]) * s,
+				0.25 / s
+			])
+		elif m[0,0] > m[1,1] and m[0,0] > m[2,2]:
+			s = 2 * math.sqrt(1 + m[0,0] - m[1,1] - m[2,2])
+			return Quaternion([
+				0.25 * s,
+				(m[0,1] + m[1,0]) / s,
+				(m[0,2] + m[2,0]) / s,
+				(m[2,1] - m[1,2]) / s
+			])
+		elif m[1,1] > m[2,2]:
+			s = 2 * math.sqrt(1 + m[1,1] - m[0,0] - m[2,2])
+			return Quaternion([
+				(m[0,1] + m[1,0]) / s,
+				0.25 * s,
+				(m[1,2] + m[2,1]) / s,
+				(m[0,2] - m[2,0]) / s
+			])
 		else:
-			i, j, k = 0, 1, 2
-			if M[1, 1] > M[0, 0]:
-				i, j, k = 1, 2, 0
-			if M[2, 2] > M[i, i]:
-				i, j, k = 2, 0, 1
-			t = M[i, i] - (M[j, j] + M[k, k]) + M[3, 3]
-			q[i] = t
-			q[j] = M[i, j] + M[j, i]
-			q[k] = M[k, i] + M[i, k]
-			q[3] = M[k, j] - M[j, k]
-		q *= 0.5 / math.sqrt(t * M[3, 3])
-		return Quaternion(q)
-
+			s = 2 * math.sqrt(1 + m[2,2] - m[0,0] - m[1,1])
+			return Quaternion([
+				(m[0,2] + m[2,0]) / s,
+				(m[1,2] + m[2,1]) / s,
+				0.25 * s,
+				(m[1,0] - m[0,1]) / s
+			])
+			
 	@staticmethod
 	def from_angle_axis(angle:float, axis:Vector3) -> 'Quaternion':
 		'''
