@@ -41,8 +41,29 @@ class Quaternion():
 		return Quaternion(0,0,0,1)
 
 	@staticmethod
-	def from_rotation_matrix(mat:Union[np.ndarray, List[List[Union[float,int]]]]) -> 'Quaternion':
-		raise NotImplementedError()
+	def from_rotation_matrix(matrix:Union[np.ndarray, List[List[Union[float,int]]]]) -> 'Quaternion':
+		#from rospy tf.transformations
+		q = np.empty((4, ), dtype=np.float64)
+		M = np.array(matrix, dtype=np.float64, copy=False)[:4, :4]
+		t = np.trace(M)
+		if t > M[3, 3]:
+			q[3] = t
+			q[2] = M[1, 0] - M[0, 1]
+			q[1] = M[0, 2] - M[2, 0]
+			q[0] = M[2, 1] - M[1, 2]
+		else:
+			i, j, k = 0, 1, 2
+			if M[1, 1] > M[0, 0]:
+				i, j, k = 1, 2, 0
+			if M[2, 2] > M[i, i]:
+				i, j, k = 2, 0, 1
+			t = M[i, i] - (M[j, j] + M[k, k]) + M[3, 3]
+			q[i] = t
+			q[j] = M[i, j] + M[j, i]
+			q[k] = M[k, i] + M[i, k]
+			q[3] = M[k, j] - M[j, k]
+		q *= 0.5 / math.sqrt(t * M[3, 3])
+		return Quaternion(q)
 
 	@staticmethod
 	def from_angle_axis(angle:float, axis:Vector3) -> 'Quaternion':
@@ -124,29 +145,19 @@ class Quaternion():
 		return Quaternion.from_angle_axis(-(math.degrees(self.angle)), self.axis)
 
 	def conjugate(self) -> 'Quaternion':
-		"""Return conjugate of quaternion.
-		>>> q0 = random_quaternion()
-		>>> q1 = q0.conjugate()
-		>>> q1[3] == q0[3] and all(q1[:3] == -q0[:3])
-		True
-		"""
+		#from rospy tf.transformations
 		return Quaternion(np.array((-self._value[0], -self._value[1],
 						-self._value[2], self._value[3]), dtype=np.float64))
 
 	def inverse(self) -> 'Quaternion':
-		"""Return inverse of quaternion.
-		>>> q0 = random_quaternion()
-		>>> q1 = q0.inverse()
-		>>> np.allclose(quaternion_multiply(q0, q1), [0, 0, 0, 1])
-		True
-		"""
-		return Quaternion(self.conjugate().value() / np.dot(self._value, self._value))
+		#from rospy tf.transformations
+		return Quaternion(self.conjugate()._value / np.dot(self._value, self._value))
 
 	def normalize(self) -> None:
 		mag = math.sqrt(np.dot(self._value, self._value))
 		if mag < np.finfo.tiny:
 			self.value = np.array([0,0,0,1])
-		self.value = np.array(self._value/mag)
+		self.value = self._value/mag
 
 
 	#----Operators----
