@@ -173,7 +173,12 @@ class Quaternion():
 	def __repr__(self) -> str:
 		return self.__str__()
 	
-	def __mul__(self,other)->'Quaternion':
+	@overload
+	def __mul__(self,other:'Quaternion')->'Quaternion':...
+	@overload
+	def __mul__(self,other:Vector3)->Vector3:...
+
+	def __mul__(self,other):
 		if isinstance(other, Quaternion):
 			x0,y0,z0,w0 = self._value[0], self._value[1], self._value[2], self._value[3]
 			x1,y1,z1,w1 = other.x, other.y, other.z, other.w
@@ -196,9 +201,8 @@ class Quaternion():
 			wx = self._value[3] * x
 			wy = self._value[3] * y
 			wz = self._value[3] * z
-
-			res = Vector3()
-			res.x = (1.0 - (yy + zz)) * other.x + (xy - wz) * other.y + (xz + wy) * other.z
-			res.y = (xy + wz) * other.x + (1.0 - (xx + zz)) * other.y + (yz - wx) * other.z
-			res.z = (xz - wy) * other.x + (yz + wx) * other.y + (1.0 - (xx + yy)) * other.z
-			return res
+			
+			_x = (1.0 - (yy + zz)) * other.x + (xy - wz) * other.y + (xz + wy) * other.z
+			_y = (xy + wz) * other.x + (1.0 - (xx + zz)) * other.y + (yz - wx) * other.z
+			_z = (xz - wy) * other.x + (yz + wx) * other.y + (1.0 - (xx + yy)) * other.z
+			return Vector3(_x,_y,_z)
