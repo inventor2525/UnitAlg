@@ -79,15 +79,16 @@ class Quaternion():
 	
 	@staticmethod
 	def from_euler(x:float,y:float,z:float) -> 'Quaternion':
+		#https://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm
 		x /= 2
 		y /= 2
 		z /= 2
-		c1 = math.cos(x)
-		s1 = math.sin(x)
-		c2 = math.cos(y)
-		s2 = math.sin(y)
-		c3 = math.cos(z)
-		s3 = math.sin(z)
+		c1 = math.cos(y)
+		s1 = math.sin(y)
+		c2 = math.cos(z)
+		s2 = math.sin(z)
+		c3 = math.cos(x)
+		s3 = math.sin(x)
 		c1c2 = c1*c2
 		s1s2 = s1*s2
 		return Quaternion([
