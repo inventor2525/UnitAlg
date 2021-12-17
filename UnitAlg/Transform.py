@@ -136,7 +136,13 @@ class Transform():
 		return any(self.mat != other.mat)
 
 if __name__ == '__main__':
-	print(Transform.Rotate_about(Quaternion.from_euler(0,0,math.pi/2),Vector3(0,1,0))*Vector3(1,0,0))
+	print(Quaternion.from_euler(0,0,math.pi/2))
+	print(Vector3(0,1,0))
+	t = Transform.Rotate_about(Quaternion.from_euler(0,0,math.pi/2),Vector3(0,1,0))
+	print(t)
+	print(t*Vector3(1,0,0))
+	print('----')
+	
 	print(Transform(np.array([
 		[1,0,0,0],
 		[0,2,0,0],
