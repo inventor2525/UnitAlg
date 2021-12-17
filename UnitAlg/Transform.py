@@ -4,7 +4,7 @@ import numpy as np
 import numpy.linalg as LA
 import math
 
-from UnitAlg import Vector3, Quaternion
+from UnitAlg import Vector3, Quaternion, epsilon
 
 class Transform():
 	def __init__(self, mat=np.identity(4)):
@@ -87,10 +87,21 @@ class Transform():
 
 	@rotation.setter
 	def rotation(self, rotation:Quaternion):
-		raise NotImplementedError()
-		t = gp_Trsf()
-		t.SetRotation(rotation.occ_Quaternion)
-		self._mat[0:3,0:3] = np.array(Transform.Trsf_to_list( t ))[0:3, 0:3] * self.localScale.value
+		#from rospy tf.transformations
+		q = np.array(rotation._value, dtype=np.float64, copy=True)
+		nq = np.dot(q, q)
+		if nq < epsilon:
+			return np.identity(4)
+		q *= math.sqrt(2.0 / nq)
+		q = np.outer(q, q)
+		rot_mat = np.array((
+			(1.0-q[1, 1]-q[2, 2],     q[0, 1]-q[2, 3],     q[0, 2]+q[1, 3], 0.0),
+			(    q[0, 1]+q[2, 3], 1.0-q[0, 0]-q[2, 2],     q[1, 2]-q[0, 3], 0.0),
+			(    q[0, 2]-q[1, 3],     q[1, 2]+q[0, 3], 1.0-q[0, 0]-q[1, 1], 0.0),
+			(                0.0,                 0.0,                 0.0, 1.0)
+			), dtype=np.float64)
+			
+		self._mat[0:3,0:3] = rot_mat[0:3, 0:3] * self.localScale._value
 
 	@property
 	def inverse(self) -> 'Transform':
