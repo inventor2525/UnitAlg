@@ -76,7 +76,27 @@ class Quaternion():
 		q._axis = axis
 		q._derived_updated = True
 		return q
-
+	
+	@staticmethod
+	def from_euler(x:float,y:float,z:float) -> 'Quaternion':
+		x /= 2
+		y /= 2
+		z /= 2
+		c1 = math.cos(x)
+		s1 = math.sin(x)
+		c2 = math.cos(y)
+		s2 = math.sin(y)
+		c3 = math.cos(z)
+		s3 = math.sin(z)
+		c1c2 = c1*c2
+		s1s2 = s1*s2
+		return Quaternion([
+			c1c2*s3 + s1s2*c3,
+			s1*c2*c3 + c1*s2*s3,
+			c1*s2*c3 - s1*c2*s3,
+			c1c2*c3 - s1s2*s3
+		])
+	
 	#----Main Properties----
 	@property
 	def value(self) -> np.ndarray:
