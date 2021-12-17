@@ -122,12 +122,15 @@ class Quaternion():
 		keeping them for performance of recal.
 		'''
 		if not self._derived_updated:
-			raise NotImplementedError()
-			#TODO: do this without OCC:
-			quat = self.occ_Quaternion
-			axis = Vector3()
-			self._angle = quat.GetVectorAndAngle(axis)
-			self._axis = Vector3.from_other(axis)
+			_w = self.w
+			if _w > 1: self.normalize()
+			self._angle = 2 * math.acos(_w)
+			s = math.sqrt(1-_w*_w)
+			if s < epsilon:
+				self._axis = Vector3(*(self._value[0:3]))
+			else:
+				self._axis = Vector3(*(self._value[0:3]/s))
+			self._derived_updated = True
 	
 	@property
 	def angle(self) -> float:
