@@ -1,5 +1,5 @@
 from UnitAlg.helpers import *
-from typing import Union, List
+from typing import Union, List, overload
 import numpy as np
 import numpy.linalg as LA
 import math
@@ -112,9 +112,23 @@ class Transform():
 		return self._mat.__str__()
 	def __repr__(self) -> str:
 		return self._mat.__repr__()
-
-	def __mul__(self, other:'Transform') -> 'Transform':
-		return Transform(np.matmul( self._mat, other._mat) )
+	
+	@overload
+	def __mul__(self, other:'Transform') -> 'Transform': ...
+	@overload
+	def __mul__(self, other:Vector3) -> Vector3: ...
+	def __mul__(self, other):
+		if isinstance(other, Transform):
+			return Transform(np.matmul( self._mat, other._mat) )
+		elif isinstance(other, Vector3):
+			v4 = np.array([*other._value, 1.])
+			v4 = np.dot(v4, self._mat)
+			if np.abs(v4[3]) < epsilon:
+				return Vector3(np.inf, np.inf, np.inf)
+			else:
+				return Vector3(v4[:3]/v4[3])
+		else:
+			raise ValueError("Transforms can only be multiplied by Vector3's and Transforms, not "+type(other))
 	def __rmul__(self, other:'Transform') -> 'Transform':
 		return Transform(np.matmul( other._mat, self._mat) )
 
@@ -125,6 +139,7 @@ class Transform():
 		return any(self.mat != other.mat)
 
 if __name__ == '__main__':
+	print(Transform.Rotate_about(Quaternion.from_euler(0,0,math.pi/2),Vector3(0,1,0))*Vector3(1,0,0))
 	print(Transform(np.array([
 		[1,0,0,0],
 		[0,2,0,0],
