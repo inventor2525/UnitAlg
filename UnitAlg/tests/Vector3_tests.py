@@ -142,9 +142,39 @@ class Vector3Tests(unittest.TestCase):
 		
 	def test08_cross(self):
 		'''Checks Vector3.cross'''
-		self.assertTrue(False)
-	def test09_lerp(self):
-		'''Checks Vector3.normalize(d)'''
+		def cross(lhs:Vector3,rhs:Vector3):
+			return Vector3(
+				lhs.y * rhs.z - lhs.z * rhs.y,
+				lhs.z * rhs.x - lhs.x * rhs.z,
+				lhs.x * rhs.y - lhs.y * rhs.x)
+		v1 = Vector3(3,-1,7).normalized
+		v2 = Vector3(1,2,9).normalized
+		self.assertTrue(cross(v1,v2) == Vector3.cross(v1,v2))
+		
+		v1 = Vector3(0,0.02,8).normalized
+		v2 = Vector3(-10,0,0.001).normalized
+		self.assertTrue(cross(v1,v2) == Vector3.cross(v1,v2))
+		
+	def test09_angle(self):
+		'''Checks Vector3.angle'''
+		v1 = Vector3.up
+		v2 = Vector3.forward
+		self.assertTrue(isclose(Vector3.angle(v1,v2), math.pi/2))
+		
+		v1 = Vector3.up
+		v2 = Vector3.down
+		self.assertTrue(isclose(Vector3.angle(v1,v2), math.pi))
+		
+		v1 = Vector3.up
+		v2 = Vector3.up
+		self.assertTrue(isclose(Vector3.angle(v1,v2), 0))
+		
+		v1 = Vector3.back
+		v2 = Vector3.left
+		self.assertTrue(isclose(Vector3.angle(v1,v2), math.pi/2))
+		
+	def test11_lerp(self):
+		'''Checks Vector3.lerp'''
 		self.assertTrue(False)
 		
 if __name__ == 'main':
