@@ -124,7 +124,7 @@ class Vector3Tests(unittest.TestCase):
 			Vector3.dot(v1,v2),
 			v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]
 		))
-		
+	
 	def test07_equality(self):
 		'''
 		Checks that the Vector3 equality functions
@@ -172,10 +172,19 @@ class Vector3Tests(unittest.TestCase):
 		v1 = Vector3.back
 		v2 = Vector3.left
 		self.assertTrue(isclose(Vector3.angle(v1,v2), math.pi/2))
+	
+	def test10_iteration(self):
+		'''Checks Vector3 len, iteration, and get/set item.'''
+		self.assertTrue(False)
 		
 	def test11_lerp(self):
 		'''Checks Vector3.lerp'''
-		self.assertTrue(False)
+		def lerp(v1,v2,t):
+			return v1 + (v2-v1).normalized*t
+		t = 0.359
+		v1 = Vector3(3,8,-1)
+		v2 = Vector3(10,3,-12.4)
+		self.assertTrue(lerp(v1,v2,t) == Vector3.lerp(v1,v2,t))
 		
 if __name__ == 'main':
 	unittest.main()
