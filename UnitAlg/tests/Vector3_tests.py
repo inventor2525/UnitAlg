@@ -118,8 +118,8 @@ class Vector3Tests(unittest.TestCase):
 	
 	def test06_dot(self):
 		'''Checks Vector3.dot'''
-		v1 = Vector3([4,-6,7])
-		v2 = Vector3([-9,9,8])
+		v1 = Vector3([4,-6.2,7])
+		v2 = Vector3(-9,9,8.1)
 		self.assertTrue(isclose(
 			Vector3.dot(v1,v2),
 			v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]
