@@ -4,6 +4,10 @@ from UnitAlg import *
 import numpy as np
 from math import isclose
 
+
+def sq_mag(v:np.ndarray) -> float:
+	return v[0]*v[0] + v[1]*v[1] + v[2]*v[2]
+			
 class Vector3Tests(unittest.TestCase):
 	def test00_constructors(self):
 		'''
@@ -95,7 +99,23 @@ class Vector3Tests(unittest.TestCase):
 		
 	def test05_normalize(self):
 		'''Checks Vector3.normalize(d)'''
-		self.assertTrue(False)
+		v = Vector3(4,2,-1)
+		self.assertTrue(isclose(v.normalized.magnitude, 1))
+		n = np.array([4,2,-1])
+		m = math.sqrt(sq_mag(n))
+		N = n/m
+		self.assertTrue(
+			isclose(v.normalized.x, N[0]) and
+			isclose(v.normalized.y, N[1]) and
+			isclose(v.normalized.z, N[2])
+		)
+		v.normalize()
+		self.assertTrue(
+			isclose(v.x, N[0]) and
+			isclose(v.y, N[1]) and
+			isclose(v.z, N[2])
+		)
+		
 	def test06_cross(self):
 		'''Checks Vector3.cross'''
 		self.assertTrue(False)
