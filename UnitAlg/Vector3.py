@@ -76,7 +76,7 @@ class Vector3(Convertable):
 		return np.array(self._value)
 	@value.setter
 	def value(self, value : Union[np.array, List[float]]) -> None:
-		self._value = np.array(value)
+		self._value = np.array(value, dtype=np.float64)
 
 	@property
 	def x(self) -> float:

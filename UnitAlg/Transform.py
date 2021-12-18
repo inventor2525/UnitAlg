@@ -45,7 +45,7 @@ class Transform():
 		return np.array(self._mat)
 	@mat.setter
 	def mat(self, new_mat: Union[np.ndarray, List[List[float]]]):
-		self._mat = np.array(new_mat)
+		self._mat = np.array(new_mat, dtype=np.float64)
 
 	@property
 	def coefficients_2d(self) -> List[List[float]]:

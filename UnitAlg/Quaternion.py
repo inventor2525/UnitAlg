@@ -30,7 +30,7 @@ class Quaternion():
 					raise ValueError("invalid numpy array shape {}, expected shape (4,) or (1,4)",x_other.shape)
 			else:
 				self._value = Vector3._from(x_other)._value
-				self._derived_updated = False
+				self._derived_updated = False #TODO: look over init cause apparently I didnt finish editing this after copy paste
 		elif all_true((isinstance(v,(int, float)) for v in (x_other,y,z,w))):
 			self.value = [x_other,y,z,w]
 		else:
@@ -116,7 +116,7 @@ class Quaternion():
 		return np.array(self._value)
 	@value.setter
 	def value(self, value : Union[np.ndarray, List[float]]) -> None:
-		self._value = np.array(value)
+		self._value = np.array(value, dtype=np.float64)
 		self._derived_updated = False
 
 	@property
