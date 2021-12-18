@@ -180,9 +180,9 @@ class Vector3(Convertable):
 		return Vector3._from_np(np.divide(self.value, other))
 		
 	def __eq__(self,other:'Vector3') -> bool:
-		return all(self.value == other.value)
+		return all(np.isclose(self._value, other._value, rtol=1e-12, atol=1e-11))
 	def __ne__(self,other:'Vector3') -> bool:
-		return any(self.value != other.value)
+		return any(not np.isclose(v1,v2, rtol=1e-12, atol=1e-11) for v1,v2 in zip(self._value, other._value))
 		
 	def __getitem__(self, index:int)->float:
 		return self._value[index]
