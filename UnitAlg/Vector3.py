@@ -108,10 +108,12 @@ class Vector3(Convertable):
 		return newArr
 		
 	#----Functions----
+	@property
 	def sq_magnitude(self) -> float:
 		''' Returns squared length of this vector '''
 		return np.dot(self._value, self._value)
-		
+	
+	@property
 	def magnitude(self) -> float:
 		''' Returns the length of this vector '''
 		return np.linalg.norm(self.value)
@@ -121,7 +123,7 @@ class Vector3(Convertable):
 		Makes this vector have a magnitude of 1 with same direction as before
 		Note: this function will change the current vector.  Use normalized if change is undesired
 		'''
-		self.value = self.value / self.magnitude()
+		self.value = self.value / self.magnitude
 
 	@property
 	def normalized(self) -> 'Vector3':
@@ -129,12 +131,12 @@ class Vector3(Convertable):
 		Returns the unit vector for current vector
 		Note: this function does NOT affect the current vector.  Use normalize function if change is desired.
 		'''
-		return self / self.magnitude()
+		return self / self.magnitude
 
 	@staticmethod
 	def distance(vector_a:'Vector3', vector_b:'Vector3') -> float:
 		''' Returns the distance between two vectors (same as (a-b).magnitude) '''
-		return (vector_a - vector_b).magnitude()
+		return (vector_a - vector_b).magnitude
 	
 	@staticmethod 
 	def angle(from_v:'Vector3', to_v:'Vector3') -> float:
@@ -142,7 +144,7 @@ class Vector3(Convertable):
 		Returns the unsigned angle between 'fromV' and 'toV' in degrees.  
 		Angle is never greater than 180.  
 		'''
-		return math.degrees(math.acos(Vector3.dot(from_v,to_v)/(from_v.magnitude()*to_v.magnitude())))
+		return math.degrees(math.acos(Vector3.dot(from_v,to_v)/(from_v.magnitude*to_v.magnitude)))
 	
 	@staticmethod
 	def cross(vector_a:'Vector3',vector_b:'Vector3') -> 'Vector3':
