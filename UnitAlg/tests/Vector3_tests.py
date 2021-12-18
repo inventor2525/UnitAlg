@@ -1,6 +1,7 @@
 import math
 import unittest
 from UnitAlg import *
+import numpy as np
 
 class Vector3Tests(unittest.TestCase):
 	def test00_constructors(self):
@@ -8,10 +9,31 @@ class Vector3Tests(unittest.TestCase):
 		Tests that the constructors produce a Vector3 
 		correctly, and as a copy of any passed data.
 		'''
-		self.assertTrue(False)
+		v = Vector3(1,3.14,42)
+		self.assertTrue(v.x==1 and v.y==3.14 and v.z==42)
+		
+		_in = [-1,3,-5]
+		v = Vector3(_in)
+		_in[0] = 2
+		_in[1] += _in[2]
+		self.assertTrue(v.x==-1 and v.y==3 and v.z==-5)
+		
+		_in = np.array([99,98,97])
+		v = Vector3(_in)
+		_in[0] = 2
+		_in[1] += _in[2]
+		self.assertTrue(v.x==99 and v.y==98 and v.z==97)
+		
 	def test01_properties(self):
 		'''Makes sure the Vector3 properties work.'''
-		self.assertTrue(False)
+		v = Vector3.zero
+		v.x = 1
+		v.y = 3.14
+		v.z = 42
+		self.assertTrue(v.x==1)
+		self.assertTrue(v.y==3.14)
+		self.assertTrue(v.z==42)
+		
 	def test02_add_sub(self):
 		'''Checks adding and subtracting Vector3s'''
 		self.assertTrue(False)
