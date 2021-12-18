@@ -70,7 +70,31 @@ class Vector3Tests(unittest.TestCase):
 		
 	def test04_magnitude(self):
 		'''Checks Vector3.(sq)magnitude / distance'''
-		self.assertTrue(False)
+		def sq_mag(v:np.ndarray) -> float:
+			return v[0]*v[0] + v[1]*v[1] + v[2]*v[2]
+		v = Vector3.forward
+		self.assertTrue(isclose(v.sq_magnitude(),1))
+		v = Vector3.one
+		self.assertTrue(isclose(v.sq_magnitude(),3))
+		v = Vector3(0,0,0)
+		self.assertTrue(isclose(v.sq_magnitude(),0))
+		v = Vector3(1,2,3)
+		self.assertTrue(isclose(v.sq_magnitude(), sq_mag(v.value)))
+		v = Vector3([4,6,7])
+		self.assertTrue(isclose(v.sq_magnitude(), sq_mag(v._value)))
+		
+		v = Vector3(1,2,3)
+		self.assertTrue(isclose(v.magnitude(), math.sqrt(sq_mag(v.value)) ))
+		v = Vector3([4,6,7])
+		self.assertTrue(isclose(v.magnitude(), math.sqrt(sq_mag(v._value)) ))
+		
+		v1 = Vector3([4,-6,7])
+		v2 = Vector3([-9,9,8])
+		self.assertTrue(isclose(
+			Vector3.distance(v1,v2),
+			math.sqrt(sq_mag([4+9,-6-9,7-8]))
+		))
+		
 	def test05_normalize(self):
 		'''Checks Vector3.normalize(d)'''
 		self.assertTrue(False)
