@@ -157,12 +157,10 @@ class Vector3(Convertable):
 
 	@staticmethod
 	def lerp(vector_a:'Vector3', vector_b:'Vector3', factor:float) -> 'Vector3':
-		p1 = vector_a.value
-		p2 = vector_b.value
-		v = (p2-p1)
+		p1 = vector_a._value
+		v = (vector_b._value-p1)
 		d = np.linalg.norm(v)
-		v_norm = v/d
-		return Vector3._from_np(p1 + v_norm*d*factor)
+		return Vector3._from_np(p1 + v*(factor/d))
 
 	#----Operators----
 	def __add__(self,other:'Vector3') -> 'Vector3':
