@@ -47,9 +47,26 @@ class Vector3Tests(unittest.TestCase):
 		self.assertTrue(isclose(v.x,0) and isclose(v.y,1.2) and isclose(v.z,2))
 		v = Vector3(1,2,3)-Vector3(-1,-3,-1)
 		self.assertTrue(isclose(v.x,2) and isclose(v.y,5) and isclose(v.z,4))
+		
 	def test03_multiply_devide(self):
 		'''Checks multiplying and deviding Vector3s'''
-		self.assertTrue(False)
+		v = Vector3(1,-2.2,3)*1
+		self.assertTrue(isclose(v.x,1) and isclose(v.y,-2.2) and isclose(v.z,3))
+		v = Vector3(1,2,3)*0
+		self.assertTrue(isclose(v.x,0) and isclose(v.y,0) and isclose(v.z,0))
+		v = Vector3(1,2,3)*2
+		self.assertTrue(isclose(v.x,2) and isclose(v.y,4) and isclose(v.z,6))
+		v = Vector3(1,2.2,3)*2.3
+		self.assertTrue(isclose(v.x,2.3) and isclose(v.y,2.2*2.3) and isclose(v.z,3*2.3))
+		
+		v = Vector3(1,-2.2,3)/1
+		self.assertTrue(isclose(v.x,1) and isclose(v.y,-2.2) and isclose(v.z,3))
+		v = Vector3(1,-2,3)/0
+		self.assertTrue(math.isnan(v.x) and math.isnan(v.y) and math.isnan(v.z))
+		v = Vector3(1,2,3)/2
+		self.assertTrue(isclose(v.x,.5) and isclose(v.y,1) and isclose(v.z,1.5))
+		v = Vector3(1,2.2,3)/2.3
+		self.assertTrue(isclose(v.x,1/2.3) and isclose(v.y,2.2/2.3) and isclose(v.z,3/2.3))
 	def test04_cross(self):
 		'''Checks Vector3.cross'''
 		self.assertTrue(False)
