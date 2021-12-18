@@ -110,7 +110,7 @@ class Vector3(Convertable):
 	#----Functions----
 	def sq_magnitude(self) -> float:
 		''' Returns squared length of this vector '''
-		return np.linalg.norm(self.value)
+		return np.dot(self._value, self._value)
 		
 	def magnitude(self) -> float:
 		''' Returns the length of this vector '''
