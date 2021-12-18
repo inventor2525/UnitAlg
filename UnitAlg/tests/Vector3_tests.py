@@ -36,9 +36,19 @@ class Vector3Tests(unittest.TestCase):
 		v.x = 2
 		v.y = 3.14
 		v.z = 42
-		self.assertTrue(isclose(v.x,2))
-		self.assertTrue(isclose(v.y,3.14))
-		self.assertTrue(isclose(v.z,42))
+		self.assertTrue(isclose(v.x,2) and isclose(v.y,3.14) and isclose(v.z,42))
+		
+		_v = np.array([1,2,3])
+		v.value = _v
+		_v[0] = -3
+		_v[1] = -9
+		_v[2] = -7
+		self.assertTrue(isclose(v.x,1) and isclose(v.y,2) and isclose(v.z,3))
+		
+		v.x = 3.14
+		v.y = 6.37
+		v.z = -4.6
+		self.assertTrue(isclose(v.x,3.14) and isclose(v.y,6.37) and isclose(v.z,-4.6))
 		
 	def test02_add_sub(self):
 		'''Checks adding and subtracting Vector3s'''
