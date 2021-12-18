@@ -30,7 +30,30 @@ class QuaternionTests(unittest.TestCase):
 		
 	def test01_properties(self):
 		'''Makes sure the Quaternion properties work.'''
-		self.assertTrue(False)
+		q = Quaternion(-2,0,4,3)
+		self.assertTrue(isclose(q.x,-2) and isclose(q.y,0) and isclose(q.z,4) and isclose(q.w,3))
+		q.x = 2
+		q.y = 3.14
+		q.z = 42
+		q.w = 42.1
+		self.assertTrue(isclose(q.x,2))
+		self.assertTrue(isclose(q.y,3.14))
+		self.assertTrue(isclose(q.z,42))
+		self.assertTrue(isclose(q.w,42.1))
+		
+		_q = np.array([1,2,3,4])
+		q.value = _q
+		_q[0] = -3
+		_q[1] = -9
+		_q[2] = -7
+		self.assertTrue(isclose(q.x,1) and isclose(q.y,2) and isclose(q.z,3) and isclose(q.w,4))
+		
+		q.x = 3.14
+		q.y = 6.37
+		q.z = -4.6
+		q.w = 2.3
+		self.assertTrue(isclose(q.x,3.14) and isclose(q.y,6.37) and isclose(q.z,-4.6) and isclose(q.w,2.3))
+
 	def test02_multiply(self):
 		'''Quaternion multiply.'''
 		self.assertTrue(False)
