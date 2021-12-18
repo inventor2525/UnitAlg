@@ -175,7 +175,23 @@ class Vector3Tests(unittest.TestCase):
 	
 	def test10_iteration(self):
 		'''Checks Vector3 len, iteration, and get/set item.'''
-		self.assertTrue(False)
+		def test(v:Vector3):
+			self.assertTrue(len(v)==3)
+			
+			_v = [x for x in v]
+			self.assertTrue(
+				v.x == v[0] and _v[0] == v.x and
+				v.y == v[1] and _v[1] == v.y and
+				v.z == v[2] and _v[2] == v.z)
+			
+			v[0] = 3.14
+			v[1] = 42
+			v[2] = 7
+			self.assertTrue(v.x == 3.14 and v.y == 42 and v.z == 7)
+			
+		test(Vector3(np.array([3,8,-1])))
+		test(Vector3(4.2,0,1))
+		test(Vector3(0,0,1))
 		
 	def test11_lerp(self):
 		'''Checks Vector3.lerp'''
