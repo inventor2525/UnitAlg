@@ -38,7 +38,15 @@ class Vector3Tests(unittest.TestCase):
 		
 	def test02_add_sub(self):
 		'''Checks adding and subtracting Vector3s'''
-		self.assertTrue(False)
+		v = Vector3(1,2.2,3)+Vector3.one
+		self.assertTrue(isclose(v.x,2) and isclose(v.y,3.2) and isclose(v.z,4))
+		v = Vector3(1,2,3)+Vector3(-1,-3,-1)
+		self.assertTrue(isclose(v.x,0) and isclose(v.y,-1) and isclose(v.z,2))
+		
+		v = Vector3(1,2.2,3)-Vector3.one
+		self.assertTrue(isclose(v.x,0) and isclose(v.y,1.2) and isclose(v.z,2))
+		v = Vector3(1,2,3)-Vector3(-1,-3,-1)
+		self.assertTrue(isclose(v.x,2) and isclose(v.y,5) and isclose(v.z,4))
 	def test03_multiply_devide(self):
 		'''Checks multiplying and deviding Vector3s'''
 		self.assertTrue(False)
