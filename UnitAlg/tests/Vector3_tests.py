@@ -125,10 +125,25 @@ class Vector3Tests(unittest.TestCase):
 			v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]
 		))
 		
-	def test07_cross(self):
+	def test07_equality(self):
+		'''
+		Checks that the Vector3 equality functions
+		work and can handle very close numbers.
+		'''
+		v1 = Vector3([4,-6.2,7])
+		v2 = Vector3(v1._value)+Vector3(1e-12,1e-12,1e-12)
+		self.assertTrue(v1==v2)
+		self.assertFalse(v1!=v2)
+		
+		v1 = Vector3([4,-6.2,7])
+		v2 = Vector3(v1._value)+Vector3(1e-10,1e-10,1e-10)
+		self.assertTrue(v1!=v2)
+		self.assertFalse(v1==v2)
+		
+	def test08_cross(self):
 		'''Checks Vector3.cross'''
 		self.assertTrue(False)
-	def test08_lerp(self):
+	def test09_lerp(self):
 		'''Checks Vector3.normalize(d)'''
 		self.assertTrue(False)
 		
