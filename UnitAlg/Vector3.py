@@ -1,3 +1,4 @@
+from numpy.core.numeric import isclose
 from UnitAlg.Convertable import Convertable
 from numpy.lib.arraysetops import isin
 from UnitAlg.helpers.classproperty import all_true
@@ -172,6 +173,8 @@ class Vector3(Convertable):
 	def __mul__(self,other:float) -> 'Vector3':
 		return Vector3._from_np(self.value * other)
 	def __truediv__(self,other:float) -> 'Vector3':
+		if math.isclose(other,0.0):
+			return Vector3(math.nan, math.nan, math.nan)
 		return Vector3._from_np(np.divide(self.value, other))
 		
 	def __eq__(self,other:'Vector3') -> bool:
