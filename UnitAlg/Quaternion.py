@@ -222,7 +222,7 @@ class Quaternion():
 
 	def normalize(self) -> None:
 		mag = math.sqrt(np.dot(self._value, self._value))
-		if mag < np.finfo.tiny:
+		if mag < epsilon:
 			self.value = np.array([0,0,0,1])
 		self.value = self._value/mag
 
@@ -244,7 +244,6 @@ class Quaternion():
 	def __mul__(self,other:'Quaternion')->'Quaternion':...
 	@overload
 	def __mul__(self,other:Vector3)->Vector3:...
-
 	def __mul__(self,other):
 		if isinstance(other, Quaternion):
 			x0,y0,z0,w0 = self._value[0], self._value[1], self._value[2], self._value[3]
