@@ -196,7 +196,35 @@ class QuaternionTests(unittest.TestCase):
 		Checks creation of Quaternion by euler 
 		angles and that it can get them.
 		'''
-		self.assertTrue(False)
+		def test(x:float, y:float, z:float):
+			def equivalent(q1:Quaternion, q2:Quaternion):
+				self.assertTrue(
+					q1*Vector3.up == q2*Vector3.up and
+					q1*Vector3.forward == q2*Vector3.forward and
+					q1*Vector3.right == q2*Vector3.right
+				)
+			qx = Quaternion.from_angle_axis(x, Vector3(1,0,0))
+			qy = Quaternion.from_angle_axis(y, Vector3(0,1,0))
+			qz = Quaternion.from_angle_axis(z, Vector3(0,0,1))
+			
+			qE = Quaternion.from_euler(x,y,z)
+			equivalent(qx*qy*qz, qE)
+			
+			#test Quaternion.eulers(), ignoring double solutions:
+			equivalent(qE, Quaternion.from_euler(*qE.eulers()) )
+		test(0,0,0)
+		test(math.pi,0,0)
+		test(0,math.pi,0)
+		test(0,0,math.pi)
+		
+		test(math.pi/2,0,0)
+		test(0,math.pi/2,0)
+		test(0,0,math.pi/2)
+		
+		test(math.pi/2, math.pi/2, math.pi/2)
+		test(math.pi/2, math.pi/2, 0)
+		test(math.pi/2, 0,         math.pi/2)
+		test(0,         math.pi/2, math.pi/2)
 	def test09_rotation_matrix(self):
 		'''Tests quaternion from to rotation matrix.'''
 		self.assertTrue(False)
