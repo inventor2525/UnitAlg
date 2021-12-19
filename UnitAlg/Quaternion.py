@@ -201,13 +201,14 @@ class Quaternion(BaseVector):
 	def __mul__(self,other:Vector3)->Vector3:...
 	def __mul__(self,other):
 		if isinstance(other, Quaternion):
-			x0,y0,z0,w0 = self._value[0], self._value[1], self._value[2], self._value[3]
-			x1,y1,z1,w1 = other.x, other.y, other.z, other.w
-			return Quaternion(np.array((
-			x1*w0 + y1*z0 - z1*y0 + w1*x0,
-			-x1*z0 + y1*w0 + z1*x0 + w1*y0,
-			x1*y0 - y1*x0 + z1*w0 + w1*z0,
-			-x1*x0 - y1*y0 - z1*z0 + w1*w0), dtype=np.float64))
+			q1x,q1y,q1z,q1w = self._value
+			q2x,q2y,q2z,q2w = other._value
+			return Quaternion(
+				q1x*q2w + q1y*q2z - q1z*q2y + q1w*q2x,
+				-q1x*q2z + q1y*q2w + q1z*q2x + q1w*q2y,
+				q1x*q2y - q1y*q2x + q1z*q2w + q1w*q2z,
+				-q1x*q2x - q1y*q2y - q1z*q2z + q1w*q2w
+			)
 
 		elif isinstance(other, Vector3):
 			x = self._value[0] * 2.0
