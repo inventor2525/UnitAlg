@@ -9,6 +9,9 @@ import math
 
 T=TypeVar('T')
 class BaseVector(Convertable):
+	rtol=1e-12
+	atol=1e-11
+	
 	#----Main Properties----
 	@property
 	def value(self) -> np.ndarray:
@@ -73,9 +76,9 @@ class BaseVector(Convertable):
 		return type(self)(self._value / self.magnitude)
 	
 	def __eq__(self:T,other:T) -> bool:
-		return all(np.isclose(self._value, other._value, rtol=1e-12, atol=1e-11))
+		return all(np.isclose(self._value, other._value, rtol=self.rtol, atol=self.atol))
 	def __ne__(self:T,other:T) -> bool:
-		return any(not np.isclose(v1,v2, rtol=1e-12, atol=1e-11) for v1,v2 in zip(self._value, other._value))
+		return any(not np.isclose(v1,v2, rtol=self.rtol, atol=self.atol) for v1,v2 in zip(self._value, other._value))
 		
 	def __getitem__(self, index:int)->float:
 		return self._value[index]
