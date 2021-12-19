@@ -30,12 +30,12 @@ class Quaternion(BaseVector):
 				else:
 					raise ValueError("invalid numpy array shape {}, expected shape (4,) or (1,4)",x_other.shape)
 			else:
-				self._value = Vector3._from(x_other)._value
-				self._derived_updated = False #TODO: look over init cause apparently I didnt finish editing this after copy paste
+				self._value = Quaternion._from(x_other)._value
+				self._derived_updated = False
 		elif all_true((isinstance(v,(int, float)) for v in (x_other,y,z,w))):
 			self.value = [x_other,y,z,w]
 		else:
-			raise ValueError("init can only take 3 real numbers, or 1 list numpy array or some type with a conversion function specified in from_conversions and nothing else.")
+			raise ValueError("init can only take 4 real numbers, or 1 list numpy array or some type with a conversion function specified in from_conversions and nothing else.")
 				
 	@classproperty
 	def identity() -> 'Quaternion':
