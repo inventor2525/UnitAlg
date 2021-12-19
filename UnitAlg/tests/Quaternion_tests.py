@@ -53,7 +53,7 @@ class QuaternionTests(unittest.TestCase):
 		q.z = -4.6
 		q.w = 2.3
 		self.assertTrue(isclose(q.x,3.14) and isclose(q.y,6.37) and isclose(q.z,-4.6) and isclose(q.w,2.3))
-
+	
 	def test02_equality(self):
 		'''Checks Quaternion (non) equality.'''
 		q1 = Quaternion([4,-6.2,7,1])
@@ -65,9 +65,29 @@ class QuaternionTests(unittest.TestCase):
 		q2 = Quaternion(q1._value+np.array([1e-10,1e-10,1e-10,1e-10]))
 		self.assertTrue(q1!=q2)
 		self.assertFalse(q1==q2)
+		
 	def test03_normalize(self):
 		'''Checks Quaternion.normalize.'''
-		self.assertTrue(False)
+		q = Quaternion(4,2,-1,3)
+		self.assertTrue(isclose(q.normalized.magnitude, 1))
+		n = np.array([1,22,-3,7])
+		q = Quaternion(n)
+		m = math.sqrt(sq_mag(n))
+		N = n/m
+		self.assertTrue(
+			isclose(q.normalized.x, N[0]) and
+			isclose(q.normalized.y, N[1]) and
+			isclose(q.normalized.z, N[2]) and
+			isclose(q.normalized.w, N[3])
+		)
+		q.normalize()
+		self.assertTrue(
+			isclose(q.x, N[0]) and
+			isclose(q.y, N[1]) and
+			isclose(q.z, N[2]) and
+			isclose(q.w, N[3])
+		)
+		
 	def test04_angle_axis(self):
 		'''
 		Checks creation of Quaternion by angle 
