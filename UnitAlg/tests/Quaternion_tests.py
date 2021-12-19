@@ -175,7 +175,10 @@ class QuaternionTests(unittest.TestCase):
 		Ensures Quaternion.identity is an 
 		identity, per Quaternion.multiply.
 		'''
-		self.assertTrue(False)
+		q = Quaternion.from_angle_axis(math.pi/2, Vector3(3,-7,2).normalized)
+		self.assertTrue(q*Quaternion.identity == q)
+		self.assertTrue(Quaternion.identity*q == q)
+		
 	def test07_inverse(self):
 		'''Checks Quaternion.inverse.'''
 		self.assertTrue(False)
