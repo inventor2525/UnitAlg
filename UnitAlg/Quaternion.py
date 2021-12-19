@@ -153,13 +153,15 @@ class Quaternion(BaseVector):
 		self._ensure_derived()
 		return self.angle, self._axis
 
-	def inverted(self) -> 'Quaternion':
-		return Quaternion.from_angle_axis(-(math.degrees(self.angle)), self.axis)
-
 	def conjugate(self) -> 'Quaternion':
 		#from rospy tf.transformations
 		return Quaternion(np.array((-self._value[0], -self._value[1],
 						-self._value[2], self._value[3]), dtype=np.float64))
+	@property
+	def inverse(self) -> 'Quaternion':
+		#from rospy tf.transformations
+		return Quaternion(self.conjugate()._value / np.dot(self._value, self._value))
+
 	def eulers(self) -> Tuple[float,float,float]:
 		'''
 		Calculates and returns the euler equivalent of this quaternion.
@@ -185,16 +187,6 @@ class Quaternion(BaseVector):
 			z_e = math.asin(2*test)
 			x_e = math.atan2(2*_x*_w-2*_y*_z , 1 - 2*sqx - 2*sqz)
 		return x_e, y_e, z_e
-	
-	def inverse(self) -> 'Quaternion':
-		#from rospy tf.transformations
-		return Quaternion(self.conjugate()._value / np.dot(self._value, self._value))
-
-	def normalize(self) -> None:
-		mag = math.sqrt(np.dot(self._value, self._value))
-		if mag < epsilon:
-			self.value = np.array([0,0,0,1])
-		self.value = self._value/mag
 
 	#----Operators----
 	def __str__(self) -> str:
