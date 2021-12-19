@@ -1,3 +1,4 @@
+from UnitAlg.BaseVector import BaseVector
 from numpy.core.numeric import isclose
 from UnitAlg.Convertable import Convertable
 from numpy.lib.arraysetops import isin
@@ -7,7 +8,7 @@ from typing import Any, Iterator, Tuple, Type, Union, List, overload
 import numpy as np
 import math
 
-class Vector3(Convertable):
+class Vector3(BaseVector):
 	to_conversions = {}
 	from_conversions = {}
 	
@@ -70,69 +71,8 @@ class Vector3(Convertable):
 	@classproperty
 	def zero() -> 'Vector3':
 		return Vector3(0,0,0)
-		
-	#----Main Properties----
-	@property
-	def value(self) -> np.ndarray:
-		return np.array(self._value)
-	@value.setter
-	def value(self, value : Union[np.array, List[float]]) -> None:
-		self._value = np.array(value, dtype=np.float64)
-
-	@property
-	def x(self) -> float:
-		return float(self._value[0])
-	@x.setter
-	def x(self, x:float) -> None:
-		self._value[0] = x
-
-	@property
-	def y(self) -> float:
-		return float(self._value[1])
-	@y.setter
-	def y(self, y:float) -> None:
-		self._value[1] = y
 	
-	@property
-	def z(self) -> float:
-		return float(self._value[2])
-	@z.setter
-	def z(self, z:float) -> None:
-		self._value[2] = z
-	
-	#----Casting----
-	@staticmethod
-	def _from_np(value: np.ndarray) -> 'Vector3':
-		newArr = Vector3.__new__(Vector3)
-		newArr._value = value
-		return newArr
-		
 	#----Functions----
-	@property
-	def sq_magnitude(self) -> float:
-		''' Returns squared length of this vector '''
-		return np.dot(self._value, self._value)
-	
-	@property
-	def magnitude(self) -> float:
-		''' Returns the length of this vector '''
-		return np.linalg.norm(self.value)
-
-	def normalize(self) -> None:
-		'''
-		Makes this vector have a magnitude of 1 with same direction as before
-		Note: this function will change the current vector.  Use normalized if change is undesired
-		'''
-		self.value = self.value / self.magnitude
-
-	@property
-	def normalized(self) -> 'Vector3':
-		'''
-		Returns the unit vector for current vector
-		Note: this function does NOT affect the current vector.  Use normalize function if change is desired.
-		'''
-		return self / self.magnitude
-
 	@staticmethod
 	def distance(vector_a:'Vector3', vector_b:'Vector3') -> float:
 		''' Returns the distance between two vectors (same as (a-b).magnitude) '''
@@ -176,24 +116,6 @@ class Vector3(Convertable):
 		if math.isclose(other,0.0):
 			return Vector3(math.nan, math.nan, math.nan)
 		return Vector3._from_np(np.divide(self.value, other))
-		
-	def __eq__(self,other:'Vector3') -> bool:
-		return all(np.isclose(self._value, other._value, rtol=1e-12, atol=1e-11))
-	def __ne__(self,other:'Vector3') -> bool:
-		return any(not np.isclose(v1,v2, rtol=1e-12, atol=1e-11) for v1,v2 in zip(self._value, other._value))
-		
-	def __getitem__(self, index:int)->float:
-		return self._value[index]
-	def __setitem__(self,index:int,value:float) -> None:
-		self._value[index] = value
-		
-	def __iter__(self) -> Iterator[float]:
-		return self._value.__iter__()
-	def __len__(self) -> int:
-		return 3
-		
-	def __hash__(self) -> int:
-		return hash((self.x,self.y,self.z))
 		
 	def __str__(self) -> str:
 		return str.format('({0}, {1}, {2})',*self._value)

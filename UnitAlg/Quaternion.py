@@ -1,3 +1,4 @@
+from UnitAlg.BaseVector import BaseVector
 from UnitAlg.helpers import *
 from typing import Any, Union, List, Tuple, overload
 import numpy as np
@@ -6,7 +7,7 @@ from multipledispatch import dispatch
 
 from UnitAlg import Vector3
 
-class Quaternion():
+class Quaternion(BaseVector):
 	@overload
 	def __init__(self, x:Union[float,int], y:Union[float,int], z:Union[float,int], w:Union[float,int]) -> None: ...
 	@overload
@@ -112,38 +113,6 @@ class Quaternion():
 	
 	#----Main Properties----
 	@property
-	def value(self) -> np.ndarray:
-		return np.array(self._value)
-	@value.setter
-	def value(self, value : Union[np.ndarray, List[float]]) -> None:
-		self._value = np.array(value, dtype=np.float64)
-		self._derived_updated = False
-
-	@property
-	def x(self) -> float:
-		return self._value[0]
-	@x.setter
-	def x(self, x:float) -> None:
-		self._value[0] = x
-		self._derived_updated = False
-
-	@property
-	def y(self) -> float:
-		return self._value[1]
-	@y.setter
-	def y(self, y:float) -> None:
-		self._value[1] = y
-		self._derived_updated = False
-	
-	@property
-	def z(self) -> float:
-		return self._value[2]
-	@z.setter
-	def z(self, z:float) -> None:
-		self._value[2] = z
-		self._derived_updated = False
-	
-	@property
 	def w(self) -> float:
 		return self._value[3]
 	@w.setter
@@ -226,14 +195,7 @@ class Quaternion():
 			self.value = np.array([0,0,0,1])
 		self.value = self._value/mag
 
-
 	#----Operators----
-	def __eq__(self,other) -> bool:
-		return all(np.isclose(self._value, other._value, rtol=1e-12, atol=1e-11))
-
-	def __ne__(self,other) -> bool:
-		return any(not np.isclose(v1,v2, rtol=1e-12, atol=1e-11) for v1,v2 in zip(self._value, other._value))
-	
 	def __str__(self) -> str:
 		return str.format('angle:{0} axis:({1},{2},{3}) Quaternion:({4},{5},{6},{7})',math.degrees(self.angle),*self.axis.value,*self._value)
 	
