@@ -54,17 +54,9 @@ class QuaternionTests(unittest.TestCase):
 		q.w = 2.3
 		self.assertTrue(isclose(q.x,3.14) and isclose(q.y,6.37) and isclose(q.z,-4.6) and isclose(q.w,2.3))
 
-	def test02_equality(self):
-		'''Checks Quaternion (non) equality.'''
-		q1 = Quaternion([4,-6.2,7,1])
-		q2 = Quaternion(q1._value+np.array([1e-12,1e-12,1e-12,1e-12]))
-		self.assertTrue(q1==q2)
-		self.assertFalse(q1!=q2)
-		
-		q1 = Quaternion([4,-6.2,7,1])
-		q2 = Quaternion(q1._value+np.array([1e-10,1e-10,1e-10,1e-10]))
-		self.assertTrue(q1!=q2)
-		self.assertFalse(q1==q2)
+	def test02_multiply(self):
+		'''Quaternion multiply.'''
+		self.assertTrue(False)
 	def test03_normalize(self):
 		'''Checks Quaternion.normalize.'''
 		self.assertTrue(False)
@@ -74,15 +66,26 @@ class QuaternionTests(unittest.TestCase):
 		axis and that it can get them too.
 		'''
 		self.assertTrue(False)
-	def test05_inverse(self):
+	def test05_multiply(self):
+		'''Quaternion multiply.'''
+		self.assertTrue(False)
+	def test06_identity(self):
+		'''
+		Ensures Quaternion.identity is an 
+		identity, per Quaternion.multiply.
+		'''
+		self.assertTrue(False)
+	def test07_inverse(self):
 		'''Checks Quaternion.inverse.'''
 		self.assertTrue(False)
-	def test06_euler(self):
+	def test08_euler(self):
 		'''
 		Checks creation of Quaternion by euler 
 		angles and that it can get them.
 		'''
 		self.assertTrue(False)
-		
+	def test09_rotation_matrix(self):
+		'''Tests quaternion from to rotation matrix.'''
+		self.assertTrue(False)
 if __name__ == 'main':
 	unittest.main()
