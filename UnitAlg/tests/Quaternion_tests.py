@@ -146,7 +146,30 @@ class QuaternionTests(unittest.TestCase):
 		
 	def test05_multiply(self):
 		'''Quaternion multiply.'''
-		self.assertTrue(False)
+		def mul(q1:Quaternion, q2:Quaternion):
+				#https://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
+				x =  q1.x * q2.w + q1.y * q2.z - q1.z * q2.y + q1.w * q2.x
+				y = -q1.x * q2.z + q1.y * q2.w + q1.z * q2.x + q1.w * q2.y
+				z =  q1.x * q2.y - q1.y * q2.x + q1.z * q2.w + q1.w * q2.z
+				w = -q1.x * q2.x - q1.y * q2.y - q1.z * q2.z + q1.w * q2.w
+				return x,y,z,w
+				
+		def test(q1:Quaternion, q2:Quaternion):
+			self.assertTrue( q1*q2 == Quaternion(mul(q1,q2)))
+			self.assertTrue( q2*q1 == Quaternion(mul(q2,q1)))
+			if q1 != Quaternion.identity and q2 != Quaternion.identity:
+				self.assertTrue( q1*q2 != q2*q1)
+		
+		test(
+			Quaternion.from_angle_axis(math.pi/2, Vector3(1,0,0)),
+			Quaternion.from_angle_axis(math.pi/2, Vector3(0,1,0))
+		)
+		
+		test(
+			Quaternion.from_angle_axis(math.pi/2, Vector3(.3,7,2).normalized),
+			Quaternion.from_angle_axis(math.pi/2, Vector3(4,2,-9).normalized)
+		)
+		
 	def test06_identity(self):
 		'''
 		Ensures Quaternion.identity is an 
