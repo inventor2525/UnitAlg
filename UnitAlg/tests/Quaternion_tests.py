@@ -93,7 +93,65 @@ class QuaternionTests(unittest.TestCase):
 		Checks creation of Quaternion by angle 
 		axis and that it can get them too.
 		'''
-		self.assertTrue(False)
+		#https://www.energid.com/resources/orientation-calculator
+		
+		Quaternion.rtol = 1e-10
+		Quaternion.atol = 1e-6
+		self.assertTrue(
+			Quaternion.from_angle_axis(0,Vector3(1,0,0)) == 
+			Quaternion(0, 0, 0, 1)
+		)
+		self.assertTrue(
+			Quaternion.from_angle_axis(math.pi,Vector3(1,0,0)) == 
+			Quaternion(1, 0, 0, 0)
+		)
+		self.assertTrue(
+			Quaternion.from_angle_axis(math.pi,Vector3(0,1,0)) == 
+			Quaternion(0, 1, 0, 0)
+		)
+		self.assertTrue(
+			Quaternion.from_angle_axis(math.pi,Vector3(0,0,1)) == 
+			Quaternion(0, 0, 1, 0)
+		)
+		
+		_707 = (0.7071070192004544 + 0.7071065431725605)/2
+		self.assertTrue(
+			Quaternion.from_angle_axis(math.pi/2,Vector3(1,0,0)) == 
+			Quaternion(_707, 0, 0, _707)
+		)
+		self.assertTrue(
+			Quaternion.from_angle_axis(math.pi/2,Vector3(0,1,0)) == 
+			Quaternion(0, _707, 0, _707)
+		)
+		self.assertTrue(
+			Quaternion.from_angle_axis(math.pi/2,Vector3(0,0,1)) == 
+			Quaternion(0, 0, _707, _707)
+		)
+		
+		self.assertTrue(
+			Quaternion.from_angle_axis(-math.pi/2,Vector3(1,0,0)) == 
+			Quaternion(-_707, 0, 0, _707)
+		)
+		self.assertTrue(
+			Quaternion.from_angle_axis(-math.pi/2,Vector3(0,1,0)) == 
+			Quaternion(0, -_707, 0, _707)
+		)
+		self.assertTrue(
+			Quaternion.from_angle_axis(-math.pi/2,Vector3(0,0,1)) == 
+			Quaternion(0, 0, -_707, _707)
+		)
+		
+		_408 = 0.40824842788125626
+		self.assertTrue(
+			Quaternion.from_angle_axis(math.pi/2, Vector3(1,1,1).normalized) == 
+			Quaternion(_408, _408, _408, _707)
+		)
+		
+		self.assertTrue(
+			Quaternion.from_angle_axis(-math.pi/2, Vector3(-1,1,1).normalized) == 
+			Quaternion(_408, -_408, -_408, _707)
+		)
+		
 	def test05_multiply(self):
 		'''Quaternion multiply.'''
 		self.assertTrue(False)
