@@ -169,6 +169,7 @@ class QuaternionTests(unittest.TestCase):
 			Quaternion.from_angle_axis(math.pi/2, Vector3(.3,7,2).normalized),
 			Quaternion.from_angle_axis(math.pi/2, Vector3(4,2,-9).normalized)
 		)
+		#TODO: test quaternion * Vector3
 		
 	def test06_identity(self):
 		'''
@@ -225,6 +226,8 @@ class QuaternionTests(unittest.TestCase):
 		test(math.pi/2, math.pi/2, 0)
 		test(math.pi/2, 0,         math.pi/2)
 		test(0,         math.pi/2, math.pi/2)
+		#TODO: figure out eulers
+		
 	def test09_rotation_matrix(self):
 		'''Tests quaternion from to rotation matrix.'''
 		self.assertTrue(False)
