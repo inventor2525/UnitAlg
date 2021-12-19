@@ -197,19 +197,21 @@ class QuaternionTests(unittest.TestCase):
 		Checks creation of Quaternion by euler 
 		angles and that it can get them.
 		'''
-		def test(x:float, y:float, z:float):
+		def test(x:float, y:float, z:float, should_compare_to_angle_axis=True):
 			def equivalent(q1:Quaternion, q2:Quaternion):
+				
 				self.assertTrue(
 					q1*Vector3.up == q2*Vector3.up and
 					q1*Vector3.forward == q2*Vector3.forward and
 					q1*Vector3.right == q2*Vector3.right
 				)
-			qx = Quaternion.from_angle_axis(x, Vector3(1,0,0))
-			qy = Quaternion.from_angle_axis(y, Vector3(0,1,0))
-			qz = Quaternion.from_angle_axis(z, Vector3(0,0,1))
-			
 			qE = Quaternion.from_euler(x,y,z)
-			equivalent(qx*qy*qz, qE)
+			if should_compare_to_angle_axis:
+				qx = Quaternion.from_angle_axis(x, Vector3(1,0,0))
+				qy = Quaternion.from_angle_axis(y, Vector3(0,1,0))
+				qz = Quaternion.from_angle_axis(z, Vector3(0,0,1))
+				
+				equivalent(qx*qy*qz, qE)
 			
 			#test Quaternion.eulers(), ignoring double solutions:
 			equivalent(qE, Quaternion.from_euler(*qE.eulers()) )
@@ -222,11 +224,42 @@ class QuaternionTests(unittest.TestCase):
 		test(0,math.pi/2,0)
 		test(0,0,math.pi/2)
 		
-		test(math.pi/2, math.pi/2, math.pi/2)
-		test(math.pi/2, math.pi/2, 0)
-		test(math.pi/2, 0,         math.pi/2)
-		test(0,         math.pi/2, math.pi/2)
-		#TODO: figure out eulers
+		test(-math.pi/2,0,0)
+		test(0,-math.pi/2,0)
+		test(0,0,-math.pi/2)
+		
+		test(math.pi/2, math.pi/2, math.pi/2, False)
+		test(math.pi/2, math.pi/2, 0,         False)
+		test(math.pi/2, 0,         math.pi/2, False)
+		test(0,         math.pi/2, math.pi/2, False)
+		
+		test(-math.pi/2, math.pi/2, math.pi/2, False)
+		test(-math.pi/2, math.pi/2, 0,         False)
+		test(-math.pi/2, 0,         math.pi/2, False)
+		
+		test(math.pi/2, -math.pi/2, math.pi/2, False)
+		test(math.pi/2, -math.pi/2, 0,         False)
+		test(0,         -math.pi/2, math.pi/2, False)
+		
+		test(math.pi/2, math.pi/2, -math.pi/2, False)
+		test(math.pi/2, 0,         -math.pi/2, False)
+		test(0,         math.pi/2, -math.pi/2, False)
+		
+		test(-math.pi/2, -math.pi/2, math.pi/2, False)
+		test(-math.pi/2, -math.pi/2, 0,         False)
+		
+		test(-math.pi/2, math.pi/2, -math.pi/2, False)
+		test(-math.pi/2, 0,         -math.pi/2, False)
+		
+		test(math.pi/2, -math.pi/2, -math.pi/2, False)
+		test(0,         -math.pi/2, -math.pi/2, False)
+		
+		test(-math.pi/2, -math.pi/2, -math.pi/2, False)
+		
+		test(math.pi, math.pi, math.pi, False)
+		test(math.pi, math.pi, 0,         False)
+		test(math.pi, 0,         math.pi, False)
+		test(0,         math.pi, math.pi, False)
 		
 	def test09_rotation_matrix(self):
 		'''Tests quaternion from to rotation matrix.'''
