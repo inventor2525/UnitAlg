@@ -69,7 +69,7 @@ class BaseVector(Convertable):
 		Returns the unit vector for current vector
 		Note: this function does NOT affect the current vector.  Use normalize function if change is desired.
 		'''
-		return self / self.magnitude
+		return type(self)(self._value / self.magnitude)
 	
 	def __eq__(self:T,other:T) -> bool:
 		return all(np.isclose(self._value, other._value, rtol=1e-12, atol=1e-11))
