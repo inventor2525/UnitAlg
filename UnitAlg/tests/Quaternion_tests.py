@@ -181,7 +181,16 @@ class QuaternionTests(unittest.TestCase):
 		
 	def test07_inverse(self):
 		'''Checks Quaternion.inverse.'''
-		self.assertTrue(False)
+		def test(q:Quaternion):
+			self.assertTrue(q.inverse * q == Quaternion.identity)
+			self.assertTrue(q * q.inverse == Quaternion.identity)
+			
+		test( Quaternion.from_angle_axis(math.pi/2, Vector3(3,-7,2).normalized) )
+		test( Quaternion.from_angle_axis(math.pi/2, Vector3(2,1,-6).normalized) )
+		test( Quaternion.from_angle_axis(math.pi/2, Vector3(1,0,0)) )
+		test( Quaternion.from_angle_axis(0, Vector3(1,0,0)) )
+		test( Quaternion.from_angle_axis(-math.pi, Vector3(0,0,1)) )
+		
 	def test08_euler(self):
 		'''
 		Checks creation of Quaternion by euler 
