@@ -116,6 +116,9 @@ class Vector3(BaseVector):
 		if math.isclose(other,0.0):
 			return Vector3(math.nan, math.nan, math.nan)
 		return Vector3._from_np(np.divide(self.value, other))
+	
+	def __neg__(self) -> 'Vector3':
+		return Vector3(-self._value)
 		
 	def __str__(self) -> str:
 		return str.format('({0}, {1}, {2})',*self._value)
