@@ -62,6 +62,7 @@ class BaseVector(Convertable):
 		Note: this function will change the current vector.  Use normalized if change is undesired
 		'''
 		self.value = self.value / self.magnitude
+		#TODO: handle 0 magnitude through a abstract method in both normalize functions
 
 	@property
 	def normalized(self:T) -> T:
