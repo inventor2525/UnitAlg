@@ -16,6 +16,7 @@ class Quaternion(BaseVector):
 	def __init__(self, arr:Any) -> None: ... 
 	
 	def __init__(self, x_other,y=None,z=None,w=None) -> None:
+		self._derived_updated = False
 		if y is None:
 			if isinstance(x_other, (list, tuple)):
 				if len(x_other) == 4:
@@ -31,7 +32,6 @@ class Quaternion(BaseVector):
 					raise ValueError("invalid numpy array shape {}, expected shape (4,) or (1,4)",x_other.shape)
 			else:
 				self._value = Quaternion._from(x_other)._value
-				self._derived_updated = False
 		elif all_true((isinstance(v,(int, float)) for v in (x_other,y,z,w))):
 			self.value = [x_other,y,z,w]
 		else:
@@ -135,7 +135,7 @@ class Quaternion(BaseVector):
 			if s < epsilon:
 				self._axis = Vector3(*(self._value[0:3]))
 			else:
-				self._axis = Vector3(*(self._value[0:3]/s))
+				self._axis = Vector3(*(self._value[0:3]))/s
 			self._derived_updated = True
 	
 	@property
