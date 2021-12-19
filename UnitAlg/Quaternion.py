@@ -197,7 +197,7 @@ class Quaternion(BaseVector):
 
 	#----Operators----
 	def __str__(self) -> str:
-		return str.format('angle:{0} axis:({1},{2},{3}) Quaternion:({4},{5},{6},{7})',math.degrees(self.angle),*self.axis.value,*self._value)
+		return str.format('angle:{0} axis:{1} Quaternion:({2},{3},{4},{5})',math.degrees(self.angle),self.axis,*self._value)
 	
 	def __repr__(self) -> str:
 		return self.__str__()
