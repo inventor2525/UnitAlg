@@ -150,6 +150,7 @@ class Quaternion(BaseVector):
 
 	@property
 	def angle_axis(self) -> Tuple[float,Vector3]:
+		self._ensure_derived()
 		return self.angle, self._axis
 
 	def inverted(self) -> 'Quaternion':
