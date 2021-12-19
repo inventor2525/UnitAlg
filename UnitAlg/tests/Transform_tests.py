@@ -25,6 +25,8 @@ class TransformTests(unittest.TestCase):
 		'''
 		self.assertTrue(False)
 		
-	#TODO: MORE tests!
+	#TODO: Translate, Rotate, Rotate_aout, Scale, TRS, mat property
+	#translation localScale rotation properties
+	#?rename tofromquaternion to rotation?
 if __name__ == 'main':
 	unittest.main()
