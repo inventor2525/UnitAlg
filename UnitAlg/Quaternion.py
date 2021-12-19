@@ -229,10 +229,10 @@ class Quaternion():
 
 	#----Operators----
 	def __eq__(self,other) -> bool:
-		return all(self.value == other.value)
+		return all(np.isclose(self._value, other._value, rtol=1e-12, atol=1e-11))
 
 	def __ne__(self,other) -> bool:
-		return any(self.value != other.value)
+		return any(not np.isclose(v1,v2, rtol=1e-12, atol=1e-11) for v1,v2 in zip(self._value, other._value))
 	
 	def __str__(self) -> str:
 		return str.format('angle:{0} axis:({1},{2},{3}) Quaternion:({4},{5},{6},{7})',math.degrees(self.angle),*self.axis.value,*self._value)
