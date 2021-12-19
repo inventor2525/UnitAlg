@@ -8,6 +8,9 @@ from multipledispatch import dispatch
 from UnitAlg import Vector3
 
 class Quaternion(BaseVector):
+	to_conversions = {}
+	from_conversions = {}
+	
 	@overload
 	def __init__(self, x:Union[float,int], y:Union[float,int], z:Union[float,int], w:Union[float,int]) -> None: ...
 	@overload
