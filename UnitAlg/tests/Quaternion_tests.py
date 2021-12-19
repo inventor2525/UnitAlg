@@ -97,60 +97,52 @@ class QuaternionTests(unittest.TestCase):
 		
 		Quaternion.rtol = 1e-10
 		Quaternion.atol = 1e-6
-		self.assertTrue(
-			Quaternion.from_angle_axis(0,Vector3(1,0,0)) == 
-			Quaternion(0, 0, 0, 1)
-		)
-		self.assertTrue(
-			Quaternion.from_angle_axis(math.pi,Vector3(1,0,0)) == 
-			Quaternion(1, 0, 0, 0)
-		)
-		self.assertTrue(
-			Quaternion.from_angle_axis(math.pi,Vector3(0,1,0)) == 
-			Quaternion(0, 1, 0, 0)
-		)
-		self.assertTrue(
-			Quaternion.from_angle_axis(math.pi,Vector3(0,0,1)) == 
-			Quaternion(0, 0, 1, 0)
-		)
+		
+		def test(angle:float, axis:Vector3, ground_truth:Quaternion) -> None:
+			def check(q:Quaternion):
+				if math.isclose(q.angle, 0):
+					self.assertTrue(math.isclose(q.angle, 0))
+				else:
+					self.assertTrue(
+						(q.axis == axis and math.isclose(q.angle, angle)) or
+						(q.axis == -axis and math.isclose(q.angle, -angle))
+					)					
+					
+			q = Quaternion.from_angle_axis(angle, axis)
+			_q = q.value
+			self.assertTrue(q == ground_truth)
+			
+			#run again, to make sure we are actually 
+			#calculating new angle axis and not relying 
+			#on it from previous test:
+			q = Quaternion(_q)
+			_ = q.angle
+			check(q)
+			
+			q = Quaternion(_q)
+			_ = q.axis
+			check(q)
+			
+			q = Quaternion(_q)
+			_,__ = q.angle_axis
+			check(q)
+		test(0, Vector3(1,0,0), Quaternion(0, 0, 0, 1))
+		test(math.pi, Vector3(1,0,0), Quaternion(1, 0, 0, 0))
+		test(math.pi, Vector3(0,1,0), Quaternion(0, 1, 0, 0))
+		test(math.pi, Vector3(0,0,1), Quaternion(0, 0, 1, 0))
 		
 		_707 = (0.7071070192004544 + 0.7071065431725605)/2
-		self.assertTrue(
-			Quaternion.from_angle_axis(math.pi/2,Vector3(1,0,0)) == 
-			Quaternion(_707, 0, 0, _707)
-		)
-		self.assertTrue(
-			Quaternion.from_angle_axis(math.pi/2,Vector3(0,1,0)) == 
-			Quaternion(0, _707, 0, _707)
-		)
-		self.assertTrue(
-			Quaternion.from_angle_axis(math.pi/2,Vector3(0,0,1)) == 
-			Quaternion(0, 0, _707, _707)
-		)
+		test(math.pi/2, Vector3(1,0,0), Quaternion(_707, 0, 0, _707))
+		test(math.pi/2, Vector3(0,1,0), Quaternion(0, _707, 0, _707))
+		test(math.pi/2, Vector3(0,0,1), Quaternion(0, 0, _707, _707))
 		
-		self.assertTrue(
-			Quaternion.from_angle_axis(-math.pi/2,Vector3(1,0,0)) == 
-			Quaternion(-_707, 0, 0, _707)
-		)
-		self.assertTrue(
-			Quaternion.from_angle_axis(-math.pi/2,Vector3(0,1,0)) == 
-			Quaternion(0, -_707, 0, _707)
-		)
-		self.assertTrue(
-			Quaternion.from_angle_axis(-math.pi/2,Vector3(0,0,1)) == 
-			Quaternion(0, 0, -_707, _707)
-		)
+		test(-math.pi/2, Vector3(1,0,0), Quaternion(-_707, 0, 0, _707))
+		test(-math.pi/2, Vector3(0,1,0), Quaternion(0, -_707, 0, _707))
+		test(-math.pi/2, Vector3(0,0,1), Quaternion(0, 0, -_707, _707))
 		
 		_408 = 0.40824842788125626
-		self.assertTrue(
-			Quaternion.from_angle_axis(math.pi/2, Vector3(1,1,1).normalized) == 
-			Quaternion(_408, _408, _408, _707)
-		)
-		
-		self.assertTrue(
-			Quaternion.from_angle_axis(-math.pi/2, Vector3(-1,1,1).normalized) == 
-			Quaternion(_408, -_408, -_408, _707)
-		)
+		test(math.pi/2, Vector3(1,1,1).normalized, Quaternion(_408, _408, _408, _707))
+		test(-math.pi/2, Vector3(-1,1,1).normalized, Quaternion(_408, -_408, -_408, _707))
 		
 	def test05_multiply(self):
 		'''Quaternion multiply.'''
