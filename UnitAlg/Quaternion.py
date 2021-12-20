@@ -94,24 +94,26 @@ class Quaternion(BaseVector):
 		return q
 	
 	@staticmethod
-	def from_euler(x:float,y:float,z:float) -> 'Quaternion':
-		#https://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm
-		x /= 2
-		y /= 2
-		z /= 2
-		c1 = math.cos(y)
-		s1 = math.sin(y)
-		c2 = math.cos(z)
-		s2 = math.sin(z)
-		c3 = math.cos(x)
-		s3 = math.sin(x)
-		c1c2 = c1*c2
-		s1s2 = s1*s2
+	def from_euler(ax:float,ay:float,az:float) -> 'Quaternion':
+		ax /= 2.0
+		ay /= 2.0
+		az /= 2.0
+		cx = math.cos(ax)
+		sx = math.sin(ax)
+		cy = math.cos(ay)
+		sy = math.sin(ay)
+		cz = math.cos(az)
+		sz = math.sin(az)
+		cxcz = cx*cz
+		cxsz = cx*sz
+		sxcz = sx*cz
+		sxsz = sx*sz
+
 		return Quaternion([
-			c1c2*s3 + s1s2*c3,
-			s1*c2*c3 + c1*s2*s3,
-			c1*s2*c3 - s1*c2*s3,
-			c1c2*c3 - s1s2*s3
+			cy*sxcz - sy*cxsz,
+			cy*sxsz + sy*cxcz,
+			cy*cxsz - sy*sxcz,
+			cy*cxcz + sy*sxsz
 		])
 	
 	#----Main Properties----
