@@ -344,6 +344,30 @@ class QuaternionTests(unittest.TestCase):
 		
 	def test09_rotation_matrix(self):
 		'''Tests quaternion from to rotation matrix.'''
-		self.assertTrue(False)
+		def test(q:Quaternion):
+			x = q*Vector3(1,0,0)
+			y = q*Vector3(0,1,0)
+			z = q*Vector3(0,0,1)
+			mat = np.array([
+				[x.x, y.x, z.x],
+				[x.y, y.y, z.y],
+				[x.z, y.z, z.z]
+			])
+			self.assertTrue(q == Quaternion.from_rotation_matrix(mat))
+		self.assertTrue(Quaternion.from_rotation_matrix([
+			[1,0,0],
+			[0,1,0],
+			[0,0,1],
+		]) == Quaternion.identity)
+		test(Quaternion.identity)
+		test(Quaternion(1,0,0,0))
+		test(Quaternion(0,1,0,0))
+		test(Quaternion(0,0,1,0))
+		Quaternion.from_angle_axis(math.pi, Vector3(1,1,1).normalized)
+		Quaternion.from_angle_axis(math.pi/2, Vector3(1,1,1).normalized)
+		Quaternion.from_angle_axis(math.pi/2, Vector3(-1,1,1).normalized)
+		Quaternion.from_angle_axis(math.pi/2, Vector3(-1,1,-1).normalized)
+		Quaternion.from_angle_axis(30, Vector3(73,-323,29).normalized)
+		
 if __name__ == 'main':
 	unittest.main()
