@@ -46,6 +46,7 @@ class Quaternion(BaseVector):
 
 	@staticmethod
 	def from_rotation_matrix(m:Union[np.ndarray, List[List[Union[float,int]]]]) -> 'Quaternion':
+		m = np.array(m,copy=False)
 		#http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
 		trace = m[0,0] + m[1,1] + m[2,2]
 		if trace > 0:
