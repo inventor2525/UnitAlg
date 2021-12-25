@@ -9,19 +9,19 @@ class TransformTests(unittest.TestCase):
 		correctly, and as a copy of any passed data.
 		'''
 		self.assertTrue(False)
-	def test01_multiply(self):
+	def test01_to_from_Quaternion(self):
+		'''
+		Tests Transform to and from Quaternion.
+		'''
+		self.assertTrue(False)
+	def test02_multiply(self):
 		'''
 		Tests multiplying Transforms (and Vectors).
 		'''
 		self.assertTrue(False)
-	def test02_inverse(self):
+	def test03_inverse(self):
 		'''
 		Tests Transform.inverse
-		'''
-		self.assertTrue(False)
-	def test03_to_from_Quaternion(self):
-		'''
-		Tests Transform to and from Quaternion.
 		'''
 		self.assertTrue(False)
 		
