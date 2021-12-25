@@ -10,6 +10,10 @@ class Transform():
 	def __init__(self, mat=np.identity(4)):
 		self.mat = mat
 
+	@classproperty
+	def identity() -> 'Transform':
+		return Transform()
+		
 	@staticmethod
 	def Translate(translation :Vector3) -> 'Transform':
 		t = Transform()
