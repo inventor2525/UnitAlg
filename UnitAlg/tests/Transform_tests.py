@@ -9,17 +9,49 @@ class TransformTests(unittest.TestCase):
 		correctly, and as a copy of any passed data.
 		'''
 		self.assertTrue(False)
-	def test01_to_from_Quaternion(self):
+		
+	def test01_equality(self):
+		'''
+		Checks that the Transform equality functions work.
+		'''
+		Transform.rtol = 1e-10
+		Transform.atol = 1e-6
+		
+		def check_eq(t1:Transform, t2:Transform):
+			self.assertTrue(t1 == t2)
+			self.assertFalse(t1 != t2)
+		def check_neq(t1:Transform, t2:Transform):
+			self.assertTrue(t1 != t2)
+			self.assertFalse(t1 == t2)
+			
+		check_eq(Transform.identity, Transform.identity)
+		
+		check_neq(Transform.identity, Transform(Transform.identity.mat*1.00001))
+		check_eq( Transform.identity, Transform(Transform.identity.mat*1.00000001))
+		
+		check_neq(Transform.identity, Transform([
+			[1,0,0,0.00001],
+			[0,1,0,0],
+			[0,0,1,0],
+			[0,0,0,1]
+		]))
+		check_eq(Transform.identity, Transform([
+			[1,0,0,0.000001],
+			[0,1,0,0],
+			[0,0,1,0],
+			[0,0,0,1]
+		]))
+		
+	def test02_to_from_Quaternion(self):
 		'''
 		Tests Transform to and from Quaternion.
 		'''
-		self.assertTrue(False)
-	def test02_multiply(self):
+	def test03_multiply(self):
 		'''
 		Tests multiplying Transforms (and Vectors).
 		'''
 		self.assertTrue(False)
-	def test03_inverse(self):
+	def test04_inverse(self):
 		'''
 		Tests Transform.inverse
 		'''
