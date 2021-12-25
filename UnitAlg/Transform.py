@@ -7,6 +7,9 @@ import math
 from UnitAlg import Vector3, Quaternion
 
 class Transform():
+	rtol=1e-12
+	atol=1e-11
+	
 	def __init__(self, mat=np.identity(4)):
 		self.mat = mat
 
@@ -134,11 +137,12 @@ class Transform():
 	def __rmul__(self, other:'Transform') -> 'Transform':
 		return Transform(np.matmul( other._mat, self._mat) )
 
-	def __eq__(self,other) -> bool:
-		return all(self.mat == other.mat)
+	def __eq__(self,other:'Transform') -> bool:
+		#TODO: speed improvement, flatten coppies
+		return all(np.isclose(self._mat.flatten(), other._mat.flatten(), rtol=self.rtol, atol=self.atol))
 
-	def __ne__(self,other) -> bool:
-		return any(self.mat != other.mat)
+	def __ne__(self,other:'Transform') -> bool:
+		return any(not np.isclose(m1,m2, rtol=self.rtol, atol=self.atol) for m1,m2 in zip(self._mat.flatten(), other._mat.flatten()))
 
 if __name__ == '__main__':
 	print(Quaternion.from_euler(0,0,math.pi/2))
