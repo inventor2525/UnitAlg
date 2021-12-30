@@ -109,9 +109,18 @@ class Vector3(BaseVector):
 		return self + other
 	def __sub__(self,other:'Vector3') -> 'Vector3':
 		return Vector3._from_np(self.value - other.value)
-	
-	def __mul__(self,other:float) -> 'Vector3':
-		return Vector3._from_np(self.value * other)
+		
+	@overload
+	def __mul__(self,other:Union[float,int]) -> 'Vector3': ...
+	@overload
+	def __mul__(self,other:'Vector3') -> 'Vector3': ...
+	def __mul__(self,other):
+		if isinstance(other, (float,int)):
+			return Vector3._from_np(self.value * other)
+		elif isinstance(other,Vector3):
+			return Vector3._from_np(self._value * other._value)
+		else:
+			raise ValueError("Expected float/int or Vector3 not "+str(type(other)))
 	def __truediv__(self,other:float) -> 'Vector3':
 		if math.isclose(other,0.0):
 			return Vector3(math.nan, math.nan, math.nan)

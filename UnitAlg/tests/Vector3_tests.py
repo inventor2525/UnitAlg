@@ -82,6 +82,15 @@ class Vector3Tests(unittest.TestCase):
 		v = Vector3(1,2.2,3)/2.3
 		self.assertTrue(isclose(v.x,1/2.3) and isclose(v.y,2.2/2.3) and isclose(v.z,3/2.3))
 		
+		def test_mul_vectors_element_wise(v1:Vector3, v2:Vector3):
+			self.assertTrue(v1*v2 == Vector3(v1.x*v2.x, v1.y*v2.y, v1.z*v2.z))
+		test_mul_vectors_element_wise(Vector3(0,0,0), Vector3(0,0,0))
+		test_mul_vectors_element_wise(Vector3(0,0,0), Vector3(1,1,1))
+		test_mul_vectors_element_wise(Vector3(1,1,1), Vector3(2,3.2,7))
+		test_mul_vectors_element_wise(Vector3(2,3,4), Vector3(2,3.2,7))
+		test_mul_vectors_element_wise(Vector3(-2,3.14,-4), Vector3(2,3.2,7))
+		test_mul_vectors_element_wise(Vector3(-9.1,1,0), Vector3(2,3.2,7))
+	
 	def test04_magnitude(self):
 		'''Checks Vector3.(sq)magnitude / distance'''
 		v = Vector3.forward
