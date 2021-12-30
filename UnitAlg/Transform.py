@@ -90,6 +90,9 @@ class Transform():
 	
 	@property
 	def localScale(self) -> Vector3:
+		'''
+		Gets the positive local scale from the transform matrix, does not handle negative scale.
+		'''
 		m = self._mat
 		return Vector3._from_np(LA.norm([m[0:3,0], m[0:3,1], m[0:3,2]], axis=1))
 	@localScale.setter
