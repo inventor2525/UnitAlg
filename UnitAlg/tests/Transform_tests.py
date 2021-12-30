@@ -1,6 +1,33 @@
 import math
 import unittest
+
+from numpy.core.numeric import identity
 from UnitAlg import *
+
+translations = [
+	Vector3(0,0,0),
+	Vector3(0,1,0),
+	Vector3(2,0,7.3),
+	Vector3(1,-6.2,9.6),
+	Vector3(-1,-7,-3)
+]
+rotations = [
+			Quaternion.identity,
+			Quaternion(1,0,0,0),
+			Quaternion(0,1,0,0),
+			Quaternion(0,0,1,0),
+			Quaternion(2,4,1,.5).normalized,
+			Quaternion(-4,1,8,-.35).normalized,
+			Quaternion(-4,1,8,-.35).normalized
+]
+scales = [
+	Vector3(1,1,1),
+	Vector3(.3,.6,.2),
+	Vector3(3,1,-7),
+	Vector3(-3,1,-7),
+	Vector3(1,1,-1),
+	Vector3(1,-1,-1)
+]
 
 def quaternion_to_transform(q:Quaternion, scale:Vector3=Vector3(1,1,1), translation:Vector3=Vector3(0,0,0)) -> Transform:
 	x = (q * Vector3(1,0,0))*scale.x
@@ -98,15 +125,7 @@ class TransformTests(unittest.TestCase):
 			self.assertTrue(mul_TR_transform_vector3(t,v) == q*v)
 			self.assertTrue(mul_TR_transform_vector3(t,v) == t*v)
 			self.assertTrue(q*v == t*v)
-		rotations = [
-			Quaternion.identity,
-			Quaternion(1,0,0,0),
-			Quaternion(0,1,0,0),
-			Quaternion(0,0,1,0),
-			Quaternion(2,4,1,.5).normalized,
-			Quaternion(-4,1,8,-.35).normalized,
-			Quaternion(-4,1,8,-.35).normalized
-		]
+		
 		for q in rotations:
 			test_rotation_only(q, Vector3(3,6,2))
 		
@@ -136,30 +155,23 @@ class TransformTests(unittest.TestCase):
 			_s = Transform.Scale(scale)
 			self.assertTrue(t == _t*_r*_s )
 			
-		scales = [
-			Vector3(1,1,1),
-			Vector3(.3,.6,.2),
-			Vector3(3,1,-7),
-			Vector3(-3,1,-7),
-			Vector3(1,1,-1),
-			Vector3(1,-1,-1)
-		]
 		for s in scales:
 			for q in rotations:
-				test_TRS(Vector3(0,0,0), q, s, Vector3(3,6,2))
-				test_TRS(Vector3(0,1,0), q, s, Vector3(3,6,2))
-				test_TRS(Vector3(2,0,7.3), q, s, Vector3(3,6,2))
-				test_TRS(Vector3(1,-6.2,9.6), q, s, Vector3(3,6,2))
-				test_TRS(Vector3(-1,-7,-3), q, s, Vector3(3,6,2))
+				for t in translations:
+					test_TRS(t, q, s, Vector3(3,6,2))
 		
 	def test04_inverse(self):
 		'''
 		Tests Transform.inverse
 		'''
-		self.assertTrue(False)
+		def test(t:Transform):
+			self.assertTrue(t * t.inverse == Transform.identity)
+			self.assertTrue(t.inverse * t == Transform.identity)
 		
-	#TODO: Translate, Rotate, Rotate_aout, Scale, TRS, mat property
-	#translation localScale rotation properties
-	#?rename tofromquaternion to rotation?
+		for s in scales:
+			for q in rotations:
+				for t in translations:
+					test(Transform.TRS(t, q, s))
+					
 if __name__ == 'main':
 	unittest.main()
