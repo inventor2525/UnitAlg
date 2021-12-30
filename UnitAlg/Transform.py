@@ -10,7 +10,7 @@ class Transform():
 	rtol=1e-12
 	atol=1e-11
 	
-	def __init__(self, mat=np.identity(4)):
+	def __init__(self, mat:np.ndarray=np.identity(4)):
 		self.mat = mat
 
 	@classproperty
@@ -52,7 +52,16 @@ class Transform():
 		return np.array(self._mat)
 	@mat.setter
 	def mat(self, new_mat: Union[np.ndarray, List[List[float]]]):
-		self._mat = np.array(new_mat, dtype=np.float64)
+		mat = np.array(new_mat, dtype=np.float64)
+		
+		if mat.shape == (4,4):
+			self._mat = mat
+		elif mat.shape == (3,3):
+			m = np.identity(4)
+			m[0:3,0:3] = mat
+			self._mat = m
+		else:
+			raise ValueError("Expected 4x4 or 3x3 matrix, got "+mat.shape)
 
 	@property
 	def coefficients_2d(self) -> List[List[float]]:
@@ -87,11 +96,14 @@ class Transform():
 	def localScale(self, new_localScale:Vector3) -> None:
 		current_localScale = self.localScale
 		self._mat[0:3,0:3] = (self._mat[0:3,0:3]/current_localScale.value)*new_localScale.value
-
+	
+	@property
+	def rotation_mat(self) -> np.ndarray:
+		return self._mat[0:3,0:3] / self.localScale._value
+		
 	@property
 	def rotation(self) -> Quaternion:
-		rotation_mat = self._mat[0:3,0:3] / self.localScale.value
-		return Quaternion.from_rotation_matrix(rotation_mat)
+		return Quaternion.from_rotation_matrix(self.rotation_mat).normalized
 
 	@rotation.setter
 	def rotation(self, rotation:Quaternion):
