@@ -46,7 +46,27 @@ class TransformTests(unittest.TestCase):
 		Tests that the constructors produce a Transform 
 		correctly, and as a copy of any passed data.
 		'''
-		self.assertTrue(False)
+		for scale in scales:
+			for rotation in rotations:
+				for translation in translations:
+					t = Transform.Scale(scale)
+					self.assertTrue(t == Transform([
+						[scale.x, 0,       0,       0],
+						[0,       scale.y, 0,       0],
+						[0,       0,       scale.z, 0],
+						[0,       0,       0,       1],
+					]))
+					t = Transform.Rotate(rotation)
+					self.assertTrue(t == quaternion_to_transform(rotation))
+					
+					t = Transform.Translate(translation)
+					self.assertTrue(t == Transform([
+						[1, 0, 0, translation.x],
+						[0, 1, 0, translation.y],
+						[0, 0, 1, translation.z],
+						[0, 0, 0, 1],
+					]))
+					
 		
 	def test01_equality(self):
 		'''
