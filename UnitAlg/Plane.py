@@ -1,6 +1,7 @@
-from typing import Union, overload, Tuple
+from typing import List, Union, overload, Tuple
 from UnitAlg import Vector3, Quaternion, Ray
 from multipledispatch import dispatch
+import numpy as np
 
 class Plane():
 	@dispatch(Vector3,Vector3)
@@ -39,8 +40,21 @@ class Plane():
 		Note: this only works if it is not perpendicular to the xy plane.
 		'''
 		...
+	@overload
+	def __init__(self, points:List[Vector3]) -> None:
+		'''
+		Creates a plane by best fitting to the passed points.
+		
+		Does not handle planes perpendicular to the xy plane.
+		'''
+		...
 	def __init__(self, *args) -> None:
-		self.__dispatch_init__(*args)
+		if len(args)==1 and isinstance(args[0], list):
+			points = args[0]
+			coefficients = Plane.fit_coefficients(points)
+			self.__init__(*coefficients)
+		else:
+			self.__dispatch_init__(*args)
 	
 	#----Main Properties----
 	@property
@@ -56,7 +70,30 @@ class Plane():
 	@normal.setter
 	def normal(self, normal:Vector3) -> None:
 		self._normal = normal
+	
+	@staticmethod
+	#from https://math.stackexchange.com/questions/99299/best-fitting-plane-given-a-set-of-points (use the pretty graph one)
+	def fit_coefficients(points:List[Vector3]) -> Tuple[float,float,float]:
+		'''
+		Find the coefficents of a plane given a list of points.
+		
+		Note, this only works with planes that are not
+		perpendicular to the x,y plane.
+		'''
+		tmp_A = []
+		tmp_b = []
+		for point in points:
+			tmp_A.append([*point[0:2], 1])
+			tmp_b.append(point[2])
+		b = np.matrix(tmp_b).T
+		A = np.matrix(tmp_A)
 
+		fit = (A.T * A).I * A.T * b
+		#errors = b - A * fit
+		#residual = np.linalg.norm(errors)
+
+		return tuple(np.array(fit)[:,0]) #, errors, residual
+		
 	#----Functions----
 	def raycast(self,ray:Ray) -> Tuple[bool, Vector3]:
 		denom = Vector3.dot(ray.direction,self.normal)
