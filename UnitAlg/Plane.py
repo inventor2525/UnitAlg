@@ -15,6 +15,9 @@ class Plane():
 	@dispatch((float,int), (float,int), (float,int))
 	def __dispatch_init__(self, x_coefficient:Union[float,int], y_coefficient:Union[float,int], z_offset:Union[float,int]) -> None:
 		'''#using ax + by + c = z method:'''
+		self._a = x_coefficient
+		self._b = y_coefficient
+		self._c = z_offset
 		p1 = Vector3([0,0,z_offset])
 		p2 = Vector3([100,0, x_coefficient*100 + z_offset])
 		p3 = Vector3([0, 100, y_coefficient*100 + z_offset])
@@ -49,6 +52,9 @@ class Plane():
 		'''
 		...
 	def __init__(self, *args) -> None:
+		self._a:float = None
+		self._b:float = None
+		self._c:float = None
 		if len(args)==1 and isinstance(args[0], list):
 			points = args[0]
 			coefficients = Plane.fit_coefficients(points)
@@ -71,6 +77,25 @@ class Plane():
 	def normal(self, normal:Vector3) -> None:
 		self._normal = normal
 	
+	def _ensure_coefficents(self):
+		if self._a is None or self._b is None or self._c is None:
+			raise NotImplementedError("TODO: implement calculation of plane coefficents from normal and position.")
+			
+	@property
+	def a(self) -> float:
+		self._ensure_coefficents()
+		return self._a
+	
+	@property
+	def b(self) -> float:
+		self._ensure_coefficents()
+		return self._b
+		
+	@property
+	def c(self) -> float:
+		self._ensure_coefficents()
+		return self._c
+		
 	@staticmethod
 	#from https://math.stackexchange.com/questions/99299/best-fitting-plane-given-a-set-of-points (use the pretty graph one)
 	def fit_coefficients(points:List[Vector3]) -> Tuple[float,float,float]:
