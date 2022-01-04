@@ -1,3 +1,4 @@
+from UnitAlg.CoordinateFrame import *
 from numpy.core.numeric import isclose
 from UnitAlg.Convertable import Convertable
 from numpy.lib.arraysetops import isin
@@ -9,6 +10,8 @@ import math
 
 T=TypeVar('T')
 class BaseVector(Convertable):
+	coordinate_frame = CoordinateFrame.Normal_Math
+	
 	rtol=1e-12
 	atol=1e-11
 	
@@ -49,6 +52,10 @@ class BaseVector(Convertable):
 		return newArr
 	
 	#----Functions----
+	@classmethod
+	def frame(cls:Type['BaseVector']) -> DirectionMap:
+		return frame_directions[cls.coordinate_frame]
+		
 	@property
 	def sq_magnitude(self) -> float:
 		''' Returns squared length of this vector '''

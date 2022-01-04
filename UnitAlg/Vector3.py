@@ -1,10 +1,11 @@
+from UnitAlg.CoordinateFrame import *
 from UnitAlg.BaseVector import BaseVector
 from numpy.core.numeric import isclose
 from UnitAlg.Convertable import Convertable
 from numpy.lib.arraysetops import isin
 from UnitAlg.helpers.classproperty import all_true
 from UnitAlg.helpers import *
-from typing import Any, Iterator, Tuple, Type, Union, List, overload
+from typing import Any, Dict, Iterator, Tuple, Type, Union, List, overload
 import numpy as np
 import math
 
@@ -43,16 +44,16 @@ class Vector3(BaseVector):
 	#----Common values----
 	@classproperty
 	def back() -> 'Vector3':
-		return Vector3(0,0,-1)
+		return Vector3( Vector3.frame[Directions.back] )
 	@classproperty
 	def down() -> 'Vector3':
-		return Vector3(0,-1,0)
+		return Vector3( Vector3.frame[Directions.down] )
 	@classproperty
 	def forward() -> 'Vector3':
-		return Vector3(0,0,1)
+		return Vector3( Vector3.frame[Directions.forward] )
 	@classproperty
 	def left() -> 'Vector3':
-		return Vector3(-1,0,0)
+		return Vector3( Vector3.frame[Directions.left] )
 	@classproperty
 	def negative_infinity() -> 'Vector3':
 		return Vector3(-math.inf,-math.inf,-math.inf)
@@ -64,10 +65,10 @@ class Vector3(BaseVector):
 		return Vector3(math.inf,math.inf,math.inf)
 	@classproperty
 	def right() -> 'Vector3':
-		return Vector3(1,0,0)
+		return Vector3( Vector3.frame[Directions.right] )
 	@classproperty
 	def up() -> 'Vector3':
-		return Vector3(0,1,0)
+		return Vector3( Vector3.frame[Directions.up] )
 	@classproperty
 	def zero() -> 'Vector3':
 		return Vector3(0,0,0)

@@ -5,6 +5,7 @@ import numpy.linalg as LA
 import math
 
 from UnitAlg import Vector3, Quaternion
+from UnitAlg.CoordinateFrame import *
 
 class Transform():
 	rtol=1e-12
@@ -12,7 +13,13 @@ class Transform():
 	
 	def __init__(self, mat:np.ndarray=np.identity(4)):
 		self.mat = mat
-
+	
+	@staticmethod
+	def conversion_from_to(frame1:CoordinateFrame, frame2:CoordinateFrame) -> 'Transform':
+		f1 = Transform(frame_directions[frame1].rotation_matrix())
+		f2 = Transform(frame_directions[frame2].rotation_matrix())
+		return  f1.inverse * f2
+	
 	@classproperty
 	def identity() -> 'Transform':
 		return Transform()
