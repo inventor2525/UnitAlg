@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='UnitAlg',
-    version='0.0.8',
+    version='0.1.0',
     author='Charlie Angela Mehlenbeck',
     author_email='charlie_inventor2003@yahoo.com',
     packages=['UnitAlg'],
@@ -10,7 +10,7 @@ setup(
     scripts=[],
     url='https://github.com/inventor2525/UnitAlg',
     license='LICENSE.txt',
-    description='An un-described package.',
+    description='A numpy based Linear Algebra framework inspired by Unity, for python.',
     long_description=open('README.md').read(),
     install_requires=[
         'numpy'
