@@ -47,28 +47,28 @@ class DirectionMap():
 		
 frame_directions = {
 	CoordinateFrame.Normal_Math: DirectionMap({
-		Directions.right:tuple(1,0,0),
-		Directions.forward:tuple(0,1,0),
-		Directions.up:tuple(0,0,1),
+		Directions.right:(1,0,0),
+		Directions.forward:(0,1,0),
+		Directions.up:(0,0,1),
 	}),
 	CoordinateFrame.ROS: DirectionMap({
-		Directions.right:tuple(0,-1,0),
-		Directions.forward:tuple(1,0,0),
-		Directions.up:tuple(0,0,1),
+		Directions.right:(0,-1,0),
+		Directions.forward:(1,0,0),
+		Directions.up:(0,0,1),
 	}),
 	CoordinateFrame.ROS_IMU: DirectionMap({
-		Directions.right:tuple(0,-1,0),
-		Directions.forward:tuple(1,0,0),
-		Directions.up:tuple(0,0,-1),
+		Directions.right:(0,-1,0),
+		Directions.forward:(1,0,0),
+		Directions.up:(0,0,-1),
 	}),
 	CoordinateFrame.Unity: DirectionMap({
-		Directions.right:tuple(1,0,0),
-		Directions.forward:tuple(0,0,1),
-		Directions.up:tuple(0,1,0),
+		Directions.right:(1,0,0),
+		Directions.forward:(0,0,1),
+		Directions.up:(0,1,0),
 	}),
 	CoordinateFrame.OpenCV: DirectionMap({
-		Directions.right:tuple(1,0,0),
-		Directions.forward:tuple(0,0,1),
-		Directions.up:tuple(0,-1,0),
+		Directions.right:(1,0,0),
+		Directions.forward:(0,0,1),
+		Directions.up:(0,-1,0),
 	})
 }
