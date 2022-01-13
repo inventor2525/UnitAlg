@@ -31,7 +31,7 @@ class DirectionMap():
 	def neg(x:TupleVec3) -> TupleVec3:
 		return (-x[0], -x[1], -x[2])
 	
-	def __get_item__(self, direction:Directions) -> TupleVec3:
+	def __getitem__(self, direction:Directions) -> TupleVec3:
 		return self.map[direction]
 	
 	def rotation_matrix(self) -> np.ndarray:

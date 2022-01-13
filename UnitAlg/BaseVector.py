@@ -52,9 +52,9 @@ class BaseVector(Convertable):
 		return newArr
 	
 	#----Functions----
-	@classmethod
-	def frame(cls:Type['BaseVector']) -> DirectionMap:
-		return frame_directions[cls.coordinate_frame]
+	@classproperty
+	def frame() -> DirectionMap:
+		return frame_directions[BaseVector.coordinate_frame]
 		
 	@property
 	def sq_magnitude(self) -> float:
