@@ -18,7 +18,7 @@ class Transform():
 	def conversion_from_to(frame1:CoordinateFrame, frame2:CoordinateFrame) -> 'Transform':
 		f1 = Transform(frame_directions[frame1].rotation_matrix())
 		f2 = Transform(frame_directions[frame2].rotation_matrix())
-		return  f1.inverse * f2
+		return  f2* f1.inverse
 	
 	@classproperty
 	def identity() -> 'Transform':
