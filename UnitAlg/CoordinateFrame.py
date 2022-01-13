@@ -36,7 +36,7 @@ class DirectionMap():
 	
 	def rotation_matrix(self) -> np.ndarray:
 		'''Returns a 3x3 matrix representing frame'''
-		m = self.mat
+		m = self.map
 		
 		f = np.zeros((3,3), dtype=np.float64)
 		f[:,0] = m[Directions.right]
