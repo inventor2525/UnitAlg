@@ -54,6 +54,13 @@ class Transform():
 		t.localScale = scale
 		return t
 		
+	@staticmethod
+	def TR(translation :Vector3, rotation :Quaternion) -> 'Transform':
+		t = Transform()
+		t.translation = translation
+		t.rotation = rotation
+		return t
+		
 	@property
 	def mat(self) -> np.ndarray:
 		return np.array(self._mat)
