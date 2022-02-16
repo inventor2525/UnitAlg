@@ -23,6 +23,15 @@ class Transform():
 	@classproperty
 	def identity() -> 'Transform':
 		return Transform()
+	
+	@staticmethod
+	def from_rows(x:Vector3, y:Vector3, z:Vector3, pos:Vector3=Vector3.zero) -> 'Transform':
+		return Transform([ #TODO: do this with numpy for speed, and test it with this
+			[x.x, y.x, z.x, pos.x],
+			[x.y, y.y, z.y, pos.y],
+			[x.z, y.z, z.z, pos.z],
+			[0,0,0,1]
+		])
 		
 	@staticmethod
 	def Translate(translation :Vector3) -> 'Transform':
