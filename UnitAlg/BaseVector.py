@@ -10,10 +10,21 @@ import math
 
 T=TypeVar('T')
 class BaseVector(Convertable):
+	to_conversions = {}
+	from_conversions = {}
+	
 	coordinate_frame = CoordinateFrame.Normal_Math
 	
 	rtol=1e-12
 	atol=1e-11
+	
+	T = TypeVar('T', bound='BaseVector')
+	@classmethod
+	def from_other(cls:Type[T], obj:Any) -> T:
+		return cls.from_conversions[type(obj)](obj)
+	
+	def to_other(self, new_type:Type[T]) -> T:
+		return self.to_conversions[new_type](new_type)
 	
 	#----Main Properties----
 	@property
