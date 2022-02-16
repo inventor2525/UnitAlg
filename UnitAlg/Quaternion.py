@@ -120,7 +120,7 @@ class Quaternion(BaseVector):
 	#----Main Properties----
 	@property
 	def w(self) -> float:
-		return self._value[3]
+		return float(self._value[3])
 	@w.setter
 	def w(self, w:float) -> None:
 		self._value[3] = w
