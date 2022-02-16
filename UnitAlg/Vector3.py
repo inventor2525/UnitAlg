@@ -38,7 +38,7 @@ class Vector3(BaseVector):
 				self._value = Vector3._from(x_other)._value
 		elif all_true((isinstance(v,(int, float)) for v in (x_other,y,z))):
 			self.value = [x_other,y,z]
-		else:
+		else: #TODO:conversion functions. -- never got implemented
 			raise ValueError("init can only take 3 real numbers, or 1 list numpy array or some type with a conversion function specified in from_conversions and nothing else.")
 				
 	#----Common values----
