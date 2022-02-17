@@ -82,8 +82,7 @@ class Vector3(BaseVector):
 	@staticmethod 
 	def angle(from_v:'Vector3', to_v:'Vector3') -> float:
 		''' 
-		Returns the unsigned angle between 'fromV' and 'toV' in degrees.  
-		Angle is never greater than 180.  
+		Returns the unsigned angle between 'fromV' and 'toV' in rad [0,pi].  
 		'''
 		return math.acos(Vector3.dot(from_v,to_v)/(from_v.magnitude*to_v.magnitude))
 	
