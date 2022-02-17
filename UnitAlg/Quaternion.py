@@ -193,7 +193,18 @@ class Quaternion(BaseVector):
 			z_e = math.asin(2*test)
 			x_e = math.atan2(2*_x*_w-2*_y*_z , 1 - 2*sqx - 2*sqz)
 		return x_e, y_e, z_e
-
+	
+	@staticmethod
+	def lerp(q1:'Quaternion', q2:'Quaternion', t:float) -> 'Quaternion':
+		'''
+		Linearly interpolates between q1 and q2 by t where t is
+		usually [0,1] (but can be more or less).
+		'''
+		#TODO: speed this up?? and test it
+		_q2 = q2*q1.inverse
+		_q2 = Quaternion.from_angle_axis(_q2.angle*t, _q2.axis)
+		return q1*_q2
+		
 	#----Operators----
 	def __str__(self) -> str:
 		return str.format('angle:{0} axis:{1} Quaternion:({2},{3},{4},{5})',math.degrees(self.angle),self.axis,*self._value)
