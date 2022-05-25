@@ -32,6 +32,17 @@ class Transform():
 			[x.z, y.z, z.z, pos.z],
 			[0,0,0,1]
 		])
+	@staticmethod
+	def from_3x3list(mat:List[float], pos:Vector3=Vector3.zero) -> 'Transform':
+		'''
+		Takes in a single dimentional list of the top left 3x3 rotation/projection matrix,
+		in row major order, and sets the last column to [*pos,1].'''
+		return Transform([ #TODO: do this with numpy for speed, and test it with this
+			[mat[0], mat[1], mat[2], pos.x],
+			[mat[3], mat[4], mat[5], pos.y],
+			[mat[6], mat[7], mat[8], pos.z],
+			[0,0,0,1]
+		])
 		
 	@staticmethod
 	def Translate(translation :Vector3) -> 'Transform':
@@ -152,6 +163,10 @@ class Transform():
 	@property
 	def inverse(self) -> 'Transform':
 		 return Transform(LA.inv(self._mat))
+		 
+	@property
+	def transpose(self) -> 'Transform':
+		 return Transform(self._mat.T)
 		 
 	#----Operators----
 	def __str__(self) -> str:
