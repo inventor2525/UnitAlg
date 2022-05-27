@@ -101,6 +101,14 @@ class Vector3(BaseVector):
 		v = (vector_b._value-p1)
 		d = np.linalg.norm(v)
 		return Vector3._from_np(p1 + v*(factor/d))
+		
+	@staticmethod
+	def project_point(vector:'Vector3', onNormal:'Vector3')->'Vector3':
+		sqrMag = Vector3.dot(onNormal,onNormal)
+		if sqrMag < 2.22*1e-16:
+			return
+		dot = Vector3.dot(vector, onNormal)
+		return Vector3(onNormal.x * dot/sqrMag, onNormal.y * dot/sqrMag, onNormal.z * dot/sqrMag)
 
 	#----Operators----
 	def __add__(self,other:'Vector3') -> 'Vector3':
