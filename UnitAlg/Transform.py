@@ -11,8 +11,27 @@ class Transform():
 	rtol=1e-12
 	atol=1e-11
 	
-	def __init__(self, mat:np.ndarray=np.identity(4)):
-		self.mat = mat
+	@overload
+	def __init__(self, vec:Vector3, rot:Quaternion, scale:Vector3=Vector3(1,1,1)) -> None: ...
+	@overload
+	def __init__(self, mat:np.ndarray=np.identity(4)) -> None: ...
+	
+	def __init__(self, *args):
+		if len(args) == 0:
+			self.mat = np.identity(4)
+		elif len(args) == 1:
+			self.mat = args[0]
+		elif len(args) == 2:
+			self.mat = np.identity(4)
+			self.translation = args[0]
+			self.rotation = args[1]
+		elif len(args) == 3:
+			self.mat = np.identity(4)
+			self.translation = args[0]
+			self.rotation = args[1]
+			self.localScale = args[2]
+		else:
+			raise ValueError("init can only take 0 args, 1 numpy array, or a Vector3, Quaternion, and Vector3, and nothing else.")
 	
 	@staticmethod
 	def conversion_from_to(frame1:CoordinateFrame, frame2:CoordinateFrame) -> 'Transform':
@@ -167,7 +186,31 @@ class Transform():
 	@property
 	def transpose(self) -> 'Transform':
 		 return Transform(self._mat.T)
-		 
+	
+	@property
+	def forward(self) -> Vector3:
+		return self.rotation*Vector3.forward
+	
+	@property
+	def back(self) -> Vector3:
+		return self.rotation*Vector3.back
+		
+	@property
+	def up(self) -> Vector3:
+		return self.rotation*Vector3.up
+	
+	@property
+	def down(self) -> Vector3:
+		return self.rotation*Vector3.down
+		
+	@property
+	def right(self) -> Vector3:
+		return self.rotation*Vector3.right
+		
+	@property
+	def left(self) -> Vector3:
+		return self.rotation*Vector3.left
+ 
 	#----Operators----
 	def __str__(self) -> str:
 		return self._mat.__str__()

@@ -11,6 +11,11 @@ class CoordinateFrame(Enum):
 	ROS_IMU=2
 	Unity=3
 	OpenCV=4
+	@staticmethod
+	def set(frame: 'CoordinateFrame') -> None:
+		'''Sets the coordinate frame for all BaseVectors'''
+		from .BaseVector import BaseVector
+		BaseVector.coordinate_frame = frame
 
 class Directions(Enum):
 	left=1

@@ -129,6 +129,15 @@ class Vector3(BaseVector):
 			return Vector3._from_np(self._value * other._value)
 		else:
 			raise ValueError("Expected float/int or Vector3 not "+str(type(other)))
+	def __imul__(self,other:Union[float,int]) -> 'Vector3':
+		return self * other	
+	def __rmul__(self,other:Union[float,int]) -> 'Vector3':
+		return self * other
+		
+	def __rtruediv__(self,other:float) -> 'Vector3':
+		if math.isclose(other,0.0):
+			return Vector3(math.nan, math.nan, math.nan)
+		return Vector3._from_np(np.divide(other, self.value))
 	def __truediv__(self,other:float) -> 'Vector3':
 		if math.isclose(other,0.0):
 			return Vector3(math.nan, math.nan, math.nan)
