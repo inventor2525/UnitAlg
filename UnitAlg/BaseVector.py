@@ -84,7 +84,17 @@ class BaseVector(Convertable):
 		'''
 		self.value = self.value / self.magnitude
 		#TODO: handle 0 magnitude through a abstract method in both normalize functions
-
+	
+	@staticmethod
+	def sq_distance(v1:T, v2:T) -> float:
+		''' Returns the square distance between two vectors '''
+		return (v1 - v2).sq_magnitude
+		
+	@staticmethod
+	def distance(v1:T, v2:T) -> float:
+		''' Returns the distance between two vectors '''
+		return (v1 - v2).magnitude
+		
 	@property
 	def normalized(self:T) -> T:
 		'''
