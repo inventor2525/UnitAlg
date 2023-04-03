@@ -84,8 +84,40 @@ class Vector3(BaseVector):
 		''' 
 		Returns the unsigned angle between 'fromV' and 'toV' in rad [0,pi].  
 		'''
-		return math.acos(Vector3.dot(from_v,to_v)/(from_v.magnitude*to_v.magnitude))
+		v = Vector3.dot(from_v,to_v)/(from_v.magnitude*to_v.magnitude)
+		if v > 1:
+			return 0
+		elif v < -1:
+			return math.pi
+		return math.acos(v)
 	
+	@staticmethod
+	def signed_angle(from_v:'Vector3', to_v:'Vector3', axis:'Vector3') -> float:
+		''' 
+		Returns the signed angle between 'fromV' and 'toV' in rad [-pi,pi].  
+		'''
+		# return math.atan2(Vector3.dot(axis,Vector3.cross(from_v,to_v)), Vector3.dot(from_v,to_v))
+		angle = Vector3.angle(from_v, to_v)
+		cross = Vector3.cross(from_v, to_v)
+		return angle if Vector3.dot(axis, cross) >= 0 else -angle
+		
+	@staticmethod
+	def signed_angle2(from_v:'Vector3', to_v:'Vector3', axis:'Vector3', inclusive=False) -> float:
+		''' 
+		Returns the signed angle between 'fromV' and 'toV' in rad [0,2pi), or [0,2pi] if inclusive is True.
+		'''
+		angle = Vector3.signed_angle(from_v,to_v,axis)
+		if angle < 0:
+			angle += 2*math.pi
+			
+		if not inclusive:
+			if angle >= 2*math.pi-0.000005: #~1 arcsecond less than 2pi, this is to make it so that 2pi is the same as 0
+				angle -= 2*math.pi
+				if angle < 0:
+					angle = 0
+					
+		return angle
+		
 	@staticmethod
 	def cross(vector_a:'Vector3',vector_b:'Vector3') -> 'Vector3':
 		'''Cross product between two vectors '''
