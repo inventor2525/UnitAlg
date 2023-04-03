@@ -141,7 +141,18 @@ class Vector3(BaseVector):
 			return
 		dot = Vector3.dot(vector, onNormal)
 		return Vector3(onNormal.x * dot/sqrMag, onNormal.y * dot/sqrMag, onNormal.z * dot/sqrMag)
-
+	
+	def reflect(self, inDirection:'Vector3') -> 'Vector3':
+		return self - 2 * Vector3.dot(inDirection, self) * inDirection
+	
+	@property
+	def normalized(self) -> 'Vector3':
+		return Vector3._from_np(self.value/np.linalg.norm(self.value))
+	
+	@staticmethod
+	def clamp(vector:'Vector3', min:'Vector3', max:'Vector3') -> 'Vector3':
+		return Vector3._from_np(np.clip(vector.value,min.value,max.value))
+		
 	#----Operators----
 	def __add__(self,other:'Vector3') -> 'Vector3':
 		return Vector3._from_np(self.value + other.value)

@@ -117,6 +117,19 @@ class Quaternion(BaseVector):
 			cy*cxcz + sy*sxsz
 		])
 	
+	@staticmethod
+	def from_euler_degrees(ax:float,ay:float,az:float) -> 'Quaternion':
+		return Quaternion.from_euler(ax/180*math.pi,ay/180*math.pi,az/180*math.pi)
+	
+	@staticmethod
+	def slerp(self, other:'Quaternion', t:float) -> 'Quaternion':
+		"""
+		Spherical linear interpolation between two quaternions.
+		"""
+		return Quaternion.from_rotation_matrix(np.array([
+			np.lerp(self.to_rotation_matrix(), other.to_rotation_matrix(), t)
+		]))		
+	
 	#----Main Properties----
 	@property
 	def w(self) -> float:
@@ -193,6 +206,28 @@ class Quaternion(BaseVector):
 			z_e = math.asin(2*test)
 			x_e = math.atan2(2*_x*_w-2*_y*_z , 1 - 2*sqx - 2*sqz)
 		return x_e, y_e, z_e
+	
+	def matrix(self) -> np.ndarray:
+		'''
+		Calculates and returns the 4x4 matrix equivalent of this quaternion.
+		'''
+		#https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+		_x, _y, _z, _w = self._value
+		xx = _x*_x
+		xy = _x*_y
+		xz = _x*_z
+		xw = _x*_w
+		yy = _y*_y
+		yz = _y*_z
+		yw = _y*_w
+		zz = _z*_z
+		zw = _z*_w
+		return np.array([
+			[1-2*(yy+zz), 2*(xy-zw), 2*(xz+yw), 0],
+			[2*(xy+zw), 1-2*(xx+zz), 2*(yz-xw), 0],
+			[2*(xz-yw), 2*(yz+xw), 1-2*(xx+yy), 0],
+			[0, 0, 0, 1]
+		])
 	
 	@staticmethod
 	def lerp(q1:'Quaternion', q2:'Quaternion', t:float) -> 'Quaternion':

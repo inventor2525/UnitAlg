@@ -16,6 +16,20 @@ class Ray():
 		#Return the closest point
 		return self.origin + self.direction * projection
 		
+	def refract(self, normal:Vector3, n1:float, n2:float) -> Vector3:
+		'''
+		Returns the refracted direction of the ray.
+		'''
+		#source: https://en.wikipedia.org/wiki/Snell%27s_law#Vector_form
+		#Find the cosine of the angle between the direction and the normal
+		cosine = Vector3.dot(self.direction, normal)
+		#Find the ratio of the indices of refraction
+		ratio = n1/n2
+		#Find the sine of the angle between the refracted direction and the normal
+		sine = ratio * (1 - cosine**2)
+		#Return the refracted direction
+		return self.direction * ratio - normal * (ratio * cosine + sine**0.5)
+	
 	def skew_point(self, ray:'Ray') -> Vector3:
 		'''
 		Returns the closest point on this ray to the passed ray.

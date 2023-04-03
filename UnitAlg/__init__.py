@@ -3,4 +3,5 @@ from .Quaternion import Quaternion
 from .Ray import Ray
 from .Transform import Transform
 from .Plane import Plane
+from .Circle import Circle
 from .CoordinateFrame import CoordinateFrame
